@@ -1,0 +1,58 @@
+{
+  "name": "npm-run-all",
+  "version": "1.0.0",
+  "description": "A CLI tool to run multiple npm-scripts on sequential or parallel.",
+  "main": "lib/index.js",
+  "bin": {
+    "npm-run-all": "lib/command.js"
+  },
+  "files": [
+    "lib"
+  ],
+  "config": {
+    "test": "OK"
+  },
+  "scripts": {
+    "build": "eslint src && babel src --out-dir lib",
+    "lint": "eslint src && eslint test",
+    "test": "npm run build && mocha test/*.js --compilers js:espower-babel/guess --timeout 10000",
+    "testing": "run-all \"npm run testing:babel\" \"npm run testing:mocha\"",
+    "testing:babel": "babel src --out-dir lib --watch --source-maps-inline",
+    "testing:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 10000 --watch --colors",
+
+    "test-task:env-check": "node test/tasks/env-check.js",
+    "test-task:append-a": "node test/tasks/append.js a",
+    "test-task:append-b": "node test/tasks/append.js b",
+    "test-task:error": "node test/tasks/error.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mysticatea/npm-run-all.git"
+  },
+  "keywords": [
+    "cli",
+    "command",
+    "commandline",
+    "tool",
+    "npm",
+    "npm-scripts",
+    "run",
+    "sequential",
+    "parallel",
+    "task"
+  ],
+  "author": "Toru Nagashima",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mysticatea/npm-run-all/issues"
+  },
+  "homepage": "https://github.com/mysticatea/npm-run-all",
+  "devDependencies": {
+    "babel": "^4.7.16",
+    "eslint": "^0.17.1",
+    "espower-babel": "^1.4.0",
+    "mocha": "^2.2.1",
+    "power-assert": "^0.10.2",
+    "run-all": "^1.0.1"
+  }
+}
