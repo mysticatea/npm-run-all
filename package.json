@@ -22,7 +22,8 @@
     "test-task:env-check": "node test/tasks/env-check.js",
     "test-task:append-a": "node test/tasks/append.js a",
     "test-task:append-b": "node test/tasks/append.js b",
-    "test-task:error": "node test/tasks/error.js"
+    "test-task:error": "node test/tasks/error.js",
+    "test-task:stdio": "node test/tasks/stdio.js"
   },
   "repository": {
     "type": "git",

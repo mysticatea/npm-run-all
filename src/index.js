@@ -20,12 +20,13 @@ function defineExec() {
 
 const exec = defineExec();
 
-function runTask(task, stdout, stderr) {
+function runTask(task, stdin, stdout, stderr) {
   return new Promise((resolve, reject) => {
     // Execute.
     const cp = exec(`npm run-script ${task}`);
 
     // Piping stdio.
+    if (stdin) { stdin.pipe(cp.stdin); }
     if (stdout) { cp.stdout.pipe(stdout); }
     if (stderr) { cp.stderr.pipe(stderr); }
 
@@ -50,14 +51,15 @@ export default function runAll(_tasks, _options) {
 
   const options = _options || {};
   const parallel = Boolean(options.parallel);
+  const stdin = options.stdin || null;
   const stdout = options.stdout || null;
   const stderr = options.stderr || null;
 
   if (parallel) {
-    return Promise.all(tasks.map(task => runTask(task, stdout, stderr)));
+    return Promise.all(tasks.map(task => runTask(task, stdin, stdout, stderr)));
   }
   return (function next() {
     const task = tasks.shift();
-    return task && runTask(task, stdout, stderr).then(next);
+    return task && runTask(task, stdin, stdout, stderr).then(next);
   })();
 }
