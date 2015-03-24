@@ -34,24 +34,24 @@ Usage: npm-run-all [OPTIONS] <task> [...tasks]
 {
   "scripts": {
     "build":        "npm-run-all build:html build:js build:babel",
-    "build:html":   "cp src/client/*.{html,css} app/static/",
+    "build:html":   "cpx \"src/client/*.{html,css}\" app/static/",
     "build:js":     "browserify src/client/index.js -o app/static/index.js",
     "build:babel":  "babel src/server -o app/server",
 
     "start": "npm run build && node app/server/index.js",
-    "test": "mocha test --compilers js:babel/register",
+    "test": "mocha test --compilers js:babel/register --colors",
 
-    "testing":        "npm-run-all --parallel testing:html testing:js testing:babel testing:server testing:mocha",
-    "testing:html":   "cpx \"src/client/*.{html,css}\" app/static/ --watch",
-    "testing:js":     "watchify src/client/index.js -o app/static/index.js",
-    "testing:babel":  "babel src/server -o app/server --watch --source-maps-inline",
-    "testing:server": "node-dev app/server/index.js",
-    "testing:mocha":  "mocha test --compilers js:babel/register --watch --colors",
+    "testing":       "npm-run-all --parallel testing:html testing:js testing:babel testing:start testing:mocha",
+    "testing:html":  "npm run build:html -- --watch",
+    "testing:js":    "watchify src/client/index.js -o app/static/index.js --debug",
+    "testing:babel": "npm run build:babel -- --watch --source-maps-inline",
+    "testing:start": "node-dev app/server/index.js",
+    "testing:mocha": "npm run test -- --watch",
   }
 }
 ```
 
-Pick up:
+### Pick up: sequential
 
 ```
 npm-run-all build:html build:js build:babel
@@ -59,11 +59,14 @@ npm-run-all build:html build:js build:babel
 
 is same as `npm run build:html && npm run build:js && npm run build:babel`.
 
+### Pick up: parallel
+
 ```
 npm-run-all --parallel testing:html testing:js testing:babel testing:server testing:mocha
 ```
 
 is same as `npm run testing:html & npm run testing:js & npm run testing:babel & npm run testing:server & npm run testing:mocha`.
+
 Of course, be possible to run on Windows as well!
 
 
