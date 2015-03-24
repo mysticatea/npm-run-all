@@ -10,11 +10,11 @@ exports.result = function result() {
     console.error(err.message);
     return null;
   }
-}
+};
 
 exports.appendResult = function appendResult(content) {
   fs.appendFileSync(FILE_NAME, content);
-}
+};
 
 exports.removeResult = function removeResult() {
   try {
@@ -23,4 +23,4 @@ exports.removeResult = function removeResult() {
   catch (err) {
     // ignore.
   }
-}
+};
