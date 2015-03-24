@@ -84,17 +84,17 @@ var promise = runAll(tasks, options);
 
 Run npm-scripts.
 
-* *tasks* `string|string[]` -- Task names.
-* *options* `object`
-  * *options.parallel* `boolean` -- A flag to run tasks on parallel. By default,
+* **tasks** `string|string[]` -- Task names.
+* **options** `object`
+  * **options.parallel** `boolean` -- A flag to run tasks on parallel. By default,
     `false`.
-  * *options.stdin* `stream.Readable` -- A readable stream that sends to stdin
+  * **options.stdin** `stream.Readable` -- A readable stream that sends to stdin
     of tasks. By default, nothing. Set `process.stdin` in order to send from
     key inputs.
-  * *options.stdout* `stream.Writable` -- A writable stream that receives stdout
+  * **options.stdout** `stream.Writable` -- A writable stream that receives stdout
     of tasks. By default, nothing. Set `process.stdout` in order to print to
     console.
-  * *options.stderr* `stream.Writable` -- A writable stream that receives stderr
+  * **options.stderr** `stream.Writable` -- A writable stream that receives stderr
     of tasks. By default, nothing. Set `process.stderr` in order to print to
     console.
 
