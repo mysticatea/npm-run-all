@@ -1,6 +1,6 @@
 {
   "name": "npm-run-all",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CLI tool to run multiple npm-scripts on sequential or parallel.",
   "main": "lib/index.js",
   "bin": {
@@ -19,7 +19,6 @@
     "testing": "npm-run-all --parallel testing:babel testing:mocha",
     "testing:babel": "babel src --out-dir lib --watch --source-maps-inline",
     "testing:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 10000 --watch --colors",
-
     "test-task:env-check": "node test/tasks/env-check.js",
     "test-task:append-a": "node test/tasks/append.js a",
     "test-task:append-b": "node test/tasks/append.js b",
