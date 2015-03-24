@@ -13,12 +13,14 @@
     "test": "OK"
   },
   "scripts": {
-    "build": "eslint src && babel src --out-dir lib",
-    "lint": "eslint src && eslint test",
-    "test": "npm run build && mocha test/*.js --compilers js:espower-babel/guess --timeout 10000",
-    "testing": "npm-run-all --parallel testing:babel testing:mocha",
-    "testing:babel": "babel src --out-dir lib --watch --source-maps-inline",
-    "testing:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 10000 --watch --colors",
+    "build": "babel src --out-dir lib",
+    "test": "npm-run-all test:lint build test:mocha",
+    "test:lint": "eslint src test",
+    "test:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 10000 --colors",
+    "testing": "npm-run-all --parallel testing:build testing:mocha",
+    "testing:build": "npm run build -- --watch --source-maps-inline",
+    "testing:mocha": "npm run test:mocha -- --watch",
+
     "test-task:env-check": "node test/tasks/env-check.js",
     "test-task:append-a": "node test/tasks/append.js a",
     "test-task:append-b": "node test/tasks/append.js b",
