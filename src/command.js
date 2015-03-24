@@ -2,6 +2,7 @@
 
 import {readFileSync} from "fs";
 import {join as joinPath} from "path";
+import minimist from "minimist";
 import runAll from "./index";
 
 if (require.main === module) {
@@ -10,14 +11,15 @@ if (require.main === module) {
 
 function printHelp() {
   console.log(`
-Usage: npm-run-all [OPTIONS] <task> [...tasks]
+Usage: npm-run-all [OPTIONS] [...tasks]
 
-  Run specified tasks on sequential.
+  Run specified tasks.
 
   Options:
-    -h, --help                        Print this text.
-    -p, --parallel <task> [...tasks]  Run specified tasks on parallel.
-    -v, --version                     Print version number.
+    -h, --help      Print this text.
+    -p, --parallel  Run specified tasks on parallel.
+                    By default, run on sequential.
+    -v, --version   Print version number.
 
   See Also:
     https://github.com/mysticatea/npm-run-all
@@ -35,42 +37,35 @@ function printVersion() {
   console.log("v" + version);
 }
 
-function findParallelOptionIndex(args) {
-  for (let i = 0, end = args.length; i < end; ++i) {
-    const arg = args[i];
-    if (arg === "-p" || arg === "--parallel") {
-      return i;
-    }
-  }
-  return -1;
-}
-
 /*eslint no-process-exit:0*/
 function main(args) {
-  switch (args[0]) {
-    case undefined:
-    case "-h":
-    case "--help":
-      printHelp();
-      process.exit(0);
-      break;
+  const options = minimist(args, {
+    boolean: ["help", "parallel", "version"],
+    alias: {"h": "help", "p": "parallel", "v": "version"},
+    unknown: arg => {
+      if (arg[0] === "-") {
+        console.error(`Unknown Option: ${arg}`);
+        process.exit(1);
+      }
+    }
+  });
 
-    case "-v":
-    case "--version":
-      printVersion();
-      process.exit(0);
-      break;
+  if (options._.length === 0 || options.help) {
+    printHelp();
+    process.exit(0);
+  }
+  if (options.version) {
+    printVersion();
+    process.exit(0);
   }
 
-  const pIndex = findParallelOptionIndex(args);
-  const seqTasks = (pIndex < 0 ? args : args.slice(0, pIndex));
-  const parTasks = (pIndex < 0 ? [] : args.slice(1 + pIndex));
-  const seqOptions =
-    {stdout: process.stdout, stderr: process.stderr, parallel: false};
-  const parOptions =
-    {stdout: process.stdout, stderr: process.stderr, parallel: true};
-
-  runAll(seqTasks, seqOptions)
-    .then(() => runAll(parTasks, parOptions))
+  runAll(
+      options._,
+      {
+        stdout: process.stdout,
+        stderr: process.stderr,
+        parallel: options.parallel
+      }
+    )
     .catch(() => process.exit(1));
 }

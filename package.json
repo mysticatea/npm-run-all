@@ -19,7 +19,6 @@
     "testing": "run-all \"npm run testing:babel\" \"npm run testing:mocha\"",
     "testing:babel": "babel src --out-dir lib --watch --source-maps-inline",
     "testing:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 10000 --watch --colors",
-
     "test-task:env-check": "node test/tasks/env-check.js",
     "test-task:append-a": "node test/tasks/append.js a",
     "test-task:append-b": "node test/tasks/append.js b",
@@ -54,5 +53,8 @@
     "mocha": "^2.2.1",
     "power-assert": "^0.10.2",
     "run-all": "^1.0.1"
+  },
+  "dependencies": {
+    "minimist": "^1.1.1"
   }
 }
