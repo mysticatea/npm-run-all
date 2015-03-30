@@ -12,7 +12,7 @@ describe("npm-run-all", () => {
 
   describe("should run tasks on parallel when was given --parallel option:", () => {
     it("lib version", () => {
-      return runAll(["test-task:append-a", "test-task:append-b"], {parallel: true})
+      return runAll(["test-task:append a", "test-task:append b"], {parallel: true})
         .then(() => {
           assert(result() === "abab" ||
                  result() === "baba" ||
@@ -22,7 +22,7 @@ describe("npm-run-all", () => {
     });
 
     it("command version", () => {
-      execSync("node lib/command.js --parallel test-task:append-a test-task:append-b");
+      execSync("node lib/command.js --parallel \"test-task:append a\" \"test-task:append b\"");
       assert(result() === "abab" ||
              result() === "baba" ||
              result() === "abba" ||

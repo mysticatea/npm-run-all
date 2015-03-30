@@ -12,14 +12,14 @@ describe("npm-run-all", () => {
 
   describe("should run tasks on sequential:", () => {
     it("lib version", () => {
-      return runAll(["test-task:append-a", "test-task:append-b"], {parallel: false})
+      return runAll(["test-task:append a", "test-task:append b"], {parallel: false})
         .then(() => {
           assert(result() === "aabb");
         });
     });
 
     it("command version", () => {
-      execSync("node lib/command.js test-task:append-a test-task:append-b");
+      execSync("node lib/command.js \"test-task:append a\" \"test-task:append b\"");
       assert(result() === "aabb");
     });
   });

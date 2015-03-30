@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-import {readFileSync} from "fs";
-import {join as joinPath} from "path";
-import minimist from "minimist";
 import runAll from "./index";
 
 if (require.main === module) {
@@ -16,10 +13,10 @@ Usage: npm-run-all [OPTIONS] [...tasks]
   Run specified tasks.
 
   Options:
-    -h, --help      Print this text.
-    -p, --parallel  Run specified tasks on parallel.
-                    By default, run on sequential.
-    -v, --version   Print version number.
+    -h, --help                  Print this text.
+    -p, --parallel [...tasks]   Grouping tasks to run on parallel.
+    -s, --sequential [...tasks] Grouping tasks to run on sequential.
+    -v, --version               Print version number.
 
   See Also:
     https://github.com/mysticatea/npm-run-all
@@ -27,45 +24,75 @@ Usage: npm-run-all [OPTIONS] [...tasks]
 }
 
 function printVersion() {
-  const version = JSON.parse(
-    readFileSync(
-      joinPath(__dirname, "../package.json"),
-      {encoding: "utf8"}
-    )
-  ).version;
+  console.log("v" + require("../package.json").version);
+}
 
-  console.log("v" + version);
+function createQueue(args) {
+  return args.reduce((queue, arg) => {
+    switch (arg) {
+      case "-s":
+      case "--sequential":
+        queue.push({parallel: false, tasks: []});
+        break;
+
+      case "-p":
+      case "--parallel":
+        queue.push({parallel: true, tasks: []});
+        break;
+
+      default:
+        if (arg[0] === "-") {
+          throw new Error("Invalid Option: " + arg);
+        }
+        queue[queue.length - 1].tasks.push(arg);
+        break;
+    }
+    return queue;
+  }, [{parallel: false, tasks: []}]);
 }
 
 /*eslint no-process-exit:0*/
 function main(args) {
-  const options = minimist(args, {
-    boolean: ["help", "parallel", "version"],
-    alias: {"h": "help", "p": "parallel", "v": "version"},
-    unknown: arg => {
-      if (arg[0] === "-") {
-        console.error(`Unknown Option: ${arg}`);
-        process.exit(1);
-      }
+  if (args.length === 0) {
+    args.push("--help");
+  }
+  switch (args[0]) {
+    case "-h":
+    case "--help":
+      printHelp();
+      return;
+
+    case "-v":
+    case "--version":
+      printVersion();
+      return;
+  }
+
+  let queue;
+  try {
+    queue = createQueue(args);
+  }
+  catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+
+  (function next() {
+    const group = queue.shift();
+    if (group == null) {
+      return;
     }
-  });
-
-  if (options._.length === 0 || options.help) {
-    printHelp();
-    process.exit(0);
-  }
-  if (options.version) {
-    printVersion();
-    process.exit(0);
-  }
-
-  runAll(
-      options._,
+    if (group.tasks.length === 0) {
+      next();
+      return;
+    }
+    runAll(
+      group.tasks,
       {
         stdout: process.stdout,
         stderr: process.stderr,
-        parallel: options.parallel
-      }
-    )
-    .catch(() => process.exit(1));
+        parallel: group.parallel
+      })
+      .then(next, () => process.exit(1));
+  })();
 }

@@ -16,15 +16,15 @@ npm install npm-run-all
 ## Usage
 
 ```
-Usage: npm-run-all [OPTIONS] <task> [...tasks]
+Usage: npm-run-all [OPTIONS] [...tasks]
 
   Run specified tasks.
 
   Options:
-    -h, --help      Print this text.
-    -p, --parallel  Run specified tasks on parallel.
-                    By default, run on sequential.
-    -v, --version   Print version number.
+    -h, --help                  Print this text.
+    -p, --parallel [...tasks]   Grouping tasks to run on parallel.
+    -s, --sequential [...tasks] Grouping tasks to run on sequential.
+    -v, --version               Print version number.
 ```
 
 ### Run tasks on sequential
@@ -44,6 +44,24 @@ npm-run-all --parallel watch:html watch:js
 This is same as `npm run watch:html & npm run watch:js`.
 
 Of course, this can be run on **Windows** as well!
+
+### Run tasks on mixed sequential and parallel.
+
+```
+npm-run-all clean lint --parallel watch:html watch:js
+```
+
+1. First, this runs `clean` and `lint` sequentially.
+2. Next, runs `build:html` and `build:js` parallelly.
+
+```
+npm-run-all a b --parallel c d --sequential e f --parallel g h i
+```
+
+1. First, runs `a` and `b` sequentially.
+2. Second, runs `c` and `d` parallelly.
+3. Third, runs `e` and `f` sequentially.
+4. Lastly, runs `g`, `h`, and `i` parallelly.
 
 
 ## Node API

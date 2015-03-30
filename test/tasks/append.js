@@ -5,4 +5,4 @@ function append() {
 }
 
 append();
-setTimeout(append, 500);
+setTimeout(append, 100);

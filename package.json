@@ -23,8 +23,7 @@
     "testing:build": "npm run build:babel -- --watch --source-maps-inline",
     "testing:mocha": "npm run test:mocha -- --watch --growl",
     "test-task:env-check": "node test/tasks/env-check.js",
-    "test-task:append-a": "node test/tasks/append.js a",
-    "test-task:append-b": "node test/tasks/append.js b",
+    "test-task:append": "node test/tasks/append.js",
     "test-task:error": "node test/tasks/error.js",
     "test-task:stdio": "node test/tasks/stdio.js"
   },
