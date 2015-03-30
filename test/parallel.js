@@ -14,13 +14,19 @@ describe("npm-run-all", () => {
     it("lib version", () => {
       return runAll(["test-task:append-a", "test-task:append-b"], {parallel: true})
         .then(() => {
-          assert(result() === "abab" || result() === "baba");
+          assert(result() === "abab" ||
+                 result() === "baba" ||
+                 result() === "abba" ||
+                 result() === "baab");
         });
     });
 
     it("command version", () => {
       execSync("node lib/command.js --parallel test-task:append-a test-task:append-b");
-      assert(result() === "abab" || result() === "baba");
+      assert(result() === "abab" ||
+             result() === "baba" ||
+             result() === "abba" ||
+             result() === "baab");
     });
   });
 
