@@ -20,7 +20,5 @@ exports.removeResult = function removeResult() {
   try {
     fs.unlinkSync(FILE_NAME);
   }
-  catch (err) {
-    // ignore.
-  }
+  catch (err) {} //eslint-disable-line no-empty
 };

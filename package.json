@@ -13,13 +13,15 @@
     "test": "OK"
   },
   "scripts": {
-    "build": "babel src --out-dir lib",
-    "test": "npm-run-all test:lint build test:mocha",
-    "test:lint": "eslint src test",
+    "clean": "rimraf lib",
+    "lint": "eslint src",
+    "build": "npm-run-all clean lint build:babel",
+    "build:babel": "babel src --out-dir lib",
+    "test": "npm-run-all build test:mocha",
     "test:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 10000 --colors",
-    "testing": "npm-run-all --parallel testing:build testing:mocha",
-    "testing:build": "npm run build -- --watch --source-maps-inline",
-    "testing:mocha": "npm run test:mocha -- --watch",
+    "testing": "npm run clean && npm-run-all --parallel testing:build testing:mocha",
+    "testing:build": "npm run build:babel -- --watch --source-maps-inline",
+    "testing:mocha": "npm run test:mocha -- --watch --growl",
 
     "test-task:env-check": "node test/tasks/env-check.js",
     "test-task:append-a": "node test/tasks/append.js a",
@@ -51,11 +53,12 @@
   "homepage": "https://github.com/mysticatea/npm-run-all",
   "devDependencies": {
     "babel": "^4.7.16",
-    "eslint": "^0.17.1",
-    "espower-babel": "^1.4.0",
+    "eslint": "^0.18.0",
+    "espower-babel": "^1.4.1",
     "mocha": "^2.2.1",
     "npm-run-all": "1.0.0",
-    "power-assert": "^0.10.2"
+    "power-assert": "^0.10.2",
+    "rimraf": "^2.3.2"
   },
   "dependencies": {
     "minimist": "^1.1.1"
