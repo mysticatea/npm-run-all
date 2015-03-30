@@ -27,47 +27,23 @@ Usage: npm-run-all [OPTIONS] <task> [...tasks]
     -v, --version   Print version number.
 ```
 
-
-## Examples
-
-```json
-{
-  "scripts": {
-    "build":        "npm-run-all build:html build:js build:babel",
-    "build:html":   "cpx \"src/client/*.{html,css}\" app/static/",
-    "build:js":     "browserify src/client/index.js -o app/static/index.js",
-    "build:babel":  "babel src/server -o app/server",
-
-    "start": "npm run build && node app/server/index.js",
-    "test": "mocha test --compilers js:babel/register --colors",
-
-    "testing":       "npm-run-all --parallel testing:html testing:js testing:babel testing:start testing:mocha",
-    "testing:html":  "npm run build:html -- --watch",
-    "testing:js":    "watchify src/client/index.js -o app/static/index.js --debug",
-    "testing:babel": "npm run build:babel -- --watch --source-maps-inline",
-    "testing:start": "node-dev app/server/index.js",
-    "testing:mocha": "npm run test -- --watch",
-  }
-}
-```
-
-### Pick up: sequential
+### Run tasks on sequential
 
 ```
-npm-run-all build:html build:js build:babel
+npm-run-all build:html build:js
 ```
 
-is same as `npm run build:html && npm run build:js && npm run build:babel`.
+This is same as `npm run build:html && npm run build:js`.
 
-### Pick up: parallel
+### Run tasks on parallel
 
 ```
-npm-run-all --parallel testing:html testing:js testing:babel testing:server testing:mocha
+npm-run-all --parallel watch:html watch:js
 ```
 
-is same as `npm run testing:html & npm run testing:js & npm run testing:babel & npm run testing:server & npm run testing:mocha`.
+This is same as `npm run watch:html & npm run watch:js`.
 
-Of course, be possible to run on Windows as well!
+Of course, this can be run on **Windows** as well!
 
 
 ## Node API
