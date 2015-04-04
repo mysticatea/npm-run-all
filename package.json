@@ -18,7 +18,7 @@
     "build": "npm-run-all clean lint build:babel",
     "build:babel": "babel src --out-dir lib",
     "test": "npm-run-all build test:mocha",
-    "test:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 10000 --colors",
+    "test:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 16000 --colors",
     "testing": "npm-run-all clean --parallel testing:build testing:mocha",
     "testing:build": "npm run build:babel -- --watch --source-maps-inline",
     "testing:mocha": "npm run test:mocha -- --watch --growl",
@@ -28,11 +28,11 @@
     "test-task:stdio": "node test/tasks/stdio.js"
   },
   "devDependencies": {
-    "babel": "^4.7.16",
+    "babel": "^5.0.8",
     "eslint": "^0.18.0",
     "espower-babel": "^1.4.1",
     "mocha": "^2.2.1",
-    "npm-run-all": "^1.1.0",
+    "npm-run-all": "1.1.1",
     "power-assert": "^0.10.2",
     "rimraf": "^2.3.2"
   },
