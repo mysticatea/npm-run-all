@@ -52,7 +52,7 @@ npm-run-all clean lint --parallel watch:html watch:js
 ```
 
 1. First, this runs `clean` and `lint` sequentially.
-2. Next, runs `build:html` and `build:js` parallelly.
+2. Next, runs `watch:html` and `watch:js` parallelly.
 
 ```
 npm-run-all a b --parallel c d --sequential e f --parallel g h i
