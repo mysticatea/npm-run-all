@@ -18,7 +18,7 @@
     "build": "npm-run-all clean lint build:babel",
     "build:babel": "babel src --out-dir lib",
     "test": "npm-run-all build test:mocha",
-    "test:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 16000 --colors",
+    "test:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 30000 --colors",
     "testing": "npm-run-all clean --parallel testing:build testing:mocha",
     "testing:build": "npm run build:babel -- --watch --source-maps-inline",
     "testing:mocha": "npm run test:mocha -- --watch --growl",
