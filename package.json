@@ -28,11 +28,11 @@
     "test-task:stdio": "node test/tasks/stdio.js"
   },
   "devDependencies": {
-    "babel": "^5.0.8",
+    "babel": "^5.0.12",
     "eslint": "^0.18.0",
-    "espower-babel": "^1.4.1",
-    "mocha": "^2.2.1",
-    "npm-run-all": "1.1.1",
+    "espower-babel": "^2.0.0",
+    "mocha": "^2.2.4",
+    "npm-run-all": "^1.1.2",
     "power-assert": "^0.10.2",
     "rimraf": "^2.3.2"
   },
