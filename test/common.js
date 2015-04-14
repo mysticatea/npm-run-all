@@ -1,4 +1,4 @@
-import {execSync} from "child_process";
+import {exec} from "shelljs";
 import {PassThrough} from "stream";
 import assert from "power-assert";
 import {result, removeResult} from "./lib/util";
@@ -20,7 +20,7 @@ describe("npm-run-all", () => {
     });
 
     it("command version", () => {
-      execSync("node lib/command.js test-task:env-check");
+      exec("node lib/command.js test-task:env-check");
       assert(result() === "OK");
     });
   });
@@ -39,7 +39,8 @@ describe("npm-run-all", () => {
     });
 
     it("command version", () => {
-      assert.throws(() => execSync("node lib/command.js test-task:error"));
+      var res = exec("node lib/command.js test-task:error");
+      assert.ok(res.code > 0);
     });
   });
 

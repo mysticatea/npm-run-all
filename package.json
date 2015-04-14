@@ -38,7 +38,6 @@
     "npm-run-all": "^1.1.2",
     "power-assert": "^0.10.2",
     "rimraf": "^2.3.2",
-    "runsync": "^0.1.8",
     "shelljs": "^0.4.0"
   },
   "repository": {

@@ -1,4 +1,4 @@
-import {execSync} from "child_process";
+import {exec} from "shelljs";
 import assert from "power-assert";
 import {result, removeResult} from "./lib/util";
 
@@ -19,7 +19,7 @@ describe("npm-run-all", () => {
     });
 
     it("command version", () => {
-      execSync("node lib/command.js \"test-task:append a\" \"test-task:append b\"");
+      exec("node lib/command.js \"test-task:append a\" \"test-task:append b\"");
       assert(result() === "aabb");
     });
   });
