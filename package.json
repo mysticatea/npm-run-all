@@ -35,7 +35,6 @@
     "eslint": "^0.18.0",
     "espower-babel": "^2.0.0",
     "mocha": "^2.2.4",
-    "npm-run-all": "^1.1.2",
     "power-assert": "^0.10.2",
     "rimraf": "^2.3.2",
     "shelljs": "^0.4.0"
