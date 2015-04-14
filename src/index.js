@@ -1,4 +1,7 @@
 import {spawn} from "child_process";
+import {polyfill} from "es6-promise";
+
+polyfill();
 
 function toArray(x) {
   if (x == null) {

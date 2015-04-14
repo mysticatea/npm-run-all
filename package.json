@@ -27,6 +27,9 @@
     "test-task:error": "node test/tasks/error.js",
     "test-task:stdio": "node test/tasks/stdio.js"
   },
+  "dependencies": {
+    "es6-promise": "^2.0.1"
+  },
   "devDependencies": {
     "babel": "^5.0.12",
     "eslint": "^0.18.0",
