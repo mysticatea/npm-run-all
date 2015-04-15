@@ -24,11 +24,16 @@
     "testing:mocha": "npm run test:mocha -- --watch --growl",
     "test-task:env-check": "node test/tasks/env-check.js",
     "test-task:append": "node test/tasks/append.js",
+    "test-task:append:a": "node test/tasks/append.js a",
+    "test-task:append:a:c": "node test/tasks/append.js ac",
+    "test-task:append:a:d": "node test/tasks/append.js ad",
+    "test-task:append:b": "node test/tasks/append.js b",
     "test-task:error": "node test/tasks/error.js",
     "test-task:stdio": "node test/tasks/stdio.js"
   },
   "dependencies": {
-    "es6-promise": "^2.0.1"
+    "es6-promise": "^2.0.1",
+    "minimatch": "^2.0.4"
   },
   "devDependencies": {
     "babel": "^5.0.12",
