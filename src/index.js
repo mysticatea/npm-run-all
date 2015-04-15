@@ -54,8 +54,8 @@ function filterTasks(taskList, patterns) {
   // Take tasks while keep the order of patterns.
   const retv = [];
   let matched = Object.create(null);
-  for (let filter of filters) {
-    for (let task of candidates) {
+  filters.forEach(filter => {
+    candidates.forEach(task => {
       if (filter(task)) {
         // Merge matched task and arguments.
         const command = swapColonAndSlash(task) + filter.args;
@@ -66,8 +66,8 @@ function filterTasks(taskList, patterns) {
           retv.push(command);
         }
       }
-    }
-  }
+    });
+  });
 
   return retv;
 }

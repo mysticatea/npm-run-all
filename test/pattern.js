@@ -1,4 +1,4 @@
-import {execSync} from "child_process";
+import {exec} from "shelljs";
 import assert from "power-assert";
 import {result, removeResult} from "./lib/util";
 
@@ -19,7 +19,7 @@ describe("npm-run-all should run matched tasks if gived glob like patterns.", ()
     });
 
     it("command version", () => {
-      execSync("node lib/command.js \"test-task:append:*\"");
+      exec("node lib/command.js \"test-task:append:*\"");
       assert(result() === "aabb");
     });
   });
@@ -33,7 +33,7 @@ describe("npm-run-all should run matched tasks if gived glob like patterns.", ()
     });
 
     it("command version", () => {
-      execSync("node lib/command.js \"test-task:append:**:*\"");
+      exec("node lib/command.js \"test-task:append:**:*\"");
       assert(result() === "aaacacadadbb");
     });
   });
@@ -47,7 +47,7 @@ describe("npm-run-all should run matched tasks if gived glob like patterns.", ()
     });
 
     it("command version", () => {
-      execSync("node lib/command.js \"test-task:append:b\" \"test-task:append:*\"");
+      exec("node lib/command.js \"test-task:append:b\" \"test-task:append:*\"");
       assert(result() === "bbaa");
     });
   });
