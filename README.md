@@ -72,6 +72,26 @@ npm-run-all a b --parallel c d --sequential e f --parallel g h i
 3. Third, runs `e` and `f` sequentially.
 4. Lastly, runs `g`, `h`, and `i` in parallell.
 
+### Glob-like pattern matching for task names.
+
+```
+npm-run-all --parallel watch:*
+```
+
+In this case, runs sub tasks of `watch`. e.g. `watch:html`, `watch:js`.
+But, doesn't run sub-sub tasks. e.g. `watch:js:index`.
+
+> `npm-run-all` reads a task list from `package.json` at the current working
+> directory.
+
+```
+npm-run-all --parallel watch:**:*
+```
+
+If you use a globstar `**`, runs both sub tasks and sub-sub tasks.
+
+This matching rule is similar to [glob](https://www.npmjs.com/package/glob#glob-primer).
+Its difference is one; the separator is `:`, instead of `/`.
 
 ## Node API
 
@@ -87,7 +107,7 @@ var promise = runAll(tasks, options);
 
 Run npm-scripts.
 
-* **tasks** `string|string[]` -- Task names.
+* **tasks** `string|string[]` -- Glob-like patterns for task names.
 * **options** `object`
   * **options.parallel** `boolean` -- A flag to run tasks in parallel. By default,
     `false`.
@@ -100,6 +120,8 @@ Run npm-scripts.
   * **options.stderr** `stream.Writable` -- A writable stream that receives stderr
     of tasks. By default, nothing. Set `process.stderr` in order to print to
     console.
+  * **options.taskList** `string[]` -- A string array that is all task names.
+    By default, reads from `package.json` at the current working directory.
 
 `runAll` returns a promise that becomes *fulfilled* when all tasks are completed.
 The promise will become *rejected* when any of the tasks exit with a non-zero code.
