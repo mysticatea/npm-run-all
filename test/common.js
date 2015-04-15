@@ -34,7 +34,7 @@ describe("npm-run-all", () => {
           },
           () => {
             // OK.
-            return Promise.resolve(null);
+            return null;
           });
     });
 
