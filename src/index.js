@@ -30,7 +30,6 @@ function readTaskList() {
 //------------------------------------------------------------------------------
 const COLON_OR_SLASH = /[:\/]/g;
 const CONVERT_MAP = {":": "/", "/": ":"};
-const MINIMATCH_OPTS = {matchBase: true};
 
 function swapColonAndSlash(s) {
   return s.replace(COLON_OR_SLASH, matched => CONVERT_MAP[matched]);
@@ -44,7 +43,7 @@ function filterTasks(taskList, patterns) {
     const spacePos = trimmed.indexOf(" ");
     const task = spacePos < 0 ? trimmed : trimmed.slice(0, spacePos);
     const args = spacePos < 0 ? "" : trimmed.slice(spacePos);
-    const filter = minimatch.filter(swapColonAndSlash(task), MINIMATCH_OPTS);
+    const filter = minimatch.filter(swapColonAndSlash(task));
     filter.args = args;
 
     return filter;

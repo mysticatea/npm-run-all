@@ -52,4 +52,19 @@ describe("npm-run-all should run matched tasks if gived glob like patterns.", ()
     });
   });
 
+  describe("\"a\" should not match to \"test-task:append:a\"", () => {
+    it("lib version", () => {
+      return runAll("a")
+        .then(
+          () => assert(false, "should not match"),
+          err => assert((/not found/i).test(err.message))
+        );
+    });
+
+    it("command version", () => {
+      var exitCode = exec("node lib/command.js \"a\"");
+      assert(exitCode !== 0);
+    });
+  });
+
 });
