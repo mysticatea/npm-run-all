@@ -15,11 +15,11 @@
   "scripts": {
     "clean": "rimraf lib",
     "lint": "eslint src",
-    "build": "npm-run-all clean lint build:babel",
+    "build": "npm run clean && npm run lint && npm run build:babel",
     "build:babel": "babel src --out-dir lib",
-    "test": "npm-run-all build test:mocha",
+    "test": "npm run build && npm run test:mocha",
     "test:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 30000 --colors",
-    "testing": "npm-run-all clean --parallel testing:build testing:mocha",
+    "testing": "npm run clean && npm run testing:build && npm run testing:mocha",
     "testing:build": "npm run build:babel -- --watch --source-maps-inline",
     "testing:mocha": "npm run test:mocha -- --watch --growl",
     "test-task:env-check": "node test/tasks/env-check.js",
@@ -27,14 +27,17 @@
     "test-task:error": "node test/tasks/error.js",
     "test-task:stdio": "node test/tasks/stdio.js"
   },
+  "dependencies": {
+    "es6-promise": "^2.0.1"
+  },
   "devDependencies": {
     "babel": "^5.0.12",
     "eslint": "^0.18.0",
     "espower-babel": "^2.0.0",
     "mocha": "^2.2.4",
-    "npm-run-all": "^1.1.2",
     "power-assert": "^0.10.2",
-    "rimraf": "^2.3.2"
+    "rimraf": "^2.3.2",
+    "shelljs": "^0.4.0"
   },
   "repository": {
     "type": "git",

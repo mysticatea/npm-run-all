@@ -1,4 +1,5 @@
 import {spawn} from "child_process";
+import Promise from "./promise";
 
 function toArray(x) {
   if (x == null) {
