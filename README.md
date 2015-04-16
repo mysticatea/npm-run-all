@@ -31,8 +31,8 @@ Usage: npm-run-all [OPTIONS] [...tasks]
 
   Options:
     -h, --help                  Print this text.
-    -p, --parallel [...tasks]   Grouping tasks to run on parallel.
-    -s, --sequential [...tasks] Grouping tasks to run on sequential.
+    -p, --parallel [...tasks]   Run a group of tasks in parallel.
+    -s, --sequential [...tasks] Run a group of tasks sequentially.
     -v, --version               Print version number.
 ```
 
