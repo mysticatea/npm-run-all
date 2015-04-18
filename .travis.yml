@@ -6,3 +6,5 @@ node_js:
   - "iojs"
 before_install:
   - npm install -g npm@latest
+after_success:
+  - npm run coveralls
