@@ -1,10 +1,9 @@
-import {exec} from "shelljs";
 import assert from "power-assert";
 import {result, removeResult} from "./lib/util";
 
 // Test targets.
 import runAll from "../lib/index";
-import "../lib/command";
+import command from "../lib/command";
 
 describe("npm-run-all", () => {
   beforeEach(removeResult);
@@ -14,19 +13,23 @@ describe("npm-run-all", () => {
     it("lib version", () => {
       return runAll(["test-task:append a", "test-task:append b"], {parallel: true})
         .then(() => {
-          assert(result() === "abab" ||
-                 result() === "baba" ||
-                 result() === "abba" ||
-                 result() === "baab");
+          assert(
+            result() === "abab" ||
+            result() === "baba" ||
+            result() === "abba" ||
+            result() === "baab");
         });
     });
 
     it("command version", () => {
-      exec("node lib/command.js --parallel \"test-task:append a\" \"test-task:append b\"");
-      assert(result() === "abab" ||
-             result() === "baba" ||
-             result() === "abba" ||
-             result() === "baab");
+      return command(["--parallel", "test-task:append a", "test-task:append b"])
+        .then(() => {
+          assert(
+            result() === "abab" ||
+            result() === "baba" ||
+            result() === "abba" ||
+            result() === "baab");
+        });
     });
   });
 

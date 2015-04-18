@@ -13,12 +13,12 @@
     "test": "OK"
   },
   "scripts": {
-    "clean": "rimraf lib",
+    "clean": "rimraf lib coverage",
     "lint": "eslint src",
     "build": "npm-run-all clean lint build:babel",
     "build:babel": "babel src --out-dir lib",
     "test": "npm-run-all build test:mocha",
-    "test:mocha": "mocha test/*.js --compilers js:espower-babel/guess --timeout 30000 --colors",
+    "test:mocha": "istanbul cover node_modules/mocha/bin/_mocha -- test/*.js --require mocha-babel-hook --timeout 30000 --colors",
     "testing": "npm-run-all clean --parallel testing:*",
     "testing:build": "npm run build:babel -- --watch --source-maps-inline",
     "testing:mocha": "npm run test:mocha -- --watch --growl",
@@ -36,12 +36,14 @@
     "minimatch": "^2.0.4"
   },
   "devDependencies": {
-    "babel": "^5.1.9",
+    "babel": "^5.1.10",
+    "babel-core": "^5.1.10",
+    "babel-plugin-espower": "^0.1.0",
     "eslint": "^0.19.0",
-    "espower-babel": "^2.0.0",
+    "istanbul": "^0.3.13",
     "mocha": "^2.2.4",
     "npm-run-all": "^1.2.1",
-    "power-assert": "^0.10.2",
+    "power-assert": "^0.11.0",
     "rimraf": "^2.3.2",
     "shelljs": "^0.4.0"
   },

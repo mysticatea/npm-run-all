@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 
 import runAll from "./index";
+import Promise from "./promise";
 
-if (require.main === module) {
-  main(process.argv.slice(2));
-}
+const SUCCESS = Promise.resolve(null);
 
-function printHelp() {
-  console.log(`
+function printHelp(stdout) {
+  stdout.write(`
 Usage: npm-run-all [OPTIONS] [...tasks]
 
   Run specified tasks.
@@ -20,11 +19,12 @@ Usage: npm-run-all [OPTIONS] [...tasks]
 
   See Also:
     https://github.com/mysticatea/npm-run-all
+
 `);
 }
 
-function printVersion() {
-  console.log("v" + require("../package.json").version);
+function printVersion(stdout) {
+  stdout.write("v" + require("../package.json").version + "\n");
 }
 
 function createQueue(args) {
@@ -51,21 +51,24 @@ function createQueue(args) {
   }, [{parallel: false, tasks: []}]);
 }
 
-/*eslint no-process-exit:0*/
-function main(args) {
+export default function main(
+  args,
+  stdout = process.stdout,
+  stderr = process.stderr
+) {
   if (args.length === 0) {
     args.push("--help");
   }
   switch (args[0]) {
     case "-h":
     case "--help":
-      printHelp();
-      return;
+      printHelp(stdout);
+      return SUCCESS;
 
     case "-v":
     case "--version":
-      printVersion();
-      return;
+      printVersion(stdout);
+      return SUCCESS;
   }
 
   let queue;
@@ -73,26 +76,36 @@ function main(args) {
     queue = createQueue(args);
   }
   catch (err) {
-    console.error(err.message);
-    process.exit(1);
+    return Promise.reject(err);
   }
 
-  (function next() {
+  return (function next() {
     const group = queue.shift();
     if (group == null) {
-      return;
+      return SUCCESS;
     }
     if (group.tasks.length === 0) {
-      next();
-      return;
+      return next();
     }
-    runAll(
-      group.tasks,
-      {
-        stdout: process.stdout,
-        stderr: process.stderr,
-        parallel: group.parallel
-      })
-      .then(next, () => process.exit(1));
+
+    const options = {
+      stdout: stdout,
+      stderr: stderr,
+      parallel: group.parallel
+    };
+    return runAll(group.tasks, options).then(next);
   })();
+}
+
+/*eslint no-process-exit:0*/
+if (require.main === module) {
+  main(process.argv.slice(2)).then(
+    () => {
+      process.exit(0);
+    },
+    err => {
+      console.log("ERROR:", err.message);
+      process.exit(1);
+    }
+  );
 }

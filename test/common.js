@@ -1,27 +1,50 @@
-import {exec} from "shelljs";
 import {PassThrough} from "stream";
 import assert from "power-assert";
-import {result, removeResult} from "./lib/util";
+import {result, removeResult, BufferStream} from "./lib/util";
 
 // Test targets.
 import runAll from "../lib/index";
-import "../lib/command";
+import command from "../lib/command";
 
 describe("npm-run-all", () => {
   beforeEach(removeResult);
   after(removeResult);
 
-  describe("should run a task by npm:", () => {
+  it("should print a help text if arguments are nothing.", () => {
+    const buf = new BufferStream();
+    return command([], /*stdout*/buf)
+      .then(() => assert(/Usage:/.test(buf.value)));
+  });
+
+  it("should print a help text if the first argument is -h", () => {
+    const buf = new BufferStream();
+    return command(["-h"], /*stdout*/buf)
+      .then(() => assert(/Usage:/.test(buf.value)));
+  });
+
+  it("should print a version number if the first argument is -v", () => {
+    const buf = new BufferStream();
+    return command(["-v"], /*stdout*/buf)
+      .then(() => assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value)));
+  });
+
+  it("should fail if an invalid option exists.", () => {
+    return command(["--invalid"])
+      .then(
+        () => assert(false, "should fail"),
+        () => null //< OK!
+      );
+  });
+
+  describe("should run a task by npm (check an environment variable):", () => {
     it("lib version", () => {
       return runAll("test-task:env-check")
-        .then(() => {
-          assert(result() === "OK");
-        });
+        .then(() => assert(result() === "OK"));
     });
 
     it("command version", () => {
-      exec("node lib/command.js test-task:env-check");
-      assert(result() === "OK");
+      return command(["test-task:env-check"])
+        .then(() => assert(result() === "OK"));
     });
   });
 
@@ -29,18 +52,17 @@ describe("npm-run-all", () => {
     it("lib version", () => {
       return runAll("test-task:error")
         .then(
-          () => {
-            assert(false, "should fail");
-          },
-          () => {
-            // OK.
-            return null;
-          });
+          () => assert(false, "should fail"),
+          () => null //< OK!
+        );
     });
 
     it("command version", () => {
-      var res = exec("node lib/command.js test-task:error");
-      assert.ok(res.code > 0);
+      return command(["test-task:error"])
+        .then(
+          () => assert(false, "should fail"),
+          () => null //< OK!
+        );
     });
   });
 

@@ -1,10 +1,9 @@
-import {exec} from "shelljs";
 import assert from "power-assert";
 import {result, removeResult} from "./lib/util";
 
 // Test targets.
 import runAll from "../lib/index";
-import "../lib/command";
+import command from "../lib/command";
 
 describe("npm-run-all should run matched tasks if gived glob like patterns.", () => {
   beforeEach(removeResult);
@@ -19,8 +18,10 @@ describe("npm-run-all should run matched tasks if gived glob like patterns.", ()
     });
 
     it("command version", () => {
-      exec("node lib/command.js \"test-task:append:*\"");
-      assert(result() === "aabb");
+      return command(["test-task:append:*"])
+        .then(() => {
+          assert(result() === "aabb");
+        });
     });
   });
 
@@ -33,8 +34,10 @@ describe("npm-run-all should run matched tasks if gived glob like patterns.", ()
     });
 
     it("command version", () => {
-      exec("node lib/command.js \"test-task:append:**:*\"");
-      assert(result() === "aaacacadadbb");
+      return command(["test-task:append:**:*"])
+        .then(() => {
+          assert(result() === "aaacacadadbb");
+        });
     });
   });
 
@@ -47,8 +50,10 @@ describe("npm-run-all should run matched tasks if gived glob like patterns.", ()
     });
 
     it("command version", () => {
-      exec("node lib/command.js \"test-task:append:b\" \"test-task:append:*\"");
-      assert(result() === "bbaa");
+      return command(["test-task:append:b", "test-task:append:*"])
+        .then(() => {
+          assert(result() === "bbaa");
+        });
     });
   });
 
@@ -62,8 +67,11 @@ describe("npm-run-all should run matched tasks if gived glob like patterns.", ()
     });
 
     it("command version", () => {
-      var exitCode = exec("node lib/command.js \"a\"");
-      assert(exitCode !== 0);
+      return command(["a"])
+        .then(
+          () => assert(false, "should not match"),
+          err => assert((/not found/i).test(err.message))
+        );
     });
   });
 

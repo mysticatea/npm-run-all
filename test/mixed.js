@@ -1,29 +1,40 @@
-import {exec} from "shelljs";
 import assert from "power-assert";
 import {result, removeResult} from "./lib/util";
 
 // Test targets.
-import runAll from "../lib/index";
-import "../lib/command";
+import command from "../lib/command";
 
 describe("npm-run-all", () => {
   beforeEach(removeResult);
   after(removeResult);
 
-  it("should run tasks, mixed sequential and parallel 1:", () => {
-    exec("node lib/command.js \"test-task:append a\" -p \"test-task:append b\" \"test-task:append c\" -s \"test-task:append d\" \"test-task:append e\"");
-    assert(result() === "aabcbcddee" ||
-           result() === "aabccbddee" ||
-           result() === "aacbbcddee" ||
-           result() === "aacbcbddee");
+  it("should run a mix of sequential and parallel tasks (has the default group):", () => {
+    return command([
+        "test-task:append a",
+        "-p", "test-task:append b", "test-task:append c",
+        "-s", "test-task:append d", "test-task:append e"
+      ])
+      .then(() => {
+        assert(
+          result() === "aabcbcddee" ||
+          result() === "aabccbddee" ||
+          result() === "aacbbcddee" ||
+          result() === "aacbcbddee");
+      });
   });
 
-  it("should run tasks, mixed sequential and parallel 2:", () => {
-    exec("node lib/command.js -p \"test-task:append b\" \"test-task:append c\" -s \"test-task:append d\" \"test-task:append e\"");
-    assert(result() === "bcbcddee" ||
-           result() === "bccbddee" ||
-           result() === "cbbcddee" ||
-           result() === "cbcbddee");
+  it("should run a mix of sequential and parallel tasks (doesn't have the default group):", () => {
+    return command([
+        "-p", "test-task:append b", "test-task:append c",
+        "-s", "test-task:append d", "test-task:append e"
+      ])
+      .then(() => {
+        assert(
+          result() === "bcbcddee" ||
+          result() === "bccbddee" ||
+          result() === "cbbcddee" ||
+          result() === "cbcbddee");
+      });
   });
 
 });

@@ -1,10 +1,9 @@
-import {exec} from "shelljs";
 import assert from "power-assert";
 import {result, removeResult} from "./lib/util";
 
 // Test targets.
 import runAll from "../lib/index";
-import "../lib/command";
+import command from "../lib/command";
 
 describe("npm-run-all", () => {
   beforeEach(removeResult);
@@ -19,8 +18,10 @@ describe("npm-run-all", () => {
     });
 
     it("command version", () => {
-      exec("node lib/command.js \"test-task:append a\" \"test-task:append b\"");
-      assert(result() === "aabb");
+      return command(["test-task:append a", "test-task:append b"])
+        .then(() => {
+          assert(result() === "aabb");
+        });
     });
   });
 
