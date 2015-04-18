@@ -1,6 +1,7 @@
 # npm-run-all
 
 [![Build Status](https://travis-ci.org/mysticatea/npm-run-all.svg?branch=master)](https://travis-ci.org/mysticatea/npm-run-all)
+[![Coverage Status](https://coveralls.io/repos/mysticatea/npm-run-all/badge.svg?branch=master)](https://coveralls.io/r/mysticatea/npm-run-all?branch=master)
 [![npm version](https://badge.fury.io/js/npm-run-all.svg)](http://badge.fury.io/js/npm-run-all)
 
 A CLI tool to run multiple npm-scripts sequentially or in parallel.
