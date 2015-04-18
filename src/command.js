@@ -99,13 +99,8 @@ export default function main(
 
 /*eslint no-process-exit:0*/
 if (require.main === module) {
-  main(process.argv.slice(2)).then(
-    () => {
-      process.exit(0);
-    },
-    err => {
-      console.log("ERROR:", err.message);
-      process.exit(1);
-    }
-  );
+  main(process.argv.slice(2)).catch(err => {
+    console.log("ERROR:", err.message);
+    process.exit(1);
+  });
 }
