@@ -2,7 +2,7 @@ import assert from "power-assert";
 import {result, removeResult} from "./lib/util";
 
 // Test targets.
-import command from "../lib/command";
+import command from "../src/command";
 
 describe("npm-run-all", () => {
   beforeEach(removeResult);

@@ -3,8 +3,8 @@ import assert from "power-assert";
 import {result, removeResult, BufferStream} from "./lib/util";
 
 // Test targets.
-import runAll from "../lib/index";
-import command from "../lib/command";
+import runAll from "../src/index";
+import command from "../src/command";
 
 describe("npm-run-all", () => {
   beforeEach(removeResult);
