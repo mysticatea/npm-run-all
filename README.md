@@ -1,5 +1,7 @@
 # npm-run-all
 
+[![Join the chat at https://gitter.im/mysticatea/npm-run-all](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mysticatea/npm-run-all?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/mysticatea/npm-run-all.svg?branch=master)](https://travis-ci.org/mysticatea/npm-run-all)
 [![Coverage Status](https://coveralls.io/repos/mysticatea/npm-run-all/badge.svg?branch=master)](https://coveralls.io/r/mysticatea/npm-run-all?branch=master)
 [![npm version](https://badge.fury.io/js/npm-run-all.svg)](http://badge.fury.io/js/npm-run-all)
