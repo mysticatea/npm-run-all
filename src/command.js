@@ -69,6 +69,9 @@ export default function main(
     case "--version":
       printVersion(stdout);
       return SUCCESS;
+
+    default:
+      break;
   }
 
   let queue;
@@ -89,18 +92,18 @@ export default function main(
     }
 
     const options = {
-      stdout: stdout,
-      stderr: stderr,
+      stdout,
+      stderr,
       parallel: group.parallel
     };
     return runAll(group.tasks, options).then(next);
   })();
 }
 
-/*eslint no-process-exit:0*/
+/* eslint no-process-exit:0 */
 if (require.main === module) {
   main(process.argv.slice(2)).catch(err => {
-    console.log("ERROR:", err.message);
+    console.error("ERROR:", err.message); // eslint-disable-line no-console
     process.exit(1);
   });
 }

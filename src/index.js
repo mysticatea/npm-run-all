@@ -21,7 +21,7 @@ function readTaskList() {
     }
   }
   catch (err) {
-    console.error("ERROR:", err.message);
+    console.error("ERROR:", err.message); // eslint-disable-line no-console
   }
 
   return null;
@@ -52,7 +52,7 @@ function filterTasks(taskList, patterns) {
 
   // Take tasks while keep the order of patterns.
   const retv = [];
-  let matched = Object.create(null);
+  const matched = Object.create(null);
   filters.forEach(filter => {
     candidates.forEach(task => {
       if (filter(task)) {
@@ -78,9 +78,7 @@ function defineExec() {
     const OPTIONS = {windowsVerbatimArguments: true};
     return command => spawn(FILE, ["/s", "/c", `"${command}"`], OPTIONS);
   }
-  else {
-    return command => spawn("/bin/sh", ["-c", command]);
-  }
+  return command => spawn("/bin/sh", ["-c", command]);
 }
 
 const exec = defineExec();
