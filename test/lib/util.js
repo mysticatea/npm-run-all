@@ -9,7 +9,9 @@ exports.result = function result() {
     return fs.readFileSync(FILE_NAME, {encoding: "utf8"});
   }
   catch (err) {
-    console.error(err.message);
+    if (err.message.indexOf("ENOENT") < 0) {
+      console.error("ERROR:", err.stack);
+    }
     return null;
   }
 };
@@ -22,7 +24,11 @@ exports.removeResult = function removeResult() {
   try {
     fs.unlinkSync(FILE_NAME);
   }
-  catch (err) {} //eslint-disable-line no-empty
+  catch (err) {
+    if (err.message.indexOf("ENOENT") < 0) {
+      console.error("ERROR:", err.stack);
+    }
+  }
 };
 
 
@@ -32,7 +38,7 @@ var BufferStream = exports.BufferStream = function BufferStream() {
 };
 inherits(BufferStream, Writable);
 
-BufferStream.prototype._write = function(chunk, encoding, callback) { //eslint-disable-line no-underscore-dangle
+BufferStream.prototype._write = function _write(chunk, encoding, callback) {
   this.value += chunk.toString();
   callback();
 };

@@ -33,4 +33,27 @@ describe("npm-run-all", () => {
     });
   });
 
+  describe("should kill all tasks when was given --parallel option if a task exited with non-zero code:", () => {
+    it("lib version", () => {
+      return runAll(["test-task:append2 a", "test-task:error"], {parallel: true})
+        .then(
+          () => {
+            assert(false, "should fail");
+          },
+          () => {
+            assert(result() == null || result() === "a");
+          });
+    });
+
+    it("command version", () => {
+      return command(["--parallel", "test-task:append2 a", "test-task:error"])
+        .then(
+          () => {
+            assert(false, "should fail");
+          },
+          () => {
+            assert(result() == null || result() === "a");
+          });
+    });
+  });
 });

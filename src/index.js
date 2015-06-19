@@ -1,8 +1,9 @@
-import {spawn} from "child_process";
 import {join} from "path";
 import minimatch from "minimatch";
 import Promise from "./promise";
+import runTask from "./run-task";
 
+//------------------------------------------------------------------------------
 function toArray(x) {
   if (x == null) {
     return [];
@@ -72,53 +73,83 @@ function filterTasks(taskList, patterns) {
 }
 
 //------------------------------------------------------------------------------
-function defineExec() {
-  if (process.platform === "win32") {
-    const FILE = process.env.comspec || "cmd.exe";
-    const OPTIONS = {windowsVerbatimArguments: true};
-    return command => spawn(FILE, ["/s", "/c", `"${command}"`], OPTIONS);
-  }
-  return command => spawn("/bin/sh", ["-c", command]);
-}
-
-const exec = defineExec();
-
-function runTask(task, stdin, stdout, stderr) {
-  return new Promise((resolve, reject) => {
-    // Execute.
-    const cp = exec(`npm run-script ${task}`);
-
-    // Piping stdio.
-    if (stdin) { stdin.pipe(cp.stdin); }
-    if (stdout) { cp.stdout.pipe(stdout); }
-    if (stderr) { cp.stderr.pipe(stderr); }
-
-    // Register
-    cp.on("exit", code => {
-      if (code) {
-        reject(new Error(`${task}: None-Zero Exit(${code});`));
+function runAllSequencially(tasks, stdin, stdout, stderr) {
+  let currentPromise = null;
+  let aborted = false;
+  const resultPromise = tasks.reduce((prevPromise, task) => {
+    return prevPromise.then(() => {
+      if (aborted) {
+        return undefined;
       }
-      else {
-        resolve(null);
-      }
+
+      currentPromise = runTask(task, stdin, stdout, stderr);
+      return currentPromise.then(item => {
+        currentPromise = null;
+        if (item.code !== 0) {
+          throw new Error(
+            `${item.task}: None-Zero Exit(${item.code});`);
+        }
+      });
     });
-    cp.on("error", reject);
-  });
+  }, Promise.resolve());
+
+  // Define abort method.
+  resultPromise.abort = function abort() {
+    aborted = true;
+    if (currentPromise != null) {
+      currentPromise.kill();
+    }
+  };
+
+  return resultPromise;
 }
 
 //------------------------------------------------------------------------------
-export default function runAll(_tasks, _options) {
-  const patterns = toArray(_tasks);
+function runAllInParallel(tasks, stdin, stdout, stderr) {
+  // When one of tasks exited with non-zero, kill all tasks.
+  // And wait for all tasks exit.
+  let nonZeroExited = null;
+  const taskPromises = tasks.map(task => runTask(task, stdin, stdout, stderr));
+  const parallelPromise = Promise.all(taskPromises.map(p => p.then(item => {
+    if (item.code !== 0) {
+      nonZeroExited = nonZeroExited || item;
+      taskPromises.forEach(t => { t.kill(); });
+    }
+  })));
+  parallelPromise.catch(() => {
+    taskPromises.forEach(t => { t.kill(); });
+  });
+
+  // Make fail if there are tasks that exited non-zero.
+  const resultPromise = parallelPromise.then(() => {
+    if (nonZeroExited != null) {
+      throw new Error(
+        `${nonZeroExited.task}: None-Zero Exit(${nonZeroExited.code});`);
+    }
+  });
+
+  // Define abort method.
+  resultPromise.abort = function abort() {
+    taskPromises.forEach(t => { t.kill(); });
+  };
+
+  return resultPromise;
+}
+
+//------------------------------------------------------------------------------
+export default function runAll(patternOrPatterns, options = {}) {
+  const patterns = toArray(patternOrPatterns);
   if (patterns.length === 0) {
     return Promise.resolve(null);
   }
 
-  const options = _options || {};
-  const parallel = Boolean(options.parallel);
-  const stdin = options.stdin || null;
-  const stdout = options.stdout || null;
-  const stderr = options.stderr || null;
-  const taskList = options.taskList || readTaskList();
+  const {
+    parallel = false,
+    stdin = null,
+    stdout = null,
+    stderr = null,
+    taskList = readTaskList()
+  } = options;
 
   if (Array.isArray(taskList) === false) {
     return Promise.reject(new Error(
@@ -132,11 +163,7 @@ export default function runAll(_tasks, _options) {
       `Matched tasks not found: ${patterns.join(", ")}`));
   }
 
-  if (parallel) {
-    return Promise.all(tasks.map(task => runTask(task, stdin, stdout, stderr)));
-  }
-  return (function next() {
-    const task = tasks.shift();
-    return task && runTask(task, stdin, stdout, stderr).then(next);
-  })();
+  return parallel
+    ? runAllInParallel(tasks, stdin, stdout, stderr)
+    : runAllSequencially(tasks, stdin, stdout, stderr);
 }

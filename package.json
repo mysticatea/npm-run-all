@@ -25,12 +25,14 @@
     "test-task:append:a:c": "node test/tasks/append.js ac",
     "test-task:append:a:d": "node test/tasks/append.js ad",
     "test-task:append:b": "node test/tasks/append.js b",
+    "test-task:append2": "node test/tasks/append2.js",
     "test-task:error": "node test/tasks/error.js",
     "test-task:stdio": "node test/tasks/stdio.js"
   },
   "dependencies": {
     "es6-promise": "^2.3.0",
-    "minimatch": "^2.0.8"
+    "minimatch": "^2.0.8",
+    "which": "^1.1.1"
   },
   "devDependencies": {
     "babel": "^5.5.8",

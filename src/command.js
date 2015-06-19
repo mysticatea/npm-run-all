@@ -82,27 +82,49 @@ export default function main(
     return Promise.reject(err);
   }
 
-  return (function next() {
-    const group = queue.shift();
-    if (group == null) {
-      return SUCCESS;
-    }
-    if (group.tasks.length === 0) {
-      return next();
-    }
+  let currentPromise = null;
+  let aborted = false;
+  const resultPromise = queue.reduce((prevPromise, group) => {
+    return prevPromise.then(() => {
+      if (group == null || group.tasks.length === 0 || aborted) {
+        return undefined;
+      }
 
-    const options = {
-      stdout,
-      stderr,
-      parallel: group.parallel
-    };
-    return runAll(group.tasks, options).then(next);
-  })();
+      currentPromise = runAll(
+        group.tasks,
+        {stdout, stderr, parallel: group.parallel});
+
+      return currentPromise;
+    });
+  }, SUCCESS);
+
+  // Define abort method.
+  resultPromise.abort = function abort() {
+    aborted = true;
+    if (currentPromise != null) {
+      currentPromise.abort();
+    }
+  };
+
+  return resultPromise;
 }
 
 /* eslint no-process-exit:0 */
+/* istanbul ignore if */
 if (require.main === module) {
-  main(process.argv.slice(2)).catch(err => {
+  // Execute.
+  const promise = main(process.argv.slice(2));
+
+  // SIGINT/SIGTERM Handling.
+  process.on("SIGINT", () => {
+    promise.abort();
+  });
+  process.on("SIGTERM", () => {
+    promise.abort();
+  });
+
+  // Error Handling.
+  promise.catch(err => {
     console.error("ERROR:", err.message); // eslint-disable-line no-console
     process.exit(1);
   });

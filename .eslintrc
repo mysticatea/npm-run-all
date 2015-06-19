@@ -1,6 +1,6 @@
 {
   "extends": "mysticatea/nodejs",
   "rules": {
-    "spaced-comment": [2, "always", {"exceptions": ["*", "-"]}]
+    "spaced-comment": 0
   }
 }
