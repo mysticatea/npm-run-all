@@ -13,11 +13,12 @@
     "test": "OK"
   },
   "scripts": {
+    "preversion": "npm run build",
     "clean": "rimraf lib coverage",
     "lint": "eslint src",
     "build": "npm-run-all clean lint && babel src --out-dir lib",
-    "test": "npm run lint && istanbul cover node_modules/mocha/bin/_mocha -- test/*.js --require mocha-babel-hook --colors --timeout 30000",
-    "testing": "mocha test/*.js --require mocha-babel-hook --colors --timeout 30000 --watch --growl",
+    "test": "npm run lint && istanbul cover node_modules/mocha/bin/_mocha -- test/*.js --require mocha-babel-hook --timeout 30000",
+    "testing": "mocha test/*.js --require mocha-babel-hook --timeout 30000 --watch --growl",
     "coveralls": "cat coverage/lcov.info | coveralls",
     "test-task:env-check": "node test/tasks/env-check.js",
     "test-task:append": "node test/tasks/append.js",
@@ -44,7 +45,7 @@
     "eslint-plugin-mysticatea": "^1.0.2",
     "istanbul": "^0.3.18",
     "mocha": "^2.2.5",
-    "npm-run-all": "^1.2.6",
+    "npm-run-all": "^1.2.8",
     "power-assert": "^0.11.0",
     "rimraf": "^2.4.2"
   },
