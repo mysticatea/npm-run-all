@@ -113,6 +113,14 @@ const killTask = (function defineKillTask() {
     };
 })();
 
+function detectStreamKind(stream, std) {
+    return (
+        stream == null ? "ignore" :
+        stream !== std ? "pipe" :
+        /* else */ stream
+    );
+}
+
 //------------------------------------------------------------------------------
 /**
  * @param {string} task - A task name to run.
@@ -127,13 +135,20 @@ export default function runTask(task, stdin, stdout, stderr) {
     let cp = null;
     const promise = lookupNpm().then(npmPath => {
         return new Promise((resolve, reject) => {
+            const stdinKind = detectStreamKind(stdin, process.stdin);
+            const stdoutKind = detectStreamKind(stdout, process.stdout);
+            const stderrKind = detectStreamKind(stderr, process.stderr);
+
             // Execute.
-            cp = spawn(npmPath, makeNpmArgs(task));
+            cp = spawn(
+                npmPath,
+                makeNpmArgs(task),
+                {stdio: [stdinKind, stdoutKind, stderrKind]});
 
             // Piping stdio.
-            if (stdin) { stdin.pipe(cp.stdin); }
-            if (stdout) { cp.stdout.pipe(stdout); }
-            if (stderr) { cp.stderr.pipe(stderr); }
+            if (stdinKind === "pipe") { stdin.pipe(cp.stdin); }
+            if (stdoutKind === "pipe") { cp.stdout.pipe(stdout); }
+            if (stderrKind === "pipe") { cp.stderr.pipe(stderr); }
 
             // Register
             cp.on("error", (err) => {
