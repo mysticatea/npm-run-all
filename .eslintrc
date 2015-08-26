@@ -1,6 +1,3 @@
 {
-  "extends": "mysticatea/nodejs",
-  "rules": {
-    "spaced-comment": 0
-  }
+  "extends": "mysticatea/nodejs"
 }

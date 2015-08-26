@@ -1,7 +1,6 @@
 {
   "env": {"mocha": true},
   "rules": {
-    "max-nested-callbacks": 0,
-    "spaced-comment": 0
+    "max-nested-callbacks": 0
   }
 }
