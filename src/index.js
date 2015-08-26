@@ -85,7 +85,7 @@ function runAllSequencially(tasks, stdin, stdout, stderr) {
             currentPromise = runTask(task, stdin, stdout, stderr);
             return currentPromise.then(item => {
                 currentPromise = null;
-                if (item.code !== 0) {
+                if (item.code !== 0 && item.code != null) {
                     throw new Error(
                         `${item.task}: None-Zero Exit(${item.code});`);
                 }
