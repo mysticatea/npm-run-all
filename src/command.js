@@ -120,14 +120,6 @@ if (require.main === module) {
     // Execute.
     const promise = main(process.argv.slice(2));
 
-    // SIGINT/SIGTERM Handling.
-    process.on("SIGINT", () => {
-        promise.abort();
-    });
-    process.on("SIGTERM", () => {
-        promise.abort();
-    });
-
     // Error Handling.
     promise.catch(err => {
         console.error("ERROR:", err.message); // eslint-disable-line no-console
