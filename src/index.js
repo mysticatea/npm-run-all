@@ -163,7 +163,8 @@ export default function runAll(patternOrPatterns, options = {}) {
             `Matched tasks not found: ${patterns.join(", ")}`));
     }
 
-    return parallel
-        ? runAllInParallel(tasks, stdin, stdout, stderr)
-        : runAllSequencially(tasks, stdin, stdout, stderr);
+    return (
+        parallel ? runAllInParallel(tasks, stdin, stdout, stderr) :
+        /* else */ runAllSequencially(tasks, stdin, stdout, stderr)
+    );
 }
