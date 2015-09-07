@@ -1,4 +1,5 @@
-/*eslint no-process-exit:0*/
+/* eslint no-process-exit:0 */
+"use strict";
 
 var appendResult = require("../lib/util").appendResult;
 

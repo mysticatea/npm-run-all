@@ -1,3 +1,5 @@
+"use strict";
+
 var fs = require("fs");
 var Writable = require("stream").Writable;
 var inherits = require("util").inherits;

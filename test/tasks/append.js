@@ -1,3 +1,5 @@
+"use strict";
+
 var appendResult = require("../lib/util").appendResult;
 
 function append() {

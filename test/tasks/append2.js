@@ -1,3 +1,5 @@
+"use strict";
+
 console.log("APPEND2", process.argv[2], "ENTER");
 
 var appendResult = require("../lib/util").appendResult;
