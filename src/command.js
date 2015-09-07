@@ -92,7 +92,12 @@ export default function main(
 
             currentPromise = runAll(
                 group.tasks,
-                {stdout, stderr, parallel: group.parallel});
+                {
+                    stdout,
+                    stderr,
+                    stdin: process.stdin,
+                    parallel: group.parallel
+                });
 
             return currentPromise;
         });
