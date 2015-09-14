@@ -3,7 +3,7 @@ language: node_js
 node_js:
   - "0.10"
   - "0.12"
-  - "iojs"
+  - "4"
 before_install:
   - npm install -g npm@latest
 after_success:
