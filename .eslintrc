@@ -1,6 +1,3 @@
 {
-  "extends": "mysticatea/nodejs",
-  "rules": {
-    "operator-linebreak": [2, "after", {"overrides": {"?": "none", ":": "none"}}]
-  }
+  "extends": "mysticatea/nodejs"
 }
