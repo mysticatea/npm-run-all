@@ -14,7 +14,6 @@
   },
   "scripts": {
     "preversion": "npm run build",
-    "prepublish": "git push; git push --tags",
     "clean": "rimraf lib coverage",
     "lint": "eslint src",
     "build": "npm-run-all clean lint && babel src --out-dir lib --plugin babel-plugin-unassert",
