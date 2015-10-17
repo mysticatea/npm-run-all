@@ -12,19 +12,19 @@ describe("npm-run-all", () => {
 
     it("should print a help text if arguments are nothing.", () => {
         const buf = new BufferStream();
-        return command([], /*stdout*/buf)
+        return command([], buf)
             .then(() => assert(/Usage:/.test(buf.value)));
     });
 
     it("should print a help text if the first argument is -h", () => {
         const buf = new BufferStream();
-        return command(["-h"], /*stdout*/buf)
+        return command(["-h"], buf)
             .then(() => assert(/Usage:/.test(buf.value)));
     });
 
     it("should print a version number if the first argument is -v", () => {
         const buf = new BufferStream();
-        return command(["-v"], /*stdout*/buf)
+        return command(["-v"], buf)
             .then(() => assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value)));
     });
 
@@ -32,7 +32,7 @@ describe("npm-run-all", () => {
         return command(["--invalid"])
             .then(
                 () => assert(false, "should fail"),
-                () => null //< OK!
+                () => null // OK!
             );
     });
 
@@ -53,7 +53,7 @@ describe("npm-run-all", () => {
             return runAll("test-task:error")
                 .then(
                     () => assert(false, "should fail"),
-                    () => null //< OK!
+                    () => null // OK!
                 );
         });
 
@@ -61,7 +61,7 @@ describe("npm-run-all", () => {
             return command(["test-task:error"])
                 .then(
                     () => assert(false, "should fail"),
-                    () => null //< OK!
+                    () => null // OK!
                 );
         });
     });
@@ -100,5 +100,25 @@ describe("npm-run-all", () => {
                     done();
                 });
             });
+    });
+
+    describe("should be able to use `restart` built-in task:", () => {
+        it("lib version", () => {
+            return runAll("restart");
+        });
+
+        it("command version", () => {
+            return command(["restart"]);
+        });
+    });
+
+    describe("should be able to use `env` built-in task:", () => {
+        it("lib version", () => {
+            return runAll("env");
+        });
+
+        it("command version", () => {
+            return command(["env"]);
+        });
     });
 });

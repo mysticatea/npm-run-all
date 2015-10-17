@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import runAll from "./index";
-import Promise from "./promise"; // eslint-disable-line no-redeclare
+import Promise from "./promise";
 
 const SUCCESS = Promise.resolve(null);
 

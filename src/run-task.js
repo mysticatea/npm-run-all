@@ -1,6 +1,6 @@
 import {spawn} from "child_process";
 import which from "which";
-import Promise from "./promise"; // eslint-disable-line no-redeclare
+import Promise from "./promise";
 
 //------------------------------------------------------------------------------
 function lookupNpm() {

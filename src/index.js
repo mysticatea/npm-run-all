@@ -1,6 +1,6 @@
 import {join} from "path";
 import minimatch from "minimatch";
-import Promise from "./promise"; // eslint-disable-line no-redeclare
+import Promise from "./promise";
 import runTask from "./run-task";
 
 //------------------------------------------------------------------------------
@@ -45,28 +45,37 @@ function filterTasks(taskList, patterns) {
         const task = spacePos < 0 ? trimmed : trimmed.slice(0, spacePos);
         const args = spacePos < 0 ? "" : trimmed.slice(spacePos);
         const filter = minimatch.filter(swapColonAndSlash(task));
+        filter.task = task;
         filter.args = args;
 
         return filter;
     });
     const candidates = taskList.map(swapColonAndSlash);
 
-    // Take tasks while keep the order of patterns.
     const retv = [];
     const matched = Object.create(null);
+    function addToRetv(command) {
+        if (matched[command] !== true) {
+            matched[command] = true;
+            retv.push(command);
+        }
+    }
+
+    // Take tasks while keep the order of patterns.
     filters.forEach(filter => {
+        let found = false;
+
         candidates.forEach(task => {
             if (filter(task)) {
-                // Merge matched task and arguments.
-                const command = swapColonAndSlash(task) + filter.args;
-
-                // Check duplications.
-                if (matched[command] !== true) {
-                    matched[command] = true;
-                    retv.push(command);
-                }
+                found = true;
+                addToRetv(swapColonAndSlash(task) + filter.args);
             }
         });
+
+        // Built-in tasks should be allowed.
+        if (!found && (filter.task === "restart" || filter.task === "env")) {
+            addToRetv(filter.task + filter.args);
+        }
     });
 
     return retv;

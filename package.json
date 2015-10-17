@@ -14,9 +14,10 @@
   },
   "scripts": {
     "preversion": "npm run build",
+    "prepublish": "git push; git push --tags",
     "clean": "rimraf lib coverage",
     "lint": "eslint src",
-    "build": "npm-run-all clean lint && babel src --out-dir lib",
+    "build": "npm-run-all clean lint && babel src --out-dir lib --plugin babel-plugin-unassert",
     "test": "npm run lint && istanbul cover node_modules/mocha/bin/_mocha -- test/*.js --require mocha-babel-hook --timeout 30000",
     "testing": "mocha test/*.js --require mocha-babel-hook --timeout 30000 --watch --growl",
     "coveralls": "cat coverage/lcov.info | coveralls",
@@ -32,21 +33,22 @@
   },
   "dependencies": {
     "es6-promise": "^3.0.2",
-    "minimatch": "^2.0.10",
-    "which": "^1.1.1"
+    "minimatch": "^3.0.0",
+    "which": "^1.2.0"
   },
   "devDependencies": {
     "babel": "^5.8.23",
-    "babel-core": "^5.8.23",
+    "babel-core": "^5.8.25",
     "babel-plugin-espower": "^1.0.0",
+    "babel-plugin-unassert": "^1.2.0",
     "coveralls": "^2.11.4",
-    "eslint": "^1.4.1",
-    "eslint-config-mysticatea": "^1.4.1",
+    "eslint": "^1.7.1",
+    "eslint-config-mysticatea": "^1.7.0",
     "eslint-plugin-mysticatea": "^1.0.2",
-    "istanbul": "^0.3.19",
-    "mocha": "^2.3.1",
-    "npm-run-all": "^1.2.8",
-    "power-assert": "^1.0.0",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.3.3",
+    "npm-run-all": "^1.2.11",
+    "power-assert": "^1.1.0",
     "rimraf": "^2.4.3"
   },
   "repository": {
