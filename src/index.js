@@ -85,22 +85,24 @@ function filterTasks(taskList, patterns) {
 function runAllSequencially(tasks, stdin, stdout, stderr) {
     let currentPromise = null;
     let aborted = false;
-    const resultPromise = tasks.reduce((prevPromise, task) => {
-        return prevPromise.then(() => {
-            if (aborted) {
-                return undefined;
-            }
-
-            currentPromise = runTask(task, stdin, stdout, stderr);
-            return currentPromise.then(item => {
-                currentPromise = null;
-                if (item.code !== 0 && item.code != null) {
-                    throw new Error(
-                        `${item.task}: None-Zero Exit(${item.code});`);
+    const resultPromise = tasks.reduce(
+        (prevPromise, task) =>
+            prevPromise.then(() => {
+                if (aborted) {
+                    return undefined;
                 }
-            });
-        });
-    }, Promise.resolve());
+
+                currentPromise = runTask(task, stdin, stdout, stderr);
+                return currentPromise.then(item => {
+                    currentPromise = null;
+                    if (item.code !== 0 && item.code != null) {
+                        throw new Error(
+                            `${item.task}: None-Zero Exit(${item.code});`);
+                    }
+                });
+            }),
+        Promise.resolve()
+    );
 
     // Define abort method.
     resultPromise.abort = function abort() {

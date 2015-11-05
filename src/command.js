@@ -84,24 +84,26 @@ export default function main(
 
     let currentPromise = null;
     let aborted = false;
-    const resultPromise = queue.reduce((prevPromise, group) => {
-        return prevPromise.then(() => {
-            if (group == null || group.tasks.length === 0 || aborted) {
-                return undefined;
-            }
+    const resultPromise = queue.reduce(
+        (prevPromise, group) =>
+            prevPromise.then(() => {
+                if (group == null || group.tasks.length === 0 || aborted) {
+                    return undefined;
+                }
 
-            currentPromise = runAll(
-                group.tasks,
-                {
-                    stdout,
-                    stderr,
-                    stdin: process.stdin,
-                    parallel: group.parallel
-                });
+                currentPromise = runAll(
+                    group.tasks,
+                    {
+                        stdout,
+                        stderr,
+                        stdin: process.stdin,
+                        parallel: group.parallel
+                    });
 
-            return currentPromise;
-        });
-    }, SUCCESS);
+                return currentPromise;
+            }),
+        SUCCESS
+    );
 
     // Define abort method.
     resultPromise.abort = function abort() {

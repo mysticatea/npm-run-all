@@ -133,8 +133,8 @@ function detectStreamKind(stream, std) {
  */
 export default function runTask(task, stdin, stdout, stderr) {
     let cp = null;
-    const promise = lookupNpm().then(npmPath => {
-        return new Promise((resolve, reject) => {
+    const promise = lookupNpm().then(npmPath =>
+        new Promise((resolve, reject) => {
             const stdinKind = detectStreamKind(stdin, process.stdin);
             const stdoutKind = detectStreamKind(stdout, process.stdout);
             const stderrKind = detectStreamKind(stderr, process.stderr);
@@ -159,8 +159,8 @@ export default function runTask(task, stdin, stdout, stderr) {
                 cp = null;
                 resolve({task, code});
             });
-        });
-    });
+        })
+    );
 
     promise.kill = function kill() {
         if (cp != null) {
