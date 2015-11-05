@@ -56,4 +56,36 @@ describe("npm-run-all", () => {
                     });
         });
     });
+
+    describe("should remove intersected tasks from two or more patterns:", () => {
+        it("lib version", () => {
+            return runAll(["test-task:*:a", "*:append:a"], {parallel: true})
+                .then(() => {
+                    assert(result() === "aa");
+                });
+        });
+
+        it("command version", () => {
+            return command(["test-task:*:a", "*:append:a"])
+                .then(() => {
+                    assert(result() === "aa");
+                });
+        });
+    });
+
+    describe("should not remove duplicate tasks from two or more the same pattern:", () => {
+        it("lib version", () => {
+            return runAll(["test-task:*:a", "test-task:*:a"], {parallel: true})
+                .then(() => {
+                    assert(result() === "aaaa");
+                });
+        });
+
+        it("command version", () => {
+            return command(["--parallel", "test-task:*:a", "test-task:*:a"])
+                .then(() => {
+                    assert(result() === "aaaa");
+                });
+        });
+    });
 });

@@ -1,5 +1,5 @@
 import {join} from "path";
-import minimatch from "minimatch";
+import {Minimatch} from "minimatch";
 import Promise from "./promise";
 import runTask from "./run-task";
 
@@ -44,21 +44,21 @@ function filterTasks(taskList, patterns) {
         const spacePos = trimmed.indexOf(" ");
         const task = spacePos < 0 ? trimmed : trimmed.slice(0, spacePos);
         const args = spacePos < 0 ? "" : trimmed.slice(spacePos);
-        const filter = minimatch.filter(swapColonAndSlash(task));
-        filter.task = task;
-        filter.args = args;
+        const matcher = new Minimatch(swapColonAndSlash(task));
+        const match = matcher.match.bind(matcher);
 
-        return filter;
+        return {match, task, args, pattern};
     });
     const candidates = taskList.map(swapColonAndSlash);
 
     const retv = [];
-    const matched = Object.create(null);
-    function addToRetv(command) {
-        if (matched[command] !== true) {
-            matched[command] = true;
+    const sourceMap = Object.create(null);
+    function addToRetv(command, pattern) {
+        const source = sourceMap[command] || (sourceMap[command] = []);
+        if (source.length === 0 || source.indexOf(pattern) !== -1) {
             retv.push(command);
         }
+        source.push(pattern);
     }
 
     // Take tasks while keep the order of patterns.
@@ -66,15 +66,15 @@ function filterTasks(taskList, patterns) {
         let found = false;
 
         candidates.forEach(task => {
-            if (filter(task)) {
+            if (filter.match(task)) {
                 found = true;
-                addToRetv(swapColonAndSlash(task) + filter.args);
+                addToRetv(swapColonAndSlash(task) + filter.args, filter.pattern);
             }
         });
 
         // Built-in tasks should be allowed.
         if (!found && (filter.task === "restart" || filter.task === "env")) {
-            addToRetv(filter.task + filter.args);
+            addToRetv(filter.pattern, filter.pattern);
         }
     });
 
