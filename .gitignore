@@ -1,4 +1,8 @@
-/node_modules
+/bin
 /coverage
+/docs
 /lib
+/node_modules
 /npm-debug.log
+/test-workspace/npm-debug.log
+/test-workspace/test.txt

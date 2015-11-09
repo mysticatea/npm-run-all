@@ -4,16 +4,10 @@
 [![Coverage Status](https://coveralls.io/repos/mysticatea/npm-run-all/badge.svg?branch=master)](https://coveralls.io/r/mysticatea/npm-run-all?branch=master)
 [![npm version](https://badge.fury.io/js/npm-run-all.svg)](http://badge.fury.io/js/npm-run-all)
 
-A CLI tool to run multiple npm-scripts sequentially or in parallel.
-
-## Platform dependencies
-
-This package works in both Windows and UNIX-like environments.
-
-It requires at least node version 0.10 and **npm version 2.0.0**. To upgrade npm, run:
+A CLI tool to run multiple npm-scripts in parallel or sequential.
 
 ```
-npm install -g npm@latest
+> npm-run-all clean lint build:*
 ```
 
 ## Installation
@@ -22,6 +16,12 @@ npm install -g npm@latest
 npm install npm-run-all
 ```
 
+- This package works in both Windows and UNIX-like environments.
+- This package is tested in the follow node versions.
+  - `0.10` (*requires `npm >= 2.0.0`, so please run `npm install -g npm@latest`*)
+  - `0.12`
+  - `4.x`
+  - `5.x`
 
 ## Usage
 
@@ -82,17 +82,16 @@ npm-run-all --parallel watch:*
 In this case, runs sub tasks of `watch`. e.g. `watch:html`, `watch:js`.
 But, doesn't run sub-sub tasks. e.g. `watch:js:index`.
 
-> `npm-run-all` reads a task list from `package.json` at the current working
-> directory.
+`npm-run-all` reads the actual npm-script list from `package.json` in the current directory.
 
 ```
-npm-run-all --parallel watch:**:*
+npm-run-all --parallel watch:**
 ```
 
 If you use a globstar `**`, runs both sub tasks and sub-sub tasks.
 
 This matching rule is similar to [glob](https://www.npmjs.com/package/glob#glob-primer).
-Its difference is one; the separator is `:`, instead of `/`.
+The Difference is one -- the separator is `:`, instead of `/`.
 
 ## Node API
 
@@ -108,21 +107,26 @@ var promise = runAll(tasks, options);
 
 Run npm-scripts.
 
-* **tasks** `string|string[]` -- Glob-like patterns for task names.
-* **options** `object`
-  * **options.parallel** `boolean` -- A flag to run tasks in parallel. By default,
-    `false`.
-  * **options.stdin** `stream.Readable` -- A readable stream that sends to stdin
-    of tasks. By default, nothing. Set `process.stdin` in order to send from
-    key inputs.
-  * **options.stdout** `stream.Writable` -- A writable stream that receives stdout
-    of tasks. By default, nothing. Set `process.stdout` in order to print to
-    console.
-  * **options.stderr** `stream.Writable` -- A writable stream that receives stderr
-    of tasks. By default, nothing. Set `process.stderr` in order to print to
-    console.
-  * **options.taskList** `string[]` -- A string array that is all task names.
-    By default, reads from `package.json` at the current working directory.
+- **patterns** `string|string[]` -- Glob-like patterns for task names.
+- **options** `object`
+  - **options.parallel** `boolean` --
+    A flag to run tasks in parallel.
+    Default is `false`.
+  - **options.stdin** `stream.Readable` --
+    A readable stream to send to the stdin of npm-scripts.
+    Default is nothing.
+    Set `process.stdin` in order to send from stdin.
+  - **options.stdout** `stream.Writable` --
+    A writable stream to receive from the stdout of npm-scripts.
+    Default is nothing.
+    Set `process.stdout` in order to print to stdout.
+  - **options.stderr** `stream.Writable` --
+    A writable stream to receive from the stderr of npm-scripts
+    Default is nothing.
+    Set `process.stderr` in order to print to stderr.
+  - **options.taskList** `string[]` --
+    A string array that is all task names.
+    By default, reads from `package.json` in the current directory.
 
 `runAll` returns a promise that becomes *fulfilled* when all tasks are completed.
 The promise will become *rejected* when any of the tasks exit with a non-zero code.

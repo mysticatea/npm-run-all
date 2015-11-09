@@ -2,53 +2,41 @@
   "name": "npm-run-all",
   "version": "1.2.13",
   "description": "A CLI tool to run multiple npm-scripts on sequential or parallel.",
-  "main": "lib/index.js",
+  "main": "lib/npm-run-all.js",
   "bin": {
-    "npm-run-all": "lib/command.js"
+    "npm-run-all": "bin/npm-run-all.js"
   },
   "files": [
+    "bin",
     "lib"
   ],
-  "config": {
-    "test": "OK"
-  },
   "scripts": {
     "preversion": "npm run build",
-    "clean": "rimraf lib coverage",
-    "lint": "eslint src",
-    "build": "npm-run-all clean lint && babel src --out-dir lib --plugin babel-plugin-unassert",
-    "test": "npm run lint && istanbul cover node_modules/mocha/bin/_mocha -- test/*.js --require mocha-babel-hook --timeout 30000",
-    "testing": "mocha test/*.js --require mocha-babel-hook --timeout 30000 --watch --growl",
-    "coveralls": "cat coverage/lcov.info | coveralls",
-    "start": "node test/tasks/append.js start",
-    "stop": "node test/tasks/append.js stop",
-    "test-task:env-check": "node test/tasks/env-check.js",
-    "test-task:append": "node test/tasks/append.js",
-    "test-task:append:a": "node test/tasks/append.js a",
-    "test-task:append:a:c": "node test/tasks/append.js ac",
-    "test-task:append:a:d": "node test/tasks/append.js ad",
-    "test-task:append:b": "node test/tasks/append.js b",
-    "test-task:append2": "node test/tasks/append2.js",
-    "test-task:error": "node test/tasks/error.js",
-    "test-task:stdio": "node test/tasks/stdio.js"
+    "clean": "rimraf lib bin coverage",
+    "lint": "eslint src test",
+    "build": "babel-node src/bin/npm-run-all.js clean lint build:*",
+    "build:babel": "babel src --out-dir . --optional runtime",
+    "build:esdoc": "esdoc -c esdoc.json",
+    "test": "npm run lint && babel-node node_modules/isparta/bin/isparta cover node_modules/mocha/bin/_mocha -- test/*.js --require scripts/mocha-babel-hook --timeout 12000",
+    "testing": "mocha test/*.js --require scripts/mocha-babel-hook --timeout 12000 --watch --growl",
+    "coveralls": "cat coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "es6-promise": "^3.0.2",
+    "babel-runtime": "^5.8.29",
     "minimatch": "^3.0.0",
+    "shell-quote": "^1.4.3",
     "which": "^1.2.0"
   },
   "devDependencies": {
     "babel": "^5.8.29",
-    "babel-core": "^5.8.33",
-    "babel-plugin-espower": "^1.0.0",
-    "babel-plugin-unassert": "^1.2.0",
+    "babel-plugin-espower": "^1.1.0",
     "coveralls": "^2.11.4",
-    "eslint": "^1.8.0",
-    "eslint-config-mysticatea": "^1.8.0",
-    "eslint-plugin-mysticatea": "^1.0.2",
-    "istanbul": "^0.4.0",
+    "esdoc": "^0.4.3",
+    "eslint": "^1.9.0",
+    "eslint-config-mysticatea": "^1.9.0",
+    "eslint-plugin-mysticatea": "^1.0.3",
+    "isparta": "^3.5.3",
     "mocha": "^2.3.3",
-    "npm-run-all": "^1.2.11",
     "power-assert": "^1.1.0",
     "rimraf": "^2.4.3"
   },

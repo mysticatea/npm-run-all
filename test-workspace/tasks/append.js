@@ -1,6 +1,6 @@
 "use strict";
 
-var appendResult = require("../lib/util").appendResult;
+var appendResult = require("../../test/lib/util").appendResult;
 
 function append() {
     appendResult(process.argv[2]);

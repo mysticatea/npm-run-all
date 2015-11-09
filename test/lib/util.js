@@ -1,9 +1,6 @@
 "use strict";
 
 var fs = require("fs");
-var Writable = require("stream").Writable;
-var inherits = require("util").inherits;
-
 var FILE_NAME = "test.txt";
 
 exports.result = function result() {
@@ -31,16 +28,4 @@ exports.removeResult = function removeResult() {
             console.error("ERROR:", err.stack);
         }
     }
-};
-
-
-var BufferStream = exports.BufferStream = function BufferStream() {
-    Writable.call(this);
-    this.value = "";
-};
-inherits(BufferStream, Writable);
-
-BufferStream.prototype._write = function _write(chunk, encoding, callback) {
-    this.value += chunk.toString();
-    callback();
 };

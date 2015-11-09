@@ -1,7 +1,6 @@
-/* eslint no-process-exit:0 */
 "use strict";
 
-var appendResult = require("../lib/util").appendResult;
+var appendResult = require("../../test/lib/util").appendResult;
 
 if (process.argv[2] === "--wait-input") {
     process.stdin.on("data", function(chunk) {

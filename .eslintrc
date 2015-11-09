@@ -1,3 +1,6 @@
 {
-  "extends": "mysticatea/nodejs"
+    "extends": "mysticatea/nodejs",
+    "rules": {
+        "require-jsdoc": 2
+    }
 }

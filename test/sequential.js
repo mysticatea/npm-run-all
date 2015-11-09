@@ -1,59 +1,72 @@
 import assert from "power-assert";
 import {result, removeResult} from "./lib/util";
+import spawnWithKill from "./lib/spawn-with-kill";
 
 // Test targets.
-import runAll from "../src/index";
-import command from "../src/command";
+import runAll from "../src/lib/npm-run-all";
+import command from "../src/bin/npm-run-all";
 
-describe("npm-run-all", () => {
+describe("[sequencial] npm-run-all", () => {
+    before(() => { process.chdir("test-workspace"); });
+    after(() => { process.chdir(".."); });
+
     beforeEach(removeResult);
-    after(removeResult);
 
     describe("should run tasks on sequential:", () => {
-        it("lib version", () => {
-            return runAll(["test-task:append a", "test-task:append b"], {parallel: false})
+        it("lib version", () =>
+            runAll(["test-task:append a", "test-task:append b"], {parallel: false})
                 .then(() => {
                     assert(result() === "aabb");
-                });
-        });
+                })
+        );
 
-        it("command version", () => {
-            return command(["test-task:append a", "test-task:append b"])
+        it("command version", () =>
+            command(["test-task:append a", "test-task:append b"])
                 .then(() => {
                     assert(result() === "aabb");
-                });
-        });
+                })
+        );
     });
 
     describe("should remove intersected tasks from two or more patterns:", () => {
-        it("lib version", () => {
-            return runAll(["test-task:*:a", "*:append:a"], {parallel: false})
+        it("lib version", () =>
+            runAll(["test-task:*:a", "*:append:a"], {parallel: false})
                 .then(() => {
                     assert(result() === "aa");
-                });
-        });
+                })
+        );
 
-        it("command version", () => {
-            return command(["test-task:*:a", "*:append:a"])
+        it("command version", () =>
+            command(["test-task:*:a", "*:append:a"])
                 .then(() => {
                     assert(result() === "aa");
-                });
-        });
+                })
+        );
     });
 
     describe("should not remove duplicate tasks from two or more the same pattern:", () => {
-        it("lib version", () => {
-            return runAll(["test-task:*:a", "test-task:*:a"], {parallel: false})
+        it("lib version", () =>
+            runAll(["test-task:*:a", "test-task:*:a"], {parallel: false})
                 .then(() => {
                     assert(result() === "aaaa");
-                });
-        });
+                })
+        );
 
-        it("command version", () => {
-            return command(["test-task:*:a", "test-task:*:a"])
+        it("command version", () =>
+            command(["test-task:*:a", "test-task:*:a"])
                 .then(() => {
                     assert(result() === "aaaa");
-                });
-        });
+                })
+        );
     });
+
+    it("should kill child processes when it's killed", () =>
+        spawnWithKill(
+            "node",
+            ["../node_modules/babel/bin/babel-node.js", "../src/bin/npm-run-all.js", "test-task:append2 a"]
+        )
+        .then(() => {
+            assert(result() == null || result() === "a");
+        })
+    );
 });

@@ -1,0 +1,28 @@
+{
+  "name": "npm-run-all-test",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "config": {
+    "test": "OK"
+  },
+  "scripts": {
+    "start": "node tasks/append.js start",
+    "stop": "node tasks/append.js stop",
+    "test-task:env-check": "node tasks/env-check.js",
+    "test-task:append": "node tasks/append.js",
+    "test-task:append:a": "node tasks/append.js a",
+    "test-task:append:a:c": "node tasks/append.js ac",
+    "test-task:append:a:d": "node tasks/append.js ad",
+    "test-task:append:b": "node tasks/append.js b",
+    "test-task:append2": "node tasks/append2.js",
+    "test-task:error": "node tasks/error.js",
+    "test-task:stdio": "node tasks/stdio.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mysticatea/npm-run-all.git"
+  },
+  "author": "Toru Nagashima",
+  "license": "MIT"
+}
