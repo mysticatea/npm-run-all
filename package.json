@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "preversion": "npm run build",
+    "postversion": "git push && git push --tags",
     "clean": "rimraf lib bin coverage",
     "lint": "eslint src test",
     "build": "babel-node src/bin/npm-run-all.js clean lint build:*",
