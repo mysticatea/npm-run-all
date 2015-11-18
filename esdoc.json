@@ -1,5 +1,13 @@
 {
     "source": "src",
     "destination": "docs",
-    "access": ["public", "protected", "private"]
+    "access": ["public", "protected", "private"],
+    "plugins": [
+        {
+            "name": "esdoc-importpath-plugin",
+            "option": {
+                "replaces": [{"from": "^src/", "to": ""}]
+            }
+        }
+    ]
 }

@@ -33,6 +33,7 @@
     "babel-plugin-espower": "^1.1.0",
     "coveralls": "^2.11.4",
     "esdoc": "^0.4.3",
+    "esdoc-importpath-plugin": "0.0.1",
     "eslint": "^1.9.0",
     "eslint-config-mysticatea": "^1.9.0",
     "eslint-plugin-mysticatea": "^1.0.3",
