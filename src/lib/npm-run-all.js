@@ -22,6 +22,34 @@ function toArray(x) {
 }
 
 /**
+ * Converts a given config object to an `--:=` style option array.
+ *
+ * @param {object|null} config -
+ *   A map-like object to overwrite package configs.
+ *   Keys are package names.
+ *   Every value is a map-like object (Pairs of variable name and value).
+ * @returns {string[]} `--:=` style options.
+ */
+function toOverwriteOptions(config) {
+    const options = [];
+    if (config == null) {
+        return options;
+    }
+
+    for (const packageName of Object.keys(config)) {
+        const packageConfig = config[packageName];
+
+        for (const variableName of Object.keys(packageConfig)) {
+            const value = packageConfig[variableName];
+
+            options.push(`--${packageName}:${variableName}=${value}`);
+        }
+    }
+
+    return options;
+}
+
+/**
  * Runs npm-scripts which are matched with given patterns.
  *
  * @param {string|string[]} patternOrPatterns - Patterns to run.
@@ -53,6 +81,12 @@ function toArray(x) {
  *   Actual name list of npm-scripts.
  *   This function search npm-script names in this list.
  *   If this is `null`, this function reads `package.json` of current directly.
+ * @param {object|null} options.packageConfig -
+ *   A map-like object to overwrite package configs.
+ *   Keys are package names.
+ *   Every value is a map-like object (Pairs of variable name and value).
+ *   e.g. `{"npm-run-all": {"test": 777}}`
+ *   Default is `null`.
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  */
@@ -63,7 +97,8 @@ export default function npmRunAll(
         stdin = null,
         stdout = null,
         stderr = null,
-        taskList = null
+        taskList = null,
+        packageConfig = null
     } = {}
 ) {
     try {
@@ -81,8 +116,8 @@ export default function npmRunAll(
         }
 
         return (
-            parallel ? runTasksInParallel(tasks, stdin, stdout, stderr) :
-            /* else */ runTasksInSequencial(tasks, stdin, stdout, stderr)
+            parallel ? runTasksInParallel(tasks, stdin, stdout, stderr, toOverwriteOptions(packageConfig)) :
+            /* else */ runTasksInSequencial(tasks, stdin, stdout, stderr, toOverwriteOptions(packageConfig))
         );
     }
     catch (err) {

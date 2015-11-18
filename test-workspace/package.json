@@ -10,6 +10,7 @@
     "start": "node tasks/append.js start",
     "stop": "node tasks/append.js stop",
     "test-task:env-check": "node tasks/env-check.js",
+    "test-task:env-check2": "node tasks/env-check2.js",
     "test-task:append": "node tasks/append.js",
     "test-task:append:a": "node tasks/append.js a",
     "test-task:append:a:c": "node tasks/append.js ac",

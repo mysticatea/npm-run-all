@@ -112,21 +112,27 @@ Run npm-scripts.
   - **options.parallel** `boolean` --
     A flag to run tasks in parallel.
     Default is `false`.
-  - **options.stdin** `stream.Readable` --
+  - **options.stdin** `stream.Readable|null` --
     A readable stream to send to the stdin of npm-scripts.
     Default is nothing.
     Set `process.stdin` in order to send from stdin.
-  - **options.stdout** `stream.Writable` --
+  - **options.stdout** `stream.Writable|null` --
     A writable stream to receive from the stdout of npm-scripts.
     Default is nothing.
     Set `process.stdout` in order to print to stdout.
-  - **options.stderr** `stream.Writable` --
+  - **options.stderr** `stream.Writable|null` --
     A writable stream to receive from the stderr of npm-scripts
     Default is nothing.
     Set `process.stderr` in order to print to stderr.
-  - **options.taskList** `string[]` --
+  - **options.taskList** `string[]|null` --
     A string array that is all task names.
     By default, reads from `package.json` in the current directory.
+  - **options.packageConfig** `object|null` --
+    A map-like object to overwrite package configs.
+    Keys are package names.
+    Every value is a map-like object (Pairs of variable name and value).
+    e.g. `{"npm-run-all": {"test": 777, "test2": 333}}`
+    Default is `null`.
 
 `runAll` returns a promise that becomes *fulfilled* when all tasks are completed.
 The promise will become *rejected* when any of the tasks exit with a non-zero code.

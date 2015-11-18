@@ -6,35 +6,70 @@
 import runAll from "../lib/npm-run-all";
 
 const START_PROMISE = Promise.resolve(null);
+const OVERWRITE_OPTION = /^--([^:]+?):([^=]+?)(?:=(.+))?$/;
+
+/**
+ * Overwrites a specified package config.
+ *
+ * @param {object} config - A config object to be overwritten.
+ * @param {string} packageName - A package name to overwrite.
+ * @param {string} variable - A variable name to overwrite.
+ * @param {string} value - A new value to overwrite.
+ * @returns {void}
+ */
+function overwriteConfig(config, packageName, variable, value) {
+    const scope = config[packageName] || (config[packageName] = {}); // eslint-disable-line no-param-reassign
+    scope[variable] = value;
+}
 
 /**
  * Parses arguments.
  *
  * @param {string[]} args - Arguments to parse.
- * @returns {{parallel: boolean, patterns: string[]}[]} A running plan.
+ * @returns {{parallel: boolean, patterns: string[], packageConfig: object}[]} A running plan.
  */
 function parse(args) {
-    return args.reduce((queue, arg) => {
+    const packageConfig = {};
+    const queue = [{parallel: false, patterns: [], packageConfig}];
+
+    for (let i = 0; i < args.length; ++i) {
+        const arg = args[i];
+
         switch (arg) {
             case "-s":
             case "--sequential":
-                queue.push({parallel: false, patterns: []});
+                if (queue[queue.length - 1].parallel) {
+                    queue.push({parallel: false, patterns: [], packageConfig});
+                }
                 break;
 
             case "-p":
             case "--parallel":
-                queue.push({parallel: true, patterns: []});
+                queue.push({parallel: true, patterns: [], packageConfig});
                 break;
 
-            default:
-                if (arg[0] === "-") {
+            default: {
+                const matched = OVERWRITE_OPTION.exec(arg);
+                if (matched) {
+                    overwriteConfig(
+                        packageConfig,
+                        matched[1],
+                        matched[2],
+                        matched[3] || args[++i]
+                    );
+                }
+                else if (arg[0] === "-") {
                     throw new Error(`Invalid Option: ${arg}`);
                 }
-                queue[queue.length - 1].patterns.push(arg);
+                else {
+                    queue[queue.length - 1].patterns.push(arg);
+                }
                 break;
+            }
         }
-        return queue;
-    }, [{parallel: false, patterns: []}]);
+    }
+
+    return queue;
 }
 
 /**
@@ -57,7 +92,8 @@ export default function npmRunAll(args, stdout, stderr) {
                         stdout,
                         stderr,
                         stdin: process.stdin,
-                        parallel: group.parallel
+                        parallel: group.parallel,
+                        packageConfig: group.packageConfig
                     }
                 )),
             START_PROMISE
