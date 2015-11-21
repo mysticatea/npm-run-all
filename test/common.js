@@ -1,4 +1,3 @@
-import {PassThrough} from "stream";
 import assert from "power-assert";
 import {result, removeResult} from "./lib/util";
 import BufferStream from "./lib/buffer-stream";
@@ -47,40 +46,40 @@ describe("[common] npm-run-all", () => {
         );
     });
 
-    it("stdin option should pipe to task.", () => {
-        const stream = new PassThrough();
-        const promise = runAll("test-task:stdio -- --wait-input", {stdin: stream})
-            .then(() => {
-                assert(result() === "STDIN");
-            });
+    describe("stdin can be used in tasks:", () => {
+        it("lib version", () =>
+            runAll("test-task:stdin")
+                .then(() => assert(result().trim() === "STDIN"))
+        );
 
-        stream.write("STDIN");
-
-        return promise;
+        it("command version", () =>
+            command(["test-task:stdin"])
+                .then(() => assert(result().trim() === "STDIN"))
+        );
     });
 
-    it("stdout option should pipe from task.", (done) => {
-        const stream = new PassThrough();
-        stream.setEncoding("utf8");
-        runAll("test-task:stdio", {stdout: stream})
-            .then(() => {
-                stream.on("readable", () => {
-                    assert(stream.read().indexOf("STDOUT") >= 0);
-                    done();
-                });
-            });
+    describe("stdout can be used in tasks:", () => {
+        it("lib version", () =>
+            runAll("test-task:stdout")
+                .then(() => assert(result() === "STDOUT"))
+        );
+
+        it("command version", () =>
+            command(["test-task:stdout"])
+                .then(() => assert(result() === "STDOUT"))
+        );
     });
 
-    it("stderr option should pipe from task.", (done) => {
-        const stream = new PassThrough();
-        stream.setEncoding("utf8");
-        runAll("test-task:stdio", {stderr: stream})
-            .then(() => {
-                stream.on("readable", () => {
-                    assert(stream.read() === "STDERR");
-                    done();
-                });
-            });
+    describe("stderr can be used in tasks:", () => {
+        it("lib version", () =>
+            runAll("test-task:stderr")
+                .then(() => assert(result() === "STDERR"))
+        );
+
+        it("command version", () =>
+            command(["test-task:stderr"])
+                .then(() => assert(result() === "STDERR"))
+        );
     });
 
     describe("should be able to use `restart` built-in task:", () => {
@@ -129,4 +128,17 @@ describe("[common] npm-run-all", () => {
                 })
         );
     });
+
+    if (process.platform === "win32") {
+        describe("issue14", () => {
+            it("lib version", () => runAll("test-task:issue14:win32"));
+            it("command version", () => command(["test-task:issue14:win32"]));
+        });
+    }
+    else {
+        describe("issue14", () => {
+            it("lib version", () => runAll("test-task:issue14:posix"));
+            it("command version", () => command(["test-task:issue14:posix"]));
+        });
+    }
 });

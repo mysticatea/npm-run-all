@@ -3,44 +3,37 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
+/* eslint no-param-reassign: 0 */
 import cp from "child_process";
-
-// List of child processes that are running currently.
-const children = [];
+import getDescendentProcessInfo from "ps-tree";
 
 /**
- * Removes this process from the children pool.
- * @this ChildProcess
- */
-function removeFromPool() {
-    const index = children.indexOf(this);
-    if (index !== -1) {
-        children.splice(index, 1);
-    }
-}
-
-/**
- * Kills this process and sub processes with the process group ID.
+ * Kills the new process and its sub processes.
  * @this ChildProcess
  */
 function kill() {
-    try {
-        process.kill(-this.pid);
-    }
-    catch (err) {
-        // ignore.
-    }
+    getDescendentProcessInfo(this.pid, (err, descendent) => {
+        if (err) {
+            return;
+        }
+
+        for (const {PID: pid} of descendent) {
+            try {
+                process.kill(pid);
+            }
+            catch (err2) {
+                // ignore.
+            }
+        }
+    });
 }
 
 /**
  * Launches a new process with the given command.
  * This is almost same as `child_process.spawn`.
  *
- * This detaches the new process to make new process group.
- * And if this process exited before the new process exits, this kills the new process.
- *
  * This returns a `ChildProcess` instance.
- * `kill` method of the instance kills the new process and its sub processes with the process group ID.
+ * `kill` method of the instance kills the new process and its sub processes.
  *
  * @param {string} command - The command to run.
  * @param {string[]} args - List of string arguments.
@@ -49,22 +42,8 @@ function kill() {
  * @private
  */
 export default function spawn(command, args, options) {
-    options.detached = true; // eslint-disable-line no-param-reassign
-
     const child = cp.spawn(command, args, options);
-    child.on("exit", removeFromPool);
-    child.on("error", removeFromPool);
     child.kill = kill;
-
-    // Add to the pool to kill on exit.
-    children.push(child);
 
     return child;
 }
-
-// Kill all child processes on exit.
-process.on("exit", () => {
-    for (const child of children) {
-        child.kill();
-    }
-});

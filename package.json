@@ -25,6 +25,7 @@
   "dependencies": {
     "babel-runtime": "^5.8.29",
     "minimatch": "^3.0.0",
+    "ps-tree": "^1.0.1",
     "shell-quote": "^1.4.3",
     "which": "^1.2.0"
   },
