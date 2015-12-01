@@ -45,15 +45,18 @@ npm-run-all build:html build:js
 
 This is same as `npm run build:html && npm run build:js`.
 
+**Note:** If a task exited with non zero code, the following tasks are not run.
+
 ### Run tasks in parallel
 
 ```
 npm-run-all --parallel watch:html watch:js
 ```
 
-This is same as `npm run watch:html & npm run watch:js`.
+This is same as `npm run watch:html & npm run watch:js`.<br>
+Of course, this works on **Windows** as well!
 
-Of course, this can be run on **Windows** as well!
+**Note:** If a task exited with non zero code, the other tasks and those descendant processes are killed with `SIGTERM` (On Windows, with `taskkill.exe /F /T`).
 
 ### Run a mix of sequential and parallel tasks.
 
@@ -102,7 +105,7 @@ var runAll = require("npm-run-all");
 ### runAll
 
 ```
-var promise = runAll(tasks, options);
+var promise = runAll(patterns, options);
 ```
 
 Run npm-scripts.
