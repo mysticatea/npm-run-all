@@ -1,8 +1,11 @@
 # npm-run-all
 
-[![Build Status](https://travis-ci.org/mysticatea/npm-run-all.svg?branch=master)](https://travis-ci.org/mysticatea/npm-run-all)
-[![Coverage Status](https://coveralls.io/repos/mysticatea/npm-run-all/badge.svg?branch=master)](https://coveralls.io/r/mysticatea/npm-run-all?branch=master)
-[![npm version](https://badge.fury.io/js/npm-run-all.svg)](http://badge.fury.io/js/npm-run-all)
+[![Build Status](https://travis-ci.org/mysticatea/npm-run-all.svg)](https://travis-ci.org/mysticatea/npm-run-all)
+[![Coverage Status](https://coveralls.io/repos/mysticatea/npm-run-all/badge.svg?branch=master&service=github)](https://coveralls.io/github/mysticatea/npm-run-all?branch=master)
+[![Dependency Status](https://david-dm.org/mysticatea/npm-run-all.svg)](https://david-dm.org/mysticatea/npm-run-all)
+[![devDependency Status](https://david-dm.org/mysticatea/npm-run-all/dev-status.svg)](https://david-dm.org/mysticatea/npm-run-all#info=devDependencies)<br>
+[![npm version](https://img.shields.io/npm/v/npm-run-all.svg)](https://www.npmjs.com/package/npm-run-all)
+[![Downloads/month](https://img.shields.io/npm/dm/npm-run-all.svg)](https://www.npmjs.com/package/npm-run-all)
 
 A CLI tool to run multiple npm-scripts in parallel or sequential.
 

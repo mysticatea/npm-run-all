@@ -24,14 +24,14 @@ export default function main(
         case undefined:
         case "-h":
         case "--help":
-            return require("./help")(stdout);
+            return require("./help").default(stdout);
 
         case "-v":
         case "--version":
-            return require("./version")(stdout);
+            return require("./version").default(stdout);
 
         default:
-            return require("./main")(args, stdout, stderr);
+            return require("./main").default(args, stdout, stderr);
     }
 }
 

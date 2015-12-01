@@ -9,4 +9,4 @@
  * This is {@link ./spawn-posix.js:spawn} or {@link ./spawn-win32.js:spawn}
  * @private
  */
-export default require(process.platform === "win32" ? "./spawn-win32" : "./spawn-posix");
+export default require(process.platform === "win32" ? "./spawn-win32" : "./spawn-posix").default;

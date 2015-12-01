@@ -1,6 +1,6 @@
 "use strict";
 
-var spawn = require("../../src/lib/spawn");
+var spawn = require("../../src/lib/spawn").default;
 
 module.exports = function spawnWithKill(command, args) {
     return new Promise(function(resolve, reject) {

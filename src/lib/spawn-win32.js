@@ -10,7 +10,7 @@ import cp from "child_process";
  * @this ChildProcess
  */
 function kill() {
-    spawn("taskkill", ["/F", "/T", "/PID", this.pid]);
+    cp.spawn("taskkill", ["/F", "/T", "/PID", this.pid]);
 }
 
 /**
