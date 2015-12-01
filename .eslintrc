@@ -1,6 +1,11 @@
 {
-    "extends": "mysticatea/nodejs",
+    "root": true,
+    "extends": [
+        "mysticatea",
+        "mysticatea/modules",
+        "mysticatea/node"
+    ],
     "rules": {
-        "require-jsdoc": 2
+        "node/shebang": [2, {"convertBinPath": ["", "src"]}]
     }
 }

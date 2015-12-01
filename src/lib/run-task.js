@@ -70,11 +70,11 @@ export default function runTask(task, stdin, stdout, stderr, packageConfigOption
         if (stderrKind === "pipe") { cp.stderr.pipe(stderr); }
 
         // Register
-        cp.on("error", (err) => {
+        cp.on("error", err => {
             cp = null;
             reject(err);
         });
-        cp.on("close", (code) => {
+        cp.on("close", code => {
             cp = null;
             resolve({task, code});
         });

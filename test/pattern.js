@@ -64,7 +64,7 @@ describe("[pattern] npm-run-all should run matched tasks if gived glob like patt
             runAll("a")
                 .then(
                     () => assert(false, "should not match"),
-                    (err) => assert((/not found/i).test(err.message))
+                    err => assert((/not found/i).test(err.message))
                 )
         );
 
@@ -72,7 +72,7 @@ describe("[pattern] npm-run-all should run matched tasks if gived glob like patt
             command(["a"])
                 .then(
                     () => assert(false, "should not match"),
-                    (err) => assert((/not found/i).test(err.message))
+                    err => assert((/not found/i).test(err.message))
                 )
         );
     });
