@@ -86,8 +86,8 @@ npm-run-all "delay 3000" --parallel watch:*
 npm-run-all --parallel "build:* -- --watch"
 ```
 
-We can enclose by quotes a script name or a pattern to use arguments.
-In cases of a pattern, arguments are forwarded to every matched task.
+We can enclose a script name or a pattern in quotes to use arguments.
+When you use a pattern, arguments are forwarded to every matched task.
 
 An example: https://gist.github.com/mysticatea/34949629c9e0a01a9e7d
 See also: https://docs.npmjs.com/cli/run-script
