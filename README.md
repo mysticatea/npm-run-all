@@ -61,7 +61,7 @@ Of course, this works on **Windows** as well!
 
 **Note:** If a task exited with non zero code, the other tasks and those descendant processes are killed with `SIGTERM` (On Windows, with `taskkill.exe /F /T`).
 
-### Run a mix of sequential and parallel tasks.
+### Run a mix of sequential and parallel tasks
 
 ```
 npm-run-all clean lint --parallel watch:html watch:js
@@ -79,7 +79,20 @@ npm-run-all a b --parallel c d --sequential e f --parallel g h i
 3. Third, runs `e` and `f` sequentially.
 4. Lastly, runs `g`, `h`, and `i` in parallell.
 
-### Glob-like pattern matching for task names.
+### Run with arguments
+
+```
+npm-run-all "delay 3000" --parallel watch:*
+npm-run-all --parallel "build:* -- --watch"
+```
+
+We can enclose by quotes a script name or a pattern to use arguments.
+In cases of a pattern, arguments are forwarded to every matched task.
+
+An example: https://gist.github.com/mysticatea/34949629c9e0a01a9e7d
+See also: https://docs.npmjs.com/cli/run-script
+
+### Glob-like pattern matching for task names
 
 ```
 npm-run-all --parallel watch:*
@@ -94,7 +107,7 @@ But, doesn't run sub-sub tasks. e.g. `watch:js:index`.
 npm-run-all --parallel watch:**
 ```
 
-If you use a globstar `**`, runs both sub tasks and sub-sub tasks.
+If we use a globstar `**`, runs both sub tasks and sub-sub tasks.
 
 This matching rule is similar to [glob](https://www.npmjs.com/package/glob#glob-primer).
 The Difference is one -- the separator is `:`, instead of `/`.
@@ -142,3 +155,5 @@ Run npm-scripts.
 
 `runAll` returns a promise that becomes *fulfilled* when all tasks are completed.
 The promise will become *rejected* when any of the tasks exit with a non-zero code.
+
+See also: https://doc.esdoc.org/github.com/mysticatea/npm-run-all/
