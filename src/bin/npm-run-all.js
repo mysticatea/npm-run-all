@@ -6,6 +6,8 @@
  * See LICENSE file in root directory for full license.
  */
 
+import "babel-polyfill";
+
 /**
  * The main process of `npm-run-all` command.
  *
