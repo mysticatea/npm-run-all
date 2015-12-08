@@ -15,7 +15,7 @@ const CONVERT_MAP = {":": "/", "/": ":"};
  * @returns {string} The text which was swapped.
  */
 function swapColonAndSlash(s) {
-    return s.replace(COLON_OR_SLASH, matched => CONVERT_MAP[matched]);
+    return s.replace(COLON_OR_SLASH, (matched) => CONVERT_MAP[matched]);
 }
 
 /**
