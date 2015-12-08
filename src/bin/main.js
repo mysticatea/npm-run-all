@@ -3,10 +3,12 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
+/* eslint no-process-env: 0 */
 import runAll from "../lib/npm-run-all";
 
 const START_PROMISE = Promise.resolve(null);
 const OVERWRITE_OPTION = /^--([^:]+?):([^=]+?)(?:=(.+))?$/;
+const CONFIG_PATTERN = /^npm_package_config_(.+)$/;
 
 /**
  * Overwrites a specified package config.
@@ -23,13 +25,36 @@ function overwriteConfig(config, packageName, variable, value) {
 }
 
 /**
+ * Creates a package config object.
+ * This checks `process.env` and creates the default value.
+ *
+ * @returns {object} Created config object.
+ */
+function createPackageConfig() {
+    const retv = {};
+    const packageName = process.env.npm_package_name;
+    if (!packageName) {
+        return retv;
+    }
+
+    for (const key of Object.keys(process.env)) {
+        const m = CONFIG_PATTERN.exec(key);
+        if (m != null) {
+            overwriteConfig(retv, packageName, m[1], process.env[key]);
+        }
+    }
+
+    return retv;
+}
+
+/**
  * Parses arguments.
  *
  * @param {string[]} args - Arguments to parse.
  * @returns {{parallel: boolean, patterns: string[], packageConfig: object}[]} A running plan.
  */
 function parse(args) {
-    const packageConfig = {};
+    const packageConfig = createPackageConfig();
     const queue = [{parallel: false, patterns: [], packageConfig}];
 
     for (let i = 0; i < args.length; ++i) {

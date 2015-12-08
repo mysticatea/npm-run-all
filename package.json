@@ -17,7 +17,7 @@
     "build:babel": "babel src --out-dir .",
     "build:esdoc": "esdoc -c esdoc.json",
     "test": "npm run lint && babel-node node_modules/isparta/bin/isparta cover node_modules/mocha/bin/_mocha -- test/*.js --timeout 12000",
-    "testing": "mocha test/*.js --require babel-register --timeout 12000 --watch --growl",
+    "watch": "mocha test/*.js --require babel-register --timeout 12000 --watch --growl",
     "coveralls": "cat coverage/lcov.info | coveralls"
   },
   "dependencies": {

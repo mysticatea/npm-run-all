@@ -92,43 +92,6 @@ describe("[common] npm-run-all", () => {
         it("command version", () => command(["env"]));
     });
 
-    describe("should have an ability to overwrite package's config:", () => {
-        it("lib version should address \"packageConfig\" option", () =>
-            runAll("test-task:env-check", {packageConfig: {"npm-run-all-test": {test: "OVERWRITTEN"}}})
-                .then(() => {
-                    assert(result() === "OVERWRITTEN");
-                })
-        );
-
-        it("lib version should address \"packageConfig\" option for multiple variables", () =>
-            runAll("test-task:env-check2", {packageConfig: {"npm-run-all-test": {test: "1", test2: "2", test3: "3"}}})
-                .then(() => {
-                    assert(result() === "1\n2\n3");
-                })
-        );
-
-        it("command version should address \"--a:b=c\" style options", () =>
-            command(["test-task:env-check", "--npm-run-all-test:test=OVERWRITTEN"])
-                .then(() => {
-                    assert(result() === "OVERWRITTEN");
-                })
-        );
-
-        it("command version should address \"--a:b=c\" style options for multiple variables", () =>
-            command(["test-task:env-check2", "--npm-run-all-test:test=1", "--npm-run-all-test:test2=2", "--npm-run-all-test:test3=3"])
-                .then(() => {
-                    assert(result() === "1\n2\n3");
-                })
-        );
-
-        it("command version should address \"--a:b c\" style options", () =>
-            command(["test-task:env-check", "--npm-run-all-test:test", "OVERWRITTEN"])
-                .then(() => {
-                    assert(result() === "OVERWRITTEN");
-                })
-        );
-    });
-
     if (process.platform === "win32") {
         describe("issue14", () => {
             it("lib version", () => runAll("test-task:issue14:win32"));
