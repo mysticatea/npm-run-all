@@ -1,6 +1,6 @@
 # npm-run-all
 
-[![Build Status](https://travis-ci.org/mysticatea/npm-run-all.svg)](https://travis-ci.org/mysticatea/npm-run-all)
+[![Build Status](https://travis-ci.org/mysticatea/npm-run-all.svg?branch=master)](https://travis-ci.org/mysticatea/npm-run-all)
 [![Coverage Status](https://coveralls.io/repos/mysticatea/npm-run-all/badge.svg?branch=master&service=github)](https://coveralls.io/github/mysticatea/npm-run-all?branch=master)
 [![Dependency Status](https://david-dm.org/mysticatea/npm-run-all.svg)](https://david-dm.org/mysticatea/npm-run-all)
 [![devDependency Status](https://david-dm.org/mysticatea/npm-run-all/dev-status.svg)](https://david-dm.org/mysticatea/npm-run-all#info=devDependencies)<br>
