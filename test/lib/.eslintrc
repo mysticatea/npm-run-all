@@ -1,13 +1,16 @@
 {
     "root": true,
-    "extends": [
-        "mysticatea/es5",
-        "mysticatea/node"
-    ],
+    "extends": ["mysticatea/es5"],
+    "plugins": ["node"],
+    "env": {"node": true},
     "rules": {
-        "no-console": 0
-    },
-    "globals": {
-        "Promise": false
+        "no-console": 0,
+        "no-process-env": 0,
+        "no-process-exit": 0,
+        "node/no-missing-import": 2,
+        "node/no-missing-require": 2,
+        "node/no-unpublished-import": 2,
+        "node/no-unpublished-require": 2,
+        "node/shebang": 2
     }
 }

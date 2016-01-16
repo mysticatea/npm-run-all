@@ -1,11 +1,19 @@
 {
     "root": true,
-    "extends": [
-        "mysticatea",
-        "mysticatea/modules",
-        "mysticatea/node"
-    ],
+    "extends": ["mysticatea/nodejs"],
+    "plugins": ["node"],
     "rules": {
-        "node/shebang": [2, {"convertBinPath": ["", "src"]}]
+        "node/no-missing-import": 2,
+        "node/no-missing-require": 2,
+        "node/no-unpublished-import": 2,
+        "node/no-unpublished-require": 2,
+        "node/shebang": 2
+    },
+    "settings": {
+        "node": {
+            "convertPath": {
+                "src/**/*.js": ["^src/(.+)$", "$1"]
+            }
+        }
     }
 }
