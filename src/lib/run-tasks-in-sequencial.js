@@ -40,17 +40,17 @@ function rejectIfNonZeroExit(result) {
  *   If this is `null`, cannot send.
  *   If this is `process.stderr`, inherits it.
  *   Otherwise, makes a pipe.
- * @param {string[]} packageConfigOptions -
- *   `--:=` style options to overwrite package configs.
+ * @param {string[]} prefixOptions -
+ *   An array of options which are inserted before the task name.
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  * @private
  */
-export default function runTasksInSequencial(tasks, stdin, stdout, stderr, packageConfigOptions) {
+export default function runTasksInSequencial(tasks, stdin, stdout, stderr, prefixOptions) {
     return tasks.reduce(
         (prev, task) => prev.then(result => {
             rejectIfNonZeroExit(result);
-            return runTask(task, stdin, stdout, stderr, packageConfigOptions);
+            return runTask(task, stdin, stdout, stderr, prefixOptions);
         }),
         START_PROMISE
     ).then(rejectIfNonZeroExit);

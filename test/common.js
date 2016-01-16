@@ -104,4 +104,26 @@ describe("[common] npm-run-all", () => {
             it("command version", () => command(["test-task:issue14:posix"]));
         });
     }
+
+    describe("should not print log if silent option was given:", () => {
+        it("lib version", () => {
+            const stdout = new BufferStream();
+            const stderr = new BufferStream();
+            return runAll("test-task:error", {silent: true, stdout, stderr})
+                .then(
+                    () => assert(false, "Should fail."),
+                    () => assert(stdout.value === "" && stderr.value === "")
+                );
+        });
+
+        it("command version", () => {
+            const stdout = new BufferStream();
+            const stderr = new BufferStream();
+            return command(["--silent", "test-task:error"], stdout, stderr)
+                .then(
+                    () => assert(false, "Should fail."),
+                    () => assert(stdout.value === "" && stderr.value === "")
+                );
+        });
+    });
 });

@@ -22,6 +22,7 @@ Usage: npm-run-all [OPTIONS] [...tasks]
     -p, --parallel [...tasks]   Run a group of tasks in parallel.
     -s, --sequential [...tasks] Run a group of tasks in sequencial.
     -v, --version               Print version number.
+    --silent                    Set "silent" to the log level of npm.
 
   See Also:
     https://github.com/mysticatea/npm-run-all#readme

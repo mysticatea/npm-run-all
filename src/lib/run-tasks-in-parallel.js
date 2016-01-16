@@ -26,17 +26,17 @@ import runTask from "./run-task";
  *   If this is `null`, cannot send.
  *   If this is `process.stderr`, inherits it.
  *   Otherwise, makes a pipe.
- * @param {string[]} packageConfigOptions -
- *   `--:=` style options to overwrite package configs.
+ * @param {string[]} prefixOptions -
+ *   An array of options which are inserted before the task name.
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  * @private
  */
-export default function runTasksInParallel(tasks, stdin, stdout, stderr, packageConfigOptions) {
+export default function runTasksInParallel(tasks, stdin, stdout, stderr, prefixOptions) {
     // When one of tasks exited with non-zero, abort all tasks.
     // And wait for all tasks exit.
     let nonZeroExited = null;
-    const taskPromises = tasks.map(task => runTask(task, stdin, stdout, stderr, packageConfigOptions));
+    const taskPromises = tasks.map(task => runTask(task, stdin, stdout, stderr, prefixOptions));
     const parallelPromise = Promise.all(taskPromises.map(p =>
         p.then(item => {
             if (nonZeroExited == null && item.code) {

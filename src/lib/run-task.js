@@ -43,14 +43,14 @@ function detectStreamKind(stream, std) {
  *   If this is `null`, cannot send.
  *   If this is `process.stderr`, inherits it.
  *   Otherwise, makes a pipe.
- * @param {string[]} packageConfigOptions -
- *   `--:=` style options to overwrite package configs.
+ * @param {string[]} prefixOptions -
+ *   An array of options which are inserted before the task name.
  * @returns {Promise}
  *   A promise object which becomes fullfilled when the npm-script is completed.
  *   This promise object has an extra method: `abort()`.
  * @private
  */
-export default function runTask(task, stdin, stdout, stderr, packageConfigOptions) {
+export default function runTask(task, stdin, stdout, stderr, prefixOptions) {
     let cp = null;
     const promise = whichNpm().then(npmPath => new Promise((resolve, reject) => {
         const stdinKind = detectStreamKind(stdin, process.stdin);
@@ -60,7 +60,7 @@ export default function runTask(task, stdin, stdout, stderr, packageConfigOption
         // Execute.
         cp = spawn(
             npmPath,
-            ["run-script"].concat(packageConfigOptions, parseArgs(task)),
+            ["run-script"].concat(prefixOptions, parseArgs(task)),
             {stdio: [stdinKind, stdoutKind, stderrKind]}
         );
 

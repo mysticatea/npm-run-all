@@ -73,6 +73,10 @@ function parse(args) {
                 queue.push({parallel: true, patterns: [], packageConfig});
                 break;
 
+            case "--silent":
+                // do nothing.
+                break;
+
             default: {
                 const matched = OVERWRITE_OPTION.exec(arg);
                 if (matched) {
@@ -108,19 +112,29 @@ function parse(args) {
  */
 export default function npmRunAll(args, stdout, stderr) {
     try {
+        const stdin = process.stdin;
+        const silent = (
+            args.indexOf("--silent") !== -1 ||
+            process.env.npm_config_loglevel === "silent"
+        );
+
         return parse(args).reduce(
-            (prev, group) => (group.patterns.length === 0) ?
-                prev :
-                prev.then(() => runAll(
-                    group.patterns,
+            (prev, {patterns, parallel, packageConfig}) => {
+                if (patterns.length === 0) {
+                    return prev;
+                }
+                return prev.then(() => runAll(
+                    patterns,
                     {
                         stdout,
                         stderr,
-                        stdin: process.stdin,
-                        parallel: group.parallel,
-                        packageConfig: group.packageConfig
+                        stdin,
+                        parallel,
+                        packageConfig,
+                        silent
                     }
-                )),
+                ));
+            },
             START_PROMISE
         );
     }

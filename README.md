@@ -38,6 +38,7 @@ Usage: npm-run-all [OPTIONS] [...tasks]
     -p, --parallel [...tasks]   Run a group of tasks in parallel.
     -s, --sequential [...tasks] Run a group of tasks sequentially.
     -v, --version               Print version number.
+    --silent                    Set "silent" to the log level of npm.
 ```
 
 ### Run tasks sequentially
@@ -89,7 +90,7 @@ npm-run-all --parallel "build:* -- --watch"
 We can enclose a script name or a pattern in quotes to use arguments.
 When you use a pattern, arguments are forwarded to every matched task.
 
-An example: https://gist.github.com/mysticatea/34949629c9e0a01a9e7d
+An example: https://gist.github.com/mysticatea/34949629c9e0a01a9e7d<br>
 See also: https://docs.npmjs.com/cli/run-script
 
 ### Glob-like pattern matching for task names
@@ -152,6 +153,9 @@ Run npm-scripts.
     Every value is a map-like object (Pairs of variable name and value).
     e.g. `{"npm-run-all": {"test": 777, "test2": 333}}`
     Default is `null`.
+  - **options.silent** `boolean` --
+    The flag to set `silent` to the log level of npm.
+    Default is `false`.
 
 `runAll` returns a promise that becomes *fulfilled* when all tasks are completed.
 The promise will become *rejected* when any of the tasks exit with a non-zero code.

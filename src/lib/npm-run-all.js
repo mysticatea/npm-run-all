@@ -32,9 +32,6 @@ function toArray(x) {
  */
 function toOverwriteOptions(config) {
     const options = [];
-    if (config == null) {
-        return options;
-    }
 
     for (const packageName of Object.keys(config)) {
         const packageConfig = config[packageName];
@@ -87,6 +84,9 @@ function toOverwriteOptions(config) {
  *   Every value is a map-like object (Pairs of variable name and value).
  *   e.g. `{"npm-run-all": {"test": 777}}`
  *   Default is `null`.
+ * @param {boolean} options.silent -
+ *   The flag to set `silent` to the log level of npm.
+ *   Default is `false`.
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  */
@@ -98,7 +98,8 @@ export default function npmRunAll(
         stdout = null,
         stderr = null,
         taskList = null,
-        packageConfig = null
+        packageConfig = null,
+        silent = false
     } = {}
 ) {
     try {
@@ -115,10 +116,16 @@ export default function npmRunAll(
             throw new Error(`Matched tasks not found: ${patterns.join(", ")}`);
         }
 
-        return (
-            parallel ? runTasksInParallel(tasks, stdin, stdout, stderr, toOverwriteOptions(packageConfig)) :
-            /* else */ runTasksInSequencial(tasks, stdin, stdout, stderr, toOverwriteOptions(packageConfig))
-        );
+        const prefixOptions = [];
+        if (silent) {
+            prefixOptions.push("--silent");
+        }
+        if (packageConfig != null) {
+            prefixOptions.push(...toOverwriteOptions(packageConfig));
+        }
+
+        const runTasks = parallel ? runTasksInParallel : runTasksInSequencial;
+        return runTasks(tasks, stdin, stdout, stderr, prefixOptions);
     }
     catch (err) {
         return Promise.reject(new Error(err.message));
