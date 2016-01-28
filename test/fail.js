@@ -37,6 +37,11 @@ describe("[fail] npm-run-all should fail", () => {
         it("command version", () => shouldFail(command(["unknown-task"])));
     });
 
+    describe("if unknown tasks are given (2):", () => {
+        it("lib version", () => shouldFail(runAll(["test-task:append:a", "unknown-task"])));
+        it("command version", () => shouldFail(command(["test-task:append:a", "unknown-task"])));
+    });
+
     describe("if package.json is not found:", () => {
         before(() => { process.chdir("no-package-json"); });
         after(() => { process.chdir(".."); });

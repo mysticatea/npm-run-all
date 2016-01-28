@@ -78,6 +78,7 @@ export default function matchTasks(taskList, patterns) {
     const filters = patterns.map(createFilter);
     const candidates = taskList.map(swapColonAndSlash);
     const taskSet = new TaskSet();
+    const unknownSet = Object.create(null);
 
     // Take tasks while keep the order of patterns.
     for (const filter of filters) {
@@ -96,8 +97,16 @@ export default function matchTasks(taskList, patterns) {
         // Built-in tasks should be allowed.
         if (!found && (filter.task === "restart" || filter.task === "env")) {
             taskSet.add(filter.task + filter.args, filter.task);
+            found = true;
+        }
+        if (!found) {
+            unknownSet[filter.task] = true;
         }
     }
 
+    const unknownTasks = Object.keys(unknownSet);
+    if (unknownTasks.length > 0) {
+        throw new Error(`Task not found: "${unknownTasks.join("\", ")}"`);
+    }
     return taskSet.result;
 }

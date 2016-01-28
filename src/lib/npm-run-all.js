@@ -111,11 +111,6 @@ export default function npmRunAll(
             throw new Error("Invalid options.taskList");
         }
 
-        const tasks = matchTasks(taskList || readTasks(), patterns);
-        if (tasks.length === 0) {
-            throw new Error(`Matched tasks not found: ${patterns.join(", ")}`);
-        }
-
         const prefixOptions = [];
         if (silent) {
             prefixOptions.push("--silent");
@@ -124,6 +119,7 @@ export default function npmRunAll(
             prefixOptions.push(...toOverwriteOptions(packageConfig));
         }
 
+        const tasks = matchTasks(taskList || readTasks(), patterns);
         const runTasks = parallel ? runTasksInParallel : runTasksInSequencial;
         return runTasks(tasks, stdin, stdout, stderr, prefixOptions);
     }

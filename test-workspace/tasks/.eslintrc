@@ -9,8 +9,6 @@
         "no-process-exit": 0,
         "node/no-missing-import": 2,
         "node/no-missing-require": 2,
-        "node/no-unpublished-import": 2,
-        "node/no-unpublished-require": 2,
         "node/shebang": 2
     }
 }
