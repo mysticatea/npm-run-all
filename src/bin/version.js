@@ -4,9 +4,6 @@
  * See LICENSE file in root directory for full license.
  */
 
-// In tests, `../../package.json` is correct.
-const version = read("../package.json") || read("../../package.json");
-
 /**
  * Reads the version of `npm-run-all`.
  *
@@ -21,6 +18,9 @@ function read(path) {
         return null;
     }
 }
+
+// In tests, `../../package.json` is correct.
+const version = read("../package.json") || read("../../package.json");
 
 /**
  * Print a version text.
