@@ -3,14 +3,14 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-import cp from "child_process";
+import crossSpawn from "cross-spawn-async";
 
 /**
  * Kills the new process and its sub processes forcibly.
  * @this ChildProcess
  */
 function kill() {
-    cp.spawn("taskkill", ["/F", "/T", "/PID", this.pid]);
+    crossSpawn("taskkill", ["/F", "/T", "/PID", this.pid]);
 }
 
 /**
@@ -27,7 +27,7 @@ function kill() {
  * @private
  */
 export default function spawn(command, args, options) {
-    const child = cp.spawn(command, args, options);
+    const child = crossSpawn(command, args, options);
     child.kill = kill;
 
     return child;

@@ -5,7 +5,6 @@
  */
 import {parse as parseArgs} from "shell-quote";
 import spawn from "./spawn";
-import whichNpm from "./which-npm";
 
 /**
  * Converts a given stream to an option for `child_process.spawn`.
@@ -52,14 +51,14 @@ function detectStreamKind(stream, std) {
  */
 export default function runTask(task, stdin, stdout, stderr, prefixOptions) {
     let cp = null;
-    const promise = whichNpm().then(npmPath => new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
         const stdinKind = detectStreamKind(stdin, process.stdin);
         const stdoutKind = detectStreamKind(stdout, process.stdout);
         const stderrKind = detectStreamKind(stderr, process.stderr);
 
         // Execute.
         cp = spawn(
-            npmPath,
+            "npm",
             ["run-script"].concat(prefixOptions, parseArgs(task)),
             {stdio: [stdinKind, stdoutKind, stderrKind]}
         );
@@ -78,7 +77,7 @@ export default function runTask(task, stdin, stdout, stderr, prefixOptions) {
             cp = null;
             resolve({task, code});
         });
-    }));
+    });
 
     promise.abort = function abort() {
         if (cp != null) {

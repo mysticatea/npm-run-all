@@ -22,10 +22,10 @@
   },
   "dependencies": {
     "babel-runtime": "^6.3.13",
+    "cross-spawn-async": "^2.1.9",
     "minimatch": "^3.0.0",
     "ps-tree": "^1.0.1",
-    "shell-quote": "^1.4.3",
-    "which": "^1.2.0"
+    "shell-quote": "^1.4.3"
   },
   "devDependencies": {
     "babel-cli": "^6.4.0",
