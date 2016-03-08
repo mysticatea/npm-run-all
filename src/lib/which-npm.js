@@ -23,7 +23,7 @@ export default function whichNpm() {
                     reject(err);
                 }
                 else {
-                    resolve(npmPath);
+                    resolve(process.platform === "win32" ? `"${npmPath}"` : npmPath);
                 }
             });
         });
