@@ -4,7 +4,7 @@
  * See LICENSE file in root directory for full license.
  */
 /* eslint no-param-reassign: 0 */
-import cp from "child_process";
+import crossSpawn from "cross-spawn-async";
 import getDescendentProcessInfo from "ps-tree";
 
 /**
@@ -42,7 +42,7 @@ function kill() {
  * @private
  */
 export default function spawn(command, args, options) {
-    const child = cp.spawn(command, args, options);
+    const child = crossSpawn(command, args, options);
     child.kill = kill;
 
     return child;
