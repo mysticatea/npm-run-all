@@ -56,12 +56,17 @@ export default function runTask(task, stdin, stdout, stderr, prefixOptions) {
         const stdinKind = detectStreamKind(stdin, process.stdin);
         const stdoutKind = detectStreamKind(stdout, process.stdout);
         const stderrKind = detectStreamKind(stderr, process.stderr);
+        const options = {stdio: [stdinKind, stdoutKind, stderrKind]};
+
+        if (process.platform === "win32") {
+            options.shell = true;
+        }
 
         // Execute.
         cp = spawn(
             npmPath,
             ["run-script"].concat(prefixOptions, parseArgs(task)),
-            {stdio: [stdinKind, stdoutKind, stderrKind]}
+            options
         );
 
         // Piping stdio.
