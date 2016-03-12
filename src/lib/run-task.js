@@ -16,7 +16,8 @@ import spawn from "./spawn";
 function detectStreamKind(stream, std) {
     return (
         stream == null ? "ignore" :
-        stream !== std ? "pipe" :
+        // `|| !std.isTTY` is needed for the workaround of https://github.com/nodejs/node/issues/5620
+        stream !== std || !std.isTTY ? "pipe" :
         /* else */ stream
     );
 }

@@ -42,8 +42,14 @@ if (require.main === module) {
     const promise = main(process.argv.slice(2), process.stdout, process.stderr);
 
     // Error Handling.
-    promise.catch(err => {
-        console.error("ERROR:", err.message); // eslint-disable-line no-console
-        process.exit(1);
-    });
+    promise.then(
+        () => {
+            // I'm not sure why, but maybe the process never exits on Git Bash (MINGW64)
+            process.exit(0);
+        },
+        (err) => {
+            console.error("ERROR:", err.message); // eslint-disable-line no-console
+            process.exit(1);
+        }
+    );
 }
