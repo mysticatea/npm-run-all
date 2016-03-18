@@ -20,7 +20,7 @@ Usage: npm-run-all [OPTIONS] [...tasks]
   Options:
     -h, --help                  Print this text.
     -p, --parallel [...tasks]   Run a group of tasks in parallel.
-    -s, --sequential [...tasks] Run a group of tasks in sequencial.
+    -s, --sequential / --serial [...tasks] Run a group of tasks in sequencial / serial.
     -v, --version               Print version number.
     --silent                    Set "silent" to the log level of npm.
 

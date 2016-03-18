@@ -10,7 +10,7 @@ describe("[mixed] npm-run-all", () => {
 
     beforeEach(removeResult);
 
-    it("should run a mix of sequential and parallel tasks (has the default group):", () =>
+    it("should run a mix of sequential / serial and parallel tasks (has the default group):", () =>
         command([
             "test-task:append a",
             "-p", "test-task:append b", "test-task:append c",
@@ -25,7 +25,7 @@ describe("[mixed] npm-run-all", () => {
         })
     );
 
-    it("should run a mix of sequential and parallel tasks (doesn't have the default group):", () =>
+    it("should run a mix of sequential / serial and parallel tasks (doesn't have the default group):", () =>
         command([
             "-p", "test-task:append b", "test-task:append c",
             "-s", "test-task:append d", "test-task:append e"

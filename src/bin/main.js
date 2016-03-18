@@ -63,6 +63,7 @@ function parse(args) {
         switch (arg) {
             case "-s":
             case "--sequential":
+            case "--serial":
                 if (queue[queue.length - 1].parallel) {
                     queue.push({parallel: false, patterns: [], packageConfig});
                 }

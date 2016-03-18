@@ -12,7 +12,7 @@ describe("[sequencial] npm-run-all", () => {
 
     beforeEach(removeResult);
 
-    describe("should run tasks on sequential:", () => {
+    describe("should run tasks sequentially / serially:", () => {
         it("lib version", () =>
             runAll(["test-task:append a", "test-task:append b"], {parallel: false})
                 .then(() => {

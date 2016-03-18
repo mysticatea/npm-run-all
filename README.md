@@ -7,7 +7,7 @@
 [![Coverage Status](https://coveralls.io/repos/mysticatea/npm-run-all/badge.svg?branch=master&service=github)](https://coveralls.io/github/mysticatea/npm-run-all?branch=master)
 [![Dependency Status](https://david-dm.org/mysticatea/npm-run-all.svg)](https://david-dm.org/mysticatea/npm-run-all)
 
-A CLI tool to run multiple npm-scripts in parallel or sequential.
+A CLI tool to run multiple npm-scripts in parallel or sequential / serial.
 
 ```
 > npm-run-all clean lint build:*
@@ -40,12 +40,12 @@ Usage: npm-run-all [OPTIONS] [...tasks]
   Options:
     -h, --help                  Print this text.
     -p, --parallel [...tasks]   Run a group of tasks in parallel.
-    -s, --sequential [...tasks] Run a group of tasks sequentially.
+    -s, --sequential / --serial [...tasks] Run a group of tasks sequentially / serially.
     -v, --version               Print version number.
     --silent                    Set "silent" to the log level of npm.
 ```
 
-### Run tasks sequentially
+### Run tasks sequentially / serially
 
 ```
 npm-run-all build:html build:js
@@ -72,16 +72,21 @@ Of course, this works on **Windows** as well!
 npm-run-all clean lint --parallel watch:html watch:js
 ```
 
-1. First, this runs `clean` and `lint` sequentially.
+1. First, this runs `clean` and `lint` sequentially / serially.
 2. Next, runs `watch:html` and `watch:js` in parallell.
 
 ```
 npm-run-all a b --parallel c d --sequential e f --parallel g h i
 ```
+or
 
-1. First, runs `a` and `b` sequentially.
+```
+npm-run-all a b --parallel c d --serial e f --parallel g h i
+```
+
+1. First, runs `a` and `b` sequentially / serially.
 2. Second, runs `c` and `d` in parallell.
-3. Third, runs `e` and `f` sequentially.
+3. Third, runs `e` and `f` sequentially / serially.
 4. Lastly, runs `g`, `h`, and `i` in parallell.
 
 ### Run with arguments
