@@ -7,6 +7,32 @@ import matchTasks from "./match-tasks";
 import readTasks from "./read-tasks";
 import runTasksInParallel from "./run-tasks-in-parallel";
 import runTasksInSequencial from "./run-tasks-in-sequencial";
+import runTasksInWaterfall from "./run-tasks-in-waterfall";
+
+const runTasks = {
+    sequencial: runTasksInSequencial,
+    parallel: runTasksInParallel,
+    waterfall: runTasksInWaterfall
+};
+const validTypes = Object.keys(runTasks);
+
+/**
+ * Parses the type from options.
+ *
+ * @param {object|undefined} options - An options object to parse.
+ * @returns {string} The value of `options.type`.
+ *      If it's nothing, `"sequencial"`.
+ *      If `options.parallel` is true, `"parallel"` for backword compatibility.
+ */
+function parseType(options) {
+    if (options == null) {
+        return "sequencial";
+    }
+    if (options.parallel) {
+        return "parallel";
+    }
+    return options.type || "sequencial";
+}
 
 /**
  * Converts a given value to an array.
@@ -90,38 +116,40 @@ function toOverwriteOptions(config) {
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  */
-export default function npmRunAll(
-    patternOrPatterns,
-    {
-        parallel = false,
-        stdin = null,
-        stdout = null,
-        stderr = null,
-        taskList = null,
-        packageConfig = null,
-        silent = false
-    } = {}
-) {
+export default function npmRunAll(patternOrPatterns, options) {
     try {
+        const type = parseType(options);
+        if (validTypes.indexOf(type) === -1) {
+            throw new Error("'options.type' is invalid.");
+        }
+
         const patterns = toArray(patternOrPatterns);
         if (patterns.length === 0) {
             return Promise.resolve(null);
         }
+
+        const {
+            stdin = null,
+            stdout = null,
+            stderr = null,
+            taskList = null,
+            packageConfig = null,
+            silent = false
+        } = options || {};
         if (taskList != null && Array.isArray(taskList) === false) {
             throw new Error("Invalid options.taskList");
         }
 
+        const tasks = matchTasks(taskList || readTasks(), patterns);
         const prefixOptions = [];
-        if (silent) {
+        if (silent || type === "waterfall") {
             prefixOptions.push("--silent");
         }
         if (packageConfig != null) {
             prefixOptions.push(...toOverwriteOptions(packageConfig));
         }
 
-        const tasks = matchTasks(taskList || readTasks(), patterns);
-        const runTasks = parallel ? runTasksInParallel : runTasksInSequencial;
-        return runTasks(tasks, stdin, stdout, stderr, prefixOptions);
+        return runTasks[type](tasks, stdin, stdout, stderr, prefixOptions);
     }
     catch (err) {
         return Promise.reject(new Error(err.message));

@@ -13,21 +13,21 @@ describe("[common] npm-run-all", () => {
     beforeEach(removeResult);
 
     it("should print a help text if arguments are nothing.", () => {
-        const buf = new BufferStream();
-        return command([], buf)
-            .then(() => assert(/Usage:/.test(buf.value)));
+        const stdout = new BufferStream();
+        return command([], {stdout})
+            .then(() => assert(/Usage:/.test(stdout.value)));
     });
 
     it("should print a help text if the first argument is -h", () => {
-        const buf = new BufferStream();
-        return command(["-h"], buf)
-            .then(() => assert(/Usage:/.test(buf.value)));
+        const stdout = new BufferStream();
+        return command(["-h"], {stdout})
+            .then(() => assert(/Usage:/.test(stdout.value)));
     });
 
     it("should print a version number if the first argument is -v", () => {
-        const buf = new BufferStream();
-        return command(["-v"], buf)
-            .then(() => assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value)));
+        const stdout = new BufferStream();
+        return command(["-v"], {stdout})
+            .then(() => assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(stdout.value)));
     });
 
     it("should do nothing if a task list is empty.", () =>
@@ -119,7 +119,7 @@ describe("[common] npm-run-all", () => {
         it("command version", () => {
             const stdout = new BufferStream();
             const stderr = new BufferStream();
-            return command(["--silent", "test-task:error"], stdout, stderr)
+            return command(["--silent", "test-task:error"], {stdout, stderr})
                 .then(
                     () => assert(false, "Should fail."),
                     () => assert(stdout.value === "" && stderr.value === "")

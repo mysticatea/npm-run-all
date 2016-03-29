@@ -10,15 +10,20 @@
  * The main process of `npm-run-all` command.
  *
  * @param {string[]} args - Arguments to parse.
- * @param {stream.Writable} stdout - A writable stream to print logs.
- * @param {stream.Writable} stderr - A writable stream to print errors.
+ * @param {object} [options] - An option object.
+ * @param {stream.Readable} [options.stdin] - A readable stream to input.
+ * @param {stream.Writable} [options.stdout] - A writable stream to print logs.
+ * @param {stream.Writable} [options.stderr] - A writable stream to print errors.
  * @returns {Promise} A promise which comes to be fulfilled when all npm-scripts are completed.
  * @private
  */
 export default function main(
     args,
-    stdout = null,
-    stderr = null
+    {
+        stdin = null,
+        stdout = null,
+        stderr = null
+    } = {}
 ) {
     switch (args[0]) {
         case undefined:
@@ -31,24 +36,28 @@ export default function main(
             return require("./version").default(stdout);
 
         default:
-            return require("./main").default(args, stdout, stderr);
+            return require("./main").default(args, stdin, stdout, stderr);
     }
 }
 
-/* eslint-disable no-process-exit */
+/* eslint-disable no-process-exit, no-console */
 /* istanbul ignore if */
 if (require.main === module) {
     // Execute.
-    const promise = main(process.argv.slice(2), process.stdout, process.stderr);
-
-    // Error Handling.
-    promise.then(
+    main(
+        process.argv.slice(2),
+        {
+            stdin: process.stdin,
+            stdout: process.stdout,
+            stderr: process.stderr
+        }
+    ).then(
         () => {
             // I'm not sure why, but maybe the process never exits on Git Bash (MINGW64)
             process.exit(0);
         },
         (err) => {
-            console.error("ERROR:", err.message); // eslint-disable-line no-console
+            console.error("ERROR:", err.message);
             process.exit(1);
         }
     );

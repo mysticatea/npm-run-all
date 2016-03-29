@@ -55,7 +55,7 @@ function createPackageConfig() {
  */
 function parse(args) {
     const packageConfig = createPackageConfig();
-    const queue = [{parallel: false, patterns: [], packageConfig}];
+    const queue = [{type: "sequential", patterns: [], packageConfig}];
 
     for (let i = 0; i < args.length; ++i) {
         const arg = args[i];
@@ -64,14 +64,19 @@ function parse(args) {
             case "-s":
             case "--sequential":
             case "--serial":
-                if (queue[queue.length - 1].parallel) {
-                    queue.push({parallel: false, patterns: [], packageConfig});
+                if (queue[queue.length - 1].type !== "sequential") {
+                    queue.push({type: "sequential", patterns: [], packageConfig});
                 }
                 break;
 
             case "-p":
             case "--parallel":
-                queue.push({parallel: true, patterns: [], packageConfig});
+                queue.push({type: "parallel", patterns: [], packageConfig});
+                break;
+
+            case "-w":
+            case "--waterfall":
+                queue.push({type: "waterfall", patterns: [], packageConfig});
                 break;
 
             case "--silent":
@@ -106,31 +111,31 @@ function parse(args) {
  * Parses arguments, then run specified npm-scripts.
  *
  * @param {string[]} args - Arguments to parse.
+ * @param {stream.Readable} stdin - A readable stream to input.
  * @param {stream.Writable} stdout - A writable stream to print logs.
  * @param {stream.Writable} stderr - A writable stream to print errors.
  * @returns {Promise} A promise which comes to be fulfilled when all npm-scripts are completed.
  * @private
  */
-export default function npmRunAll(args, stdout, stderr) {
+export default function npmRunAll(args, stdin, stdout, stderr) {
     try {
-        const stdin = process.stdin;
         const silent = (
             args.indexOf("--silent") !== -1 ||
             process.env.npm_config_loglevel === "silent"
         );
 
         return parse(args).reduce(
-            (prev, {patterns, parallel, packageConfig}) => {
+            (prev, {patterns, type, packageConfig}) => {
                 if (patterns.length === 0) {
                     return prev;
                 }
                 return prev.then(() => runAll(
                     patterns,
                     {
+                        type,
                         stdout,
                         stderr,
                         stdin,
-                        parallel,
                         packageConfig,
                         silent
                     }
