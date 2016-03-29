@@ -87,6 +87,9 @@ function toOverwriteOptions(config) {
  * @param {boolean} options.silent -
  *   The flag to set `silent` to the log level of npm.
  *   Default is `false`.
+ * @param {boolean} options.continueOnError -
+ *   The flag to ignore errors.
+ *   Default is `false`.
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  */
@@ -99,7 +102,8 @@ export default function npmRunAll(
         stderr = null,
         taskList = null,
         packageConfig = null,
-        silent = false
+        silent = false,
+        continueOnError = false
     } = {}
 ) {
     try {
@@ -121,7 +125,7 @@ export default function npmRunAll(
 
         const tasks = matchTasks(taskList || readTasks(), patterns);
         const runTasks = parallel ? runTasksInParallel : runTasksInSequencial;
-        return runTasks(tasks, stdin, stdout, stderr, prefixOptions);
+        return runTasks(tasks, stdin, stdout, stderr, prefixOptions, continueOnError);
     }
     catch (err) {
         return Promise.reject(new Error(err.message));

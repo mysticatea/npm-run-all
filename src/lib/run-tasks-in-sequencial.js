@@ -42,11 +42,19 @@ function rejectIfNonZeroExit(result) {
  *   Otherwise, makes a pipe.
  * @param {string[]} prefixOptions -
  *   An array of options which are inserted before the task name.
+ * @param {boolean} continueOnError -
+ *   The flag to ignore errors.
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  * @private
  */
-export default function runTasksInSequencial(tasks, stdin, stdout, stderr, prefixOptions) {
+export default function runTasksInSequencial(tasks, stdin, stdout, stderr, prefixOptions, continueOnError) {
+    if (continueOnError) {
+        return tasks.reduce(
+            (prev, task) => prev.then(() => runTask(task, stdin, stdout, stderr, prefixOptions)),
+            START_PROMISE
+        );
+    }
     return tasks.reduce(
         (prev, task) => prev.then(result => {
             rejectIfNonZeroExit(result);

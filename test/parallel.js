@@ -102,4 +102,39 @@ describe("[parallel] npm-run-all", () => {
             assert(result() == null || result() === "a");
         })
     );
+
+    describe("should continue on error when --continue-on-error option was specified:", () => {
+        it("lib version", () =>
+            runAll(["test-task:append a", "test-task:error", "test-task:append b"], {parallel: true, continueOnError: true})
+                .then(() => {
+                    assert(
+                        result() === "abab" ||
+                        result() === "baba" ||
+                        result() === "abba" ||
+                        result() === "baab");
+                })
+        );
+
+        it("command version", () =>
+            command(["--parallel", "test-task:append a", "test-task:error", "test-task:append b", "--continue-on-error"])
+                .then(() => {
+                    assert(
+                        result() === "abab" ||
+                        result() === "baba" ||
+                        result() === "abba" ||
+                        result() === "baab");
+                })
+        );
+
+        it("command version (-P shorthand)", () =>
+            command(["-P", "test-task:append a", "test-task:error", "test-task:append b"])
+                .then(() => {
+                    assert(
+                        result() === "abab" ||
+                        result() === "baba" ||
+                        result() === "abba" ||
+                        result() === "baab");
+                })
+        );
+    });
 });

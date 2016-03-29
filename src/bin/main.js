@@ -51,27 +51,51 @@ function createPackageConfig() {
  * Parses arguments.
  *
  * @param {string[]} args - Arguments to parse.
- * @returns {{parallel: boolean, patterns: string[], packageConfig: object}[]} A running plan.
+ * @returns {{
+ *      groups: {
+ *          parallel: boolean,
+ *          continueOnError: boolean,
+ *          patterns: string[]
+ *      }[],
+ *      packageConfig: object
+ * }} A running plan.
  */
 function parse(args) {
     const packageConfig = createPackageConfig();
-    const queue = [{parallel: false, patterns: [], packageConfig}];
+    const groups = [{
+        parallel: false,
+        continueOnError: false,
+        patterns: []
+    }];
 
     for (let i = 0; i < args.length; ++i) {
         const arg = args[i];
 
         switch (arg) {
+            case "-S":
             case "-s":
             case "--sequential":
             case "--serial":
-                if (queue[queue.length - 1].parallel) {
-                    queue.push({parallel: false, patterns: [], packageConfig});
-                }
+                groups.push({
+                    parallel: false,
+                    continueOnError: arg === "-S",
+                    patterns: []
+                });
                 break;
 
+            case "-P":
             case "-p":
             case "--parallel":
-                queue.push({parallel: true, patterns: [], packageConfig});
+                groups.push({
+                    parallel: true,
+                    continueOnError: arg === "-P",
+                    patterns: []
+                });
+                break;
+
+            case "-c":
+            case "--continue-on-error":
+                groups[groups.length - 1].continueOnError = true;
                 break;
 
             case "--silent":
@@ -92,14 +116,14 @@ function parse(args) {
                     throw new Error(`Invalid Option: ${arg}`);
                 }
                 else {
-                    queue[queue.length - 1].patterns.push(arg);
+                    groups[groups.length - 1].patterns.push(arg);
                 }
                 break;
             }
         }
     }
 
-    return queue;
+    return {groups, packageConfig};
 }
 
 /**
@@ -118,9 +142,10 @@ export default function npmRunAll(args, stdout, stderr) {
             args.indexOf("--silent") !== -1 ||
             process.env.npm_config_loglevel === "silent"
         );
+        const {groups, packageConfig} = parse(args);
 
-        return parse(args).reduce(
-            (prev, {patterns, parallel, packageConfig}) => {
+        return groups.reduce(
+            (prev, {patterns, parallel, continueOnError}) => {
                 if (patterns.length === 0) {
                     return prev;
                 }
@@ -131,6 +156,7 @@ export default function npmRunAll(args, stdout, stderr) {
                         stderr,
                         stdin,
                         parallel,
+                        continueOnError,
                         packageConfig,
                         silent
                     }
