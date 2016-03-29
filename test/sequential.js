@@ -69,4 +69,27 @@ describe("[sequencial] npm-run-all", () => {
             assert(result() == null || result() === "a");
         })
     );
+
+    describe("should continue on error when --continue-on-error option was specified:", () => {
+        it("lib version", () =>
+            runAll(["test-task:append a", "test-task:error", "test-task:append b"], {continueOnError: true})
+                .then(() => {
+                    assert(result() === "aabb");
+                })
+        );
+
+        it("command version", () =>
+            command(["test-task:append a", "test-task:error", "test-task:append b", "--continue-on-error"])
+                .then(() => {
+                    assert(result() === "aabb");
+                })
+        );
+
+        it("command version (-S shorthand)", () =>
+            command(["-S", "test-task:append a", "test-task:error", "test-task:append b"])
+                .then(() => {
+                    assert(result() === "aabb");
+                })
+        );
+    });
 });

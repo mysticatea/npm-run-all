@@ -13,17 +13,30 @@
  */
 export default function printHelp(output) {
     output.write(`
-Usage: npm-run-all [OPTIONS] [...tasks]
+Usage: npm-run-all [...tasks] [OPTIONS]
 
   Run specified tasks.
 
   Options:
     -h, --help                  Print this text.
-    -p, --parallel [...tasks]   Run a group of tasks in parallel.
-    -s, --sequential [...tasks] Run a group of tasks in sequencial.
-        --serial [...tasks]     '--serial' is a synonym of '--sequential'.
     -v, --version               Print version number.
+
+    -c, --continue-on-error     Set the flag to ignore errors to the current
+                                group of tasks.
     --silent                    Set "silent" to the log level of npm.
+
+    -p, --parallel [...tasks]   Run a group of tasks in parallel.
+                                e.g. 'npm-run-all -p foo bar' is similar to
+                                     'npm run foo & npm run bar'.
+    -P [...tasks]               Run a group of tasks in parallel as ignoring
+                                errors. This is shorthand of '-p -c [...tasks]'.
+
+    -s, --sequential [...tasks] Run a group of tasks in sequential.
+        --serial [...tasks]     '--serial' is a synonym of '--sequential'.
+                                e.g. 'npm-run-all -s foo bar' is similar to
+                                     'npm run foo && npm run bar'.
+    -S [...tasks]               Run a group of tasks in sequential as ignoring
+                                errors. This is shorthand of '-s -c [...tasks]'.
 
   See Also:
     https://github.com/mysticatea/npm-run-all#readme

@@ -33,17 +33,30 @@ npm install npm-run-all
 ## Usage
 
 ```
-Usage: npm-run-all [OPTIONS] [...tasks]
+Usage: npm-run-all [...tasks] [OPTIONS]
 
   Run specified tasks.
 
   Options:
     -h, --help                  Print this text.
-    -p, --parallel [...tasks]   Run a group of tasks in parallel.
-    -s, --sequential [...tasks] Run a group of tasks in sequencial.
-        --serial [...tasks]     '--serial' is a synonym of '--sequential'.
     -v, --version               Print version number.
+
+    -c, --continue-on-error     Set the flag to ignore errors to the current
+                                group of tasks.
     --silent                    Set "silent" to the log level of npm.
+
+    -p, --parallel [...tasks]   Run a group of tasks in parallel.
+                                e.g. 'npm-run-all -p foo bar' is similar to
+                                     'npm run foo & npm run bar'.
+    -P [...tasks]               Run a group of tasks in parallel as ignoring
+                                errors. This is shorthand of '-p -c [...tasks]'.
+
+    -s, --sequential [...tasks] Run a group of tasks in sequential.
+        --serial [...tasks]     '--serial' is a synonym of '--sequential'.
+                                e.g. 'npm-run-all -s foo bar' is similar to
+                                     'npm run foo && npm run bar'.
+    -S [...tasks]               Run a group of tasks in sequential as ignoring
+                                errors. This is shorthand of '-s -c [...tasks]'.
 ```
 
 ### Run tasks sequentially / serially
@@ -123,6 +136,25 @@ If we use a globstar `**`, runs both sub tasks and sub-sub tasks.
 This matching rule is similar to [glob](https://www.npmjs.com/package/glob#glob-primer).
 The Difference is one -- the separator is `:`, instead of `/`.
 
+### Continue on error
+
+We can use `--continue-on-error` option to ignore errors.
+
+```
+npm-run-all --sequential --continue-on-error foo bar
+npm-run-all --parallel --continue-on-error foo bar
+```
+
+`npm-run-all` stops subsequence when a task exited with non-zero code by default.
+But when `--continue-on-error` was specified, `npm-run-all` continues subsequence on error.
+
+There are shorthands.
+
+```
+npm-run-all -S foo bar
+npm-run-all -P foo bar
+```
+
 ## Node API
 
 ```
@@ -141,6 +173,9 @@ Run npm-scripts.
 - **options** `object`
   - **options.parallel** `boolean` --
     A flag to run tasks in parallel.
+    Default is `false`.
+  - **options.continueOnError** `boolean` --
+    A flag to ignore errors.
     Default is `false`.
   - **options.stdin** `stream.Readable|null` --
     A readable stream to send to the stdin of npm-scripts.

@@ -28,15 +28,20 @@ import runTask from "./run-task";
  *   Otherwise, makes a pipe.
  * @param {string[]} prefixOptions -
  *   An array of options which are inserted before the task name.
+ * @param {boolean} continueOnError -
+ *   The flag to ignore errors.
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  * @private
  */
-export default function runTasksInParallel(tasks, stdin, stdout, stderr, prefixOptions) {
+export default function runTasksInParallel(tasks, stdin, stdout, stderr, prefixOptions, continueOnError) {
     // When one of tasks exited with non-zero, abort all tasks.
     // And wait for all tasks exit.
     let nonZeroExited = null;
     const taskPromises = tasks.map(task => runTask(task, stdin, stdout, stderr, prefixOptions));
+    if (continueOnError) {
+        return Promise.all(taskPromises);
+    }
     const parallelPromise = Promise.all(taskPromises.map(p =>
         p.then(item => {
             if (nonZeroExited == null && item.code) {
