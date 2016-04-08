@@ -24,7 +24,8 @@
     "test-task:stderr": "node tasks/stderr.js 2> test.txt",
     "test-task:stdin": "echo STDIN | node tasks/stdin.js",
     "test-task:issue14:win32": "..\\node_modules\\.bin\\rimraf build && mkdir %npm_package_config_DEST% && cd build",
-    "test-task:issue14:posix": "../node_modules/.bin/rimraf build && mkdir $npm_package_config_DEST && cd build"
+    "test-task:issue14:posix": "../node_modules/.bin/rimraf build && mkdir $npm_package_config_DEST && cd build",
+    "test-task:echo": "node tasks/echo.js"
   },
   "repository": {
     "type": "git",

@@ -25,40 +25,22 @@ function rejectIfNonZeroExit(result) {
  * If a npm-script exited with a non-zero code, this aborts subsequent npm-scripts.
  *
  * @param {string} tasks - A list of npm-script name to run in sequencial.
- * @param {stream.Readable|null} stdin -
- *   A readable stream to send messages to stdin of child process.
- *   If this is `null`, ignores it.
- *   If this is `process.stdin`, inherits it.
- *   Otherwise, makes a pipe.
- * @param {stream.Writable|null} stdout -
- *   A writable stream to receive messages from stdout of child process.
- *   If this is `null`, cannot send.
- *   If this is `process.stdout`, inherits it.
- *   Otherwise, makes a pipe.
- * @param {stream.Writable|null} stderr -
- *   A writable stream to receive messages from stderr of child process.
- *   If this is `null`, cannot send.
- *   If this is `process.stderr`, inherits it.
- *   Otherwise, makes a pipe.
- * @param {string[]} prefixOptions -
- *   An array of options which are inserted before the task name.
- * @param {boolean} continueOnError -
- *   The flag to ignore errors.
- * @returns {Promise}
- *   A promise object which becomes fullfilled when all npm-scripts are completed.
+ * @param {object} options - An option object.
+ * @returns {Promise} A promise object which becomes fullfilled when all npm-scripts are completed.
  * @private
  */
-export default function runTasksInSequencial(tasks, stdin, stdout, stderr, prefixOptions, continueOnError) {
-    if (continueOnError) {
+export default function runTasksInSequencial(tasks, options) {
+    if (options.continueOnError) {
         return tasks.reduce(
-            (prev, task) => prev.then(() => runTask(task, stdin, stdout, stderr, prefixOptions)),
+            (prev, task) => prev.then(() => runTask(task, options)),
             START_PROMISE
         );
     }
+
     return tasks.reduce(
         (prev, task) => prev.then(result => {
             rejectIfNonZeroExit(result);
-            return runTask(task, stdin, stdout, stderr, prefixOptions);
+            return runTask(task, options);
         }),
         START_PROMISE
     ).then(rejectIfNonZeroExit);

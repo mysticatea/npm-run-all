@@ -11,37 +11,19 @@ import runTask from "./run-task";
  * If a npm-script exited with a non-zero code, this aborts other all npm-scripts.
  *
  * @param {string} tasks - A list of npm-script name to run in parallel.
- * @param {stream.Readable|null} stdin -
- *   A readable stream to send messages to stdin of child process.
- *   If this is `null`, ignores it.
- *   If this is `process.stdin`, inherits it.
- *   Otherwise, makes a pipe.
- * @param {stream.Writable|null} stdout -
- *   A writable stream to receive messages from stdout of child process.
- *   If this is `null`, cannot send.
- *   If this is `process.stdout`, inherits it.
- *   Otherwise, makes a pipe.
- * @param {stream.Writable|null} stderr -
- *   A writable stream to receive messages from stderr of child process.
- *   If this is `null`, cannot send.
- *   If this is `process.stderr`, inherits it.
- *   Otherwise, makes a pipe.
- * @param {string[]} prefixOptions -
- *   An array of options which are inserted before the task name.
- * @param {boolean} continueOnError -
- *   The flag to ignore errors.
- * @returns {Promise}
- *   A promise object which becomes fullfilled when all npm-scripts are completed.
+ * @param {object} options - An option object.
+ * @returns {Promise} A promise object which becomes fullfilled when all npm-scripts are completed.
  * @private
  */
-export default function runTasksInParallel(tasks, stdin, stdout, stderr, prefixOptions, continueOnError) {
+export default function runTasksInParallel(tasks, options) {
+    const taskPromises = tasks.map(task => runTask(task, options));
+    if (options.continueOnError) {
+        return Promise.all(taskPromises);
+    }
+
     // When one of tasks exited with non-zero, abort all tasks.
     // And wait for all tasks exit.
     let nonZeroExited = null;
-    const taskPromises = tasks.map(task => runTask(task, stdin, stdout, stderr, prefixOptions));
-    if (continueOnError) {
-        return Promise.all(taskPromises);
-    }
     const parallelPromise = Promise.all(taskPromises.map(p =>
         p.then(item => {
             if (nonZeroExited == null && item.code) {
@@ -58,7 +40,8 @@ export default function runTasksInParallel(tasks, stdin, stdout, stderr, prefixO
     return parallelPromise.then(() => {
         if (nonZeroExited != null) {
             throw new Error(
-                `${nonZeroExited.task}: None-Zero Exit(${nonZeroExited.code});`);
+                `${nonZeroExited.task}: None-Zero Exit(${nonZeroExited.code});`
+            );
         }
     });
 }

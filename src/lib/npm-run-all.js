@@ -47,6 +47,17 @@ function toOverwriteOptions(config) {
 }
 
 /**
+ * Gets the maximum length.
+ *
+ * @param {number} length - The current maximum length.
+ * @param {string} name - A name.
+ * @returns {number} The maximum length.
+ */
+function maxLength(length, name) {
+    return Math.max(name.length, length);
+}
+
+/**
  * Runs npm-scripts which are matched with given patterns.
  *
  * @param {string|string[]} patternOrPatterns - Patterns to run.
@@ -90,6 +101,9 @@ function toOverwriteOptions(config) {
  * @param {boolean} options.continueOnError -
  *   The flag to ignore errors.
  *   Default is `false`.
+ * @param {boolean} options.printLabel -
+ *   The flag to print task names at the head of each line.
+ *   Default is `false`.
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  */
@@ -103,7 +117,8 @@ export default function npmRunAll(
         taskList = null,
         packageConfig = null,
         silent = false,
-        continueOnError = false
+        continueOnError = false,
+        printLabel = false
     } = {}
 ) {
     try {
@@ -124,8 +139,21 @@ export default function npmRunAll(
         }
 
         const tasks = matchTasks(taskList || readTasks(), patterns);
+        const labelWidth = tasks.reduce(maxLength, 0);
         const runTasks = parallel ? runTasksInParallel : runTasksInSequencial;
-        return runTasks(tasks, stdin, stdout, stderr, prefixOptions, continueOnError);
+        return runTasks(tasks, {
+            stdin,
+            stdout,
+            stderr,
+            prefixOptions,
+            continueOnError,
+            labelState: {
+                enabled: printLabel,
+                width: labelWidth,
+                lastPrefix: null,
+                lastIsLinebreak: true
+            }
+        });
     }
     catch (err) {
         return Promise.reject(new Error(err.message));

@@ -65,6 +65,7 @@ function parse(args) {
     const groups = [{
         parallel: false,
         continueOnError: false,
+        printLabel: false,
         patterns: []
     }];
 
@@ -79,6 +80,7 @@ function parse(args) {
                 groups.push({
                     parallel: false,
                     continueOnError: arg === "-S",
+                    printLabel: false,
                     patterns: []
                 });
                 break;
@@ -89,6 +91,7 @@ function parse(args) {
                 groups.push({
                     parallel: true,
                     continueOnError: arg === "-P",
+                    printLabel: false,
                     patterns: []
                 });
                 break;
@@ -96,6 +99,11 @@ function parse(args) {
             case "-c":
             case "--continue-on-error":
                 groups[groups.length - 1].continueOnError = true;
+                break;
+
+            case "-l":
+            case "--print-label":
+                groups[groups.length - 1].printLabel = true;
                 break;
 
             case "--silent":
@@ -145,7 +153,7 @@ export default function npmRunAll(args, stdout, stderr) {
         const {groups, packageConfig} = parse(args);
 
         return groups.reduce(
-            (prev, {patterns, parallel, continueOnError}) => {
+            (prev, {patterns, parallel, continueOnError, printLabel}) => {
                 if (patterns.length === 0) {
                     return prev;
                 }
@@ -157,6 +165,7 @@ export default function npmRunAll(args, stdout, stderr) {
                         stdin,
                         parallel,
                         continueOnError,
+                        printLabel,
                         packageConfig,
                         silent
                     }

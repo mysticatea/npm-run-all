@@ -23,6 +23,9 @@ Usage: npm-run-all [...tasks] [OPTIONS]
 
     -c, --continue-on-error     Set the flag to ignore errors to the current
                                 group of tasks.
+    -l, --print-label           Set the flag to print the task name as a prefix
+                                on each line of output, to the current group of
+                                tasks.
     --silent                    Set "silent" to the log level of npm.
 
     -p, --parallel [...tasks]   Run a group of tasks in parallel.
