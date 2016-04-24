@@ -4,7 +4,7 @@
  * See LICENSE file in root directory for full license.
  */
 import matchTasks from "./match-tasks";
-import readTasks from "./read-tasks";
+import readPackageJson from "./read-package-json";
 import runTasksInParallel from "./run-tasks-in-parallel";
 import runTasksInSequencial from "./run-tasks-in-sequencial";
 
@@ -104,6 +104,9 @@ function maxLength(length, name) {
  * @param {boolean} options.printLabel -
  *   The flag to print task names at the head of each line.
  *   Default is `false`.
+ * @param {boolean} options.printName -
+ *   The flag to print task names before running each task.
+ *   Default is `false`.
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  */
@@ -118,7 +121,8 @@ export default function npmRunAll(
         packageConfig = null,
         silent = false,
         continueOnError = false,
-        printLabel = false
+        printLabel = false,
+        printName = false
     } = {}
 ) {
     try {
@@ -138,22 +142,34 @@ export default function npmRunAll(
             prefixOptions.push(...toOverwriteOptions(packageConfig));
         }
 
-        const tasks = matchTasks(taskList || readTasks(), patterns);
-        const labelWidth = tasks.reduce(maxLength, 0);
-        const runTasks = parallel ? runTasksInParallel : runTasksInSequencial;
-        return runTasks(tasks, {
-            stdin,
-            stdout,
-            stderr,
-            prefixOptions,
-            continueOnError,
-            labelState: {
-                enabled: printLabel,
-                width: labelWidth,
-                lastPrefix: null,
-                lastIsLinebreak: true
-            }
-        });
+        return Promise.resolve(taskList)
+            .then(taskList => {    // eslint-disable-line no-shadow
+                if (taskList != null) {
+                    return {taskList, packageInfo: null};
+                }
+                return readPackageJson();
+            })
+            .then(({taskList, packageInfo}) => {    // eslint-disable-line no-shadow
+                const tasks = matchTasks(taskList, patterns);
+                const labelWidth = tasks.reduce(maxLength, 0);
+                const runTasks = parallel ? runTasksInParallel : runTasksInSequencial;
+
+                return runTasks(tasks, {
+                    stdin,
+                    stdout,
+                    stderr,
+                    prefixOptions,
+                    continueOnError,
+                    labelState: {
+                        enabled: printLabel,
+                        width: labelWidth,
+                        lastPrefix: null,
+                        lastIsLinebreak: true
+                    },
+                    printName,
+                    packageInfo
+                });
+            });
     }
     catch (err) {
         return Promise.reject(new Error(err.message));

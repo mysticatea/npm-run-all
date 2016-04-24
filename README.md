@@ -46,6 +46,9 @@ Usage: npm-run-all [...tasks] [OPTIONS]
     -l, --print-label           Set the flag to print the task name as a prefix
                                 on each line of output, to the current group of
                                 tasks.
+    -n, --print-name            Set the flag to print the task name before
+                                running each task, to the current group of
+                                tasks.
     --silent                    Set "silent" to the log level of npm.
 
     -p, --parallel [...tasks]   Run a group of tasks in parallel.

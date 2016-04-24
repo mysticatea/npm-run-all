@@ -44,6 +44,14 @@ describe("[print-label] npm-run-all", () => {
                     assert.equal(stdout.value, EXPECTED_TEXT);
                 });
         });
+
+        it("command version (shorthand)", () => {
+            const stdout = new BufferStream();
+            return command(["test-task:echo abc", "--silent", "-l"], stdout)
+                .then(() => {
+                    assert.equal(stdout.value, EXPECTED_TEXT);
+                });
+        });
     });
 
     describe("should print all labels with the same width:", () => {

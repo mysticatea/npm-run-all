@@ -11,6 +11,7 @@
 import chalk from "chalk";
 import {parse as parseArgs} from "shell-quote";
 import padEnd from "string.prototype.padend";
+import createHeader from "./create-header";
 import createPrefixTransform from "./create-prefix-transform-stream";
 import spawn from "./spawn";
 
@@ -19,31 +20,20 @@ import spawn from "./spawn";
 //------------------------------------------------------------------------------
 
 /**
- * Pass through the argument.
- *
- * @param {string} s - An argument.
- * @returns {string} The argument.
- */
-function identity(s) {
-    return s;
-}
-
-/**
  * Wraps stdout/stderr with a transform stream to add the task name as prefix.
  *
  * @param {string} taskName - The task name.
  * @param {stream.Writable} source - An output stream to be wrapped.
- * @param {stream.Writable} std - process.stdout/process.stderr.
  * @param {object} labelState - An label state for the transform stream.
  * @returns {stream.Writable} `source` or the created wrapped stream.
  */
-function wrapLabeling(taskName, source, std, labelState) {
+function wrapLabeling(taskName, source, labelState) {
     if (source == null || !labelState.enabled) {
         return source;
     }
 
     const label = padEnd(taskName, labelState.width);
-    const color = (source === std) ? chalk.gray : identity;
+    const color = source.isTTY ? chalk.gray : (x) => x;
     const prefix = color(`[${label}] `);
     const stream = createPrefixTransform(prefix, labelState);
 
@@ -97,6 +87,7 @@ function detectStreamKind(stream, std) {
  * @param {string[]} options.prefixOptions -
  *   An array of options which are inserted before the task name.
  * @param {object} options.labelState - A state object for printing labels.
+ * @param {boolean} options.printName - The flag to print task names before running each task.
  * @returns {Promise}
  *   A promise object which becomes fullfilled when the npm-script is completed.
  *   This promise object has an extra method: `abort()`.
@@ -109,16 +100,23 @@ export default function runTask(
         stdout: sourceStdout,
         stderr: sourceStderr,
         prefixOptions,
-        labelState
+        labelState,
+        printName,
+        packageInfo
     }
 ) {
     let cp = null;
     const promise = new Promise((resolve, reject) => {
-        const stdout = wrapLabeling(task, sourceStdout, process.stdout, labelState);
-        const stderr = wrapLabeling(task, sourceStderr, process.stderr, labelState);
+        const stdout = wrapLabeling(task, sourceStdout, labelState);
+        const stderr = wrapLabeling(task, sourceStderr, labelState);
         const stdinKind = detectStreamKind(stdin, process.stdin);
         const stdoutKind = detectStreamKind(stdout, process.stdout);
         const stderrKind = detectStreamKind(stderr, process.stderr);
+
+        // Print task name.
+        if (printName && stdout != null) {
+            stdout.write(createHeader(task, packageInfo, sourceStdout.isTTY));
+        }
 
         // Execute.
         cp = spawn(

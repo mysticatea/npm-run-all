@@ -66,6 +66,7 @@ function parse(args) {
         parallel: false,
         continueOnError: false,
         printLabel: false,
+        printName: false,
         patterns: []
     }];
 
@@ -81,6 +82,7 @@ function parse(args) {
                     parallel: false,
                     continueOnError: arg === "-S",
                     printLabel: false,
+                    printName: false,
                     patterns: []
                 });
                 break;
@@ -92,6 +94,7 @@ function parse(args) {
                     parallel: true,
                     continueOnError: arg === "-P",
                     printLabel: false,
+                    printName: false,
                     patterns: []
                 });
                 break;
@@ -106,6 +109,13 @@ function parse(args) {
                 groups[groups.length - 1].printLabel = true;
                 break;
 
+            case "-n":
+            case "--print-name":
+                groups[groups.length - 1].printName = true;
+                break;
+
+            case "--color":
+            case "--no-color":
             case "--silent":
                 // do nothing.
                 break;
@@ -153,7 +163,16 @@ export default function npmRunAll(args, stdout, stderr) {
         const {groups, packageConfig} = parse(args);
 
         return groups.reduce(
-            (prev, {patterns, parallel, continueOnError, printLabel}) => {
+            (
+                prev,
+                {
+                    patterns,
+                    parallel,
+                    continueOnError,
+                    printLabel,
+                    printName
+                }
+            ) => {
                 if (patterns.length === 0) {
                     return prev;
                 }
@@ -166,6 +185,7 @@ export default function npmRunAll(args, stdout, stderr) {
                         parallel,
                         continueOnError,
                         printLabel,
+                        printName,
                         packageConfig,
                         silent
                     }
