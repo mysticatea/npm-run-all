@@ -33,36 +33,38 @@ npm install npm-run-all
 ## Usage
 
 ```
-Usage: npm-run-all [...tasks] [OPTIONS]
+Usage:
+    $ npm-run-all [--help | -h | --version | -v]
+    $ npm-run-all [tasks] [OPTIONS]
 
-  Run specified tasks.
+    Run specified tasks in parallel or sequential.
 
-  Options:
-    -h, --help                  Print this text.
-    -v, --version               Print version number.
+    <tasks> : A list of npm-scripts' names and Glob-like patterns.
 
-    -c, --continue-on-error     Set the flag to ignore errors to the current
-                                group of tasks.
-    -l, --print-label           Set the flag to print the task name as a prefix
-                                on each line of output, to the current group of
-                                tasks.
-    -n, --print-name            Set the flag to print the task name before
-                                running each task, to the current group of
-                                tasks.
-    --silent                    Set "silent" to the log level of npm.
+Options:
+    -c, --continue-on-error  - Set the flag to continue executing
+                               other/subsequent tasks even if a task threw an
+                               error. 'npm-run-all' itself will exit with
+                               non-zero code if one or more tasks threw error(s)
+    -l, --print-label  - - - - Set the flag to print the task name as a prefix
+                               on each line of output. Tools in tasks may stop
+                               coloring their output if this option was given.
+    -n, --print-name   - - - - Set the flag to print the task name before
+                               running each task.
+    -p, --parallel <tasks>   - Run a group of tasks in parallel.
+                               e.g. 'npm-run-all -p foo bar' is similar to
+                                    'npm run foo & npm run bar'.
+    -s, --sequential <tasks> - Run a group of tasks sequentially.
+        --serial <tasks>       e.g. 'npm-run-all -s foo bar' is similar to
+                                    'npm run foo && npm run bar'.
+                               '--serial' is a synonym of '--sequential'.
+    --silent   - - - - - - - - Set 'silent' to the log level of npm.
 
-    -p, --parallel [...tasks]   Run a group of tasks in parallel.
-                                e.g. 'npm-run-all -p foo bar' is similar to
-                                     'npm run foo & npm run bar'.
-    -P [...tasks]               Run a group of tasks in parallel as ignoring
-                                errors. This is shorthand of '-p -c [...tasks]'.
-
-    -s, --sequential [...tasks] Run a group of tasks in sequential.
-        --serial [...tasks]     '--serial' is a synonym of '--sequential'.
-                                e.g. 'npm-run-all -s foo bar' is similar to
-                                     'npm run foo && npm run bar'.
-    -S [...tasks]               Run a group of tasks in sequential as ignoring
-                                errors. This is shorthand of '-s -c [...tasks]'.
+Examples:
+    $ npm-run-all --serial clean lint build:**
+    $ npm-run-all --parallel watch:**
+    $ npm-run-all clean lint --parallel "build:** -- --watch"
+    $ npm-run-all -l -p start-server start-browser start-electron
 ```
 
 ### Run tasks sequentially / serially

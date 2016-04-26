@@ -6,6 +6,10 @@
  * See LICENSE file in root directory for full license.
  */
 
+//------------------------------------------------------------------------------
+// Helpers
+//------------------------------------------------------------------------------
+
 /**
  * The main process of `npm-run-all` command.
  *
@@ -28,12 +32,16 @@ export default function main(
 
         case "-v":
         case "--version":
-            return require("./version").default(stdout);
+            return require("../common/version").default(stdout);
 
         default:
             return require("./main").default(args, stdout, stderr);
     }
 }
+
+//------------------------------------------------------------------------------
+// Main
+//------------------------------------------------------------------------------
 
 /* eslint-disable no-process-exit */
 /* istanbul ignore if */

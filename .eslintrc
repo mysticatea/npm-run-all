@@ -3,6 +3,7 @@
     "extends": ["mysticatea/nodejs"],
     "plugins": ["node"],
     "rules": {
+        "no-param-reassign": [2, {"props": false}],
         "node/no-missing-import": 2,
         "node/no-missing-require": 2,
         "node/no-unpublished-import": 2,
