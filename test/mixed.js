@@ -1,12 +1,19 @@
-import assert from "power-assert";
-import {result, removeResult} from "./lib/util";
+/**
+ * @author Toru Nagashima
+ * @copyright 2016 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
+"use strict";
+
+const assert = require("power-assert");
+const {result, removeResult} = require("./lib/util");
 
 // Test targets.
-import command from "../src/bin/npm-run-all";
+const command = require("../src/bin/npm-run-all");
 
 describe("[mixed] npm-run-all", () => {
-    before(() => { process.chdir("test-workspace"); });
-    after(() => { process.chdir(".."); });
+    before(() => process.chdir("test-workspace"));
+    after(() => process.chdir(".."));
 
     beforeEach(removeResult);
 

@@ -1,14 +1,21 @@
-import assert from "power-assert";
-import {result, removeResult} from "./lib/util";
-import spawnWithKill from "./lib/spawn-with-kill";
+/**
+ * @author Toru Nagashima
+ * @copyright 2016 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
+"use strict";
+
+const assert = require("power-assert");
+const {result, removeResult} = require("./lib/util");
+const spawnWithKill = require("./lib/spawn-with-kill");
 
 // Test targets.
-import runAll from "../src/lib/npm-run-all";
-import command from "../src/bin/npm-run-all";
+const runAll = require("../src/lib");
+const command = require("../src/bin/npm-run-all");
 
 describe("[parallel] npm-run-all", () => {
-    before(() => { process.chdir("test-workspace"); });
-    after(() => { process.chdir(".."); });
+    before(() => process.chdir("test-workspace"));
+    after(() => process.chdir(".."));
 
     beforeEach(removeResult);
 

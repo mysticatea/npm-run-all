@@ -3,7 +3,17 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-import runTask from "./run-task";
+"use strict";
+
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+const runTask = require("./run-task");
+
+//------------------------------------------------------------------------------
+// Helpers
+//------------------------------------------------------------------------------
 
 const START_PROMISE = Promise.resolve({code: 0});
 
@@ -19,6 +29,10 @@ function rejectIfNonZeroExit(result) {
     }
 }
 
+//------------------------------------------------------------------------------
+// Public Interface
+//------------------------------------------------------------------------------
+
 /**
  * Run npm-scripts of given names in sequencial.
  *
@@ -29,7 +43,7 @@ function rejectIfNonZeroExit(result) {
  * @returns {Promise} A promise object which becomes fullfilled when all npm-scripts are completed.
  * @private
  */
-export default function runTasksInSequencial(tasks, options) {
+module.exports = function runTasksInSequencial(tasks, options) {
     if (options.continueOnError) {
         return tasks.reduce(
             (prev, task) => prev.then(() => runTask(task, options)),
@@ -44,4 +58,4 @@ export default function runTasksInSequencial(tasks, options) {
         }),
         START_PROMISE
     ).then(rejectIfNonZeroExit);
-}
+};

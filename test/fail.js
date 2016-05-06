@@ -1,9 +1,16 @@
-import assert from "power-assert";
-import {removeResult} from "./lib/util";
+/**
+ * @author Toru Nagashima
+ * @copyright 2016 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
+"use strict";
+
+const assert = require("power-assert");
+const {removeResult} = require("./lib/util");
 
 // Test targets.
-import runAll from "../src/lib/npm-run-all";
-import command from "../src/bin/npm-run-all";
+const runAll = require("../src/lib");
+const command = require("../src/bin/npm-run-all");
 
 /**
  * Throws an assertion error if a given promise comes to be fulfilled.
@@ -19,8 +26,8 @@ function shouldFail(p) {
 }
 
 describe("[fail] npm-run-all should fail", () => {
-    before(() => { process.chdir("test-workspace"); });
-    after(() => { process.chdir(".."); });
+    before(() => process.chdir("test-workspace"));
+    after(() => process.chdir(".."));
 
     beforeEach(removeResult);
 
@@ -43,16 +50,16 @@ describe("[fail] npm-run-all should fail", () => {
     });
 
     describe("if package.json is not found:", () => {
-        before(() => { process.chdir("no-package-json"); });
-        after(() => { process.chdir(".."); });
+        before(() => process.chdir("no-package-json"));
+        after(() => process.chdir(".."));
 
         it("lib version", () => shouldFail(runAll(["test-task:append:a"])));
         it("command version", () => shouldFail(command(["test-task:append:a"])));
     });
 
     describe("if package.json does not have scripts field:", () => {
-        before(() => { process.chdir("no-scripts"); });
-        after(() => { process.chdir(".."); });
+        before(() => process.chdir("no-scripts"));
+        after(() => process.chdir(".."));
 
         it("lib version", () => shouldFail(runAll(["test-task:append:a"])));
         it("command version", () => shouldFail(command(["test-task:append:a"])));

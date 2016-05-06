@@ -7,16 +7,17 @@
     "run-s": "bin/run-s/index.js",
     "npm-run-all": "bin/npm-run-all/index.js"
   },
+  "main": "lib/index.js",
   "files": [
     "bin",
-    "lib",
-    "index.js"
+    "lib"
   ],
   "scripts": {
     "preversion": "npm run build",
     "postversion": "git push && git push --tags",
+    "pretest": "node scripts/make-slink.js",
     "clean": "rimraf bin coverage docs lib",
-    "lint": "eslint src test test-workspace",
+    "lint": "eslint src test test-workspace/tasks/*",
     "build": "babel-node src/bin/run-s/index.js clean lint build:*",
     "build:babel": "babel src --out-dir .",
     "build:esdoc": "esdoc -c esdoc.json",
@@ -46,10 +47,8 @@
     "coveralls": "^2.11.4",
     "esdoc": "^0.4.3",
     "esdoc-importpath-plugin": "^0.0.1",
-    "eslint": "^1.10.3",
-    "eslint-config-mysticatea": "^1.9.0",
-    "eslint-plugin-mysticatea": "^1.0.3",
-    "eslint-plugin-node": "^0.6.0",
+    "eslint": "^2.9.0",
+    "eslint-config-mysticatea": "^3.0.0",
     "isparta": "^4.0.0",
     "mocha": "^2.3.4",
     "power-assert": "^1.2.0",

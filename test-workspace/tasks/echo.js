@@ -1,5 +1,11 @@
 "use strict";
 
+/**
+ * Executes functions sequentially.
+ *
+ * @param {function[]} arguments - Functions to execute.
+ * @returns {void}
+ */
 function flow() {
     if (arguments.length === 0) {
         return;

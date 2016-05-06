@@ -1,13 +1,20 @@
-import assert from "power-assert";
-import {result, removeResult} from "./lib/util";
+/**
+ * @author Toru Nagashima
+ * @copyright 2016 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
+"use strict";
+
+const assert = require("power-assert");
+const {result, removeResult} = require("./lib/util");
 
 // Test targets.
-import runAll from "../src/lib/npm-run-all";
-import command from "../src/bin/npm-run-all";
+const runAll = require("../src/lib");
+const command = require("../src/bin/npm-run-all");
 
 describe("[pattern] npm-run-all should run matched tasks if gived glob like patterns.", () => {
-    before(() => { process.chdir("test-workspace"); });
-    after(() => { process.chdir(".."); });
+    before(() => process.chdir("test-workspace"));
+    after(() => process.chdir(".."));
 
     beforeEach(removeResult);
 

@@ -3,7 +3,17 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-import runTask from "./run-task";
+"use strict";
+
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+const runTask = require("./run-task");
+
+//------------------------------------------------------------------------------
+// Public Interface
+//------------------------------------------------------------------------------
 
 /**
  * Run npm-scripts of given names in parallel.
@@ -15,7 +25,7 @@ import runTask from "./run-task";
  * @returns {Promise} A promise object which becomes fullfilled when all npm-scripts are completed.
  * @private
  */
-export default function runTasksInParallel(tasks, options) {
+module.exports = function runTasksInParallel(tasks, options) {
     const taskPromises = tasks.map(task => runTask(task, options));
     if (options.continueOnError) {
         return Promise.all(taskPromises);
@@ -28,12 +38,12 @@ export default function runTasksInParallel(tasks, options) {
         p.then(item => {
             if (nonZeroExited == null && item.code) {
                 nonZeroExited = nonZeroExited || item;
-                taskPromises.forEach(t => { t.abort(); });
+                taskPromises.forEach(t => t.abort());
             }
         })
     ));
     parallelPromise.catch(() => {
-        taskPromises.forEach(t => { t.abort(); });
+        taskPromises.forEach(t => t.abort());
     });
 
     // Make fail if there are tasks that exited non-zero.
@@ -44,4 +54,4 @@ export default function runTasksInParallel(tasks, options) {
             );
         }
     });
-}
+};

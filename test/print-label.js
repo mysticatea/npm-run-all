@@ -1,14 +1,20 @@
-/* eslint-disable no-trailing-spaces */
-import assert from "power-assert";
-import BufferStream from "./lib/buffer-stream";
+/**
+ * @author Toru Nagashima
+ * @copyright 2016 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
+"use strict";
+
+const assert = require("power-assert");
+const BufferStream = require("./lib/buffer-stream");
 
 // Test targets.
-import runAll from "../src/lib/npm-run-all";
-import command from "../src/bin/npm-run-all";
+const runAll = require("../src/lib");
+const command = require("../src/bin/npm-run-all");
 
 describe("[print-label] npm-run-all", () => {
-    before(() => { process.chdir("test-workspace"); });
-    after(() => { process.chdir(".."); });
+    before(() => process.chdir("test-workspace"));
+    after(() => process.chdir(".."));
 
     describe("should print labels at the head of every line:", () => {
         const EXPECTED_TEXT = [

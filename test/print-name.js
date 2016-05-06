@@ -1,12 +1,19 @@
+/**
+ * @author Toru Nagashima
+ * @copyright 2016 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
+"use strict";
+
 /* eslint-disable no-trailing-spaces */
-import assert from "power-assert";
-import createHeader from "../src/lib/create-header";
-import readPackageJson from "../src/lib/read-package-json";
-import BufferStream from "./lib/buffer-stream";
+const assert = require("power-assert");
+const createHeader = require("../src/lib/create-header");
+const readPackageJson = require("../src/lib/read-package-json");
+const BufferStream = require("./lib/buffer-stream");
 
 // Test targets.
-import runAll from "../src/lib/npm-run-all";
-import command from "../src/bin/npm-run-all";
+const runAll = require("../src/lib");
+const command = require("../src/bin/npm-run-all");
 
 describe("[print-name] npm-run-all", () => {
     let packageInfo = null;
@@ -17,7 +24,7 @@ describe("[print-name] npm-run-all", () => {
             packageInfo = info.packageInfo;
         });
     });
-    after(() => { process.chdir(".."); });
+    after(() => process.chdir(".."));
 
     describe("should print names before running tasks:", () => {
         it("lib version", () => {

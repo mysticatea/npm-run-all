@@ -3,6 +3,7 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
+"use strict";
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -15,7 +16,7 @@
  * @returns {Promise} Always a fulfilled promise.
  * @private
  */
-export default function printHelp(output) {
+module.exports = function printHelp(output) {
     output.write(`
 Usage:
     $ run-s [--help | -h | --version | -v]
@@ -51,4 +52,4 @@ See Also:
 `);
 
     return Promise.resolve(null);
-}
+};

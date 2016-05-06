@@ -3,13 +3,14 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
+"use strict";
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-import parseCLIArgs from "../common/parse-cli-args";
-import runAll from "../../lib/npm-run-all";
+const runAll = require("../../lib");
+const parseCLIArgs = require("../common/parse-cli-args");
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -24,7 +25,7 @@ import runAll from "../../lib/npm-run-all";
  * @returns {Promise} A promise which comes to be fulfilled when all npm-scripts are completed.
  * @private
  */
-export default function npmRunAll(args, stdout, stderr) {
+module.exports = function npmRunAll(args, stdout, stderr) {
     try {
         const stdin = process.stdin;
         const {
@@ -65,4 +66,4 @@ export default function npmRunAll(args, stdout, stderr) {
     catch (err) {
         return Promise.reject(err);
     }
-}
+};

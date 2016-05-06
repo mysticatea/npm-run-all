@@ -3,10 +3,20 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-import matchTasks from "./match-tasks";
-import readPackageJson from "./read-package-json";
-import runTasksInParallel from "./run-tasks-in-parallel";
-import runTasksInSequencial from "./run-tasks-in-sequencial";
+"use strict";
+
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+const matchTasks = require("./match-tasks");
+const readPackageJson = require("./read-package-json");
+const runTasksInParallel = require("./run-tasks-in-parallel");
+const runTasksInSequencial = require("./run-tasks-in-sequencial");
+
+//------------------------------------------------------------------------------
+// Helpers
+//------------------------------------------------------------------------------
 
 /**
  * Converts a given value to an array.
@@ -57,6 +67,12 @@ function maxLength(length, name) {
     return Math.max(name.length, length);
 }
 
+//------------------------------------------------------------------------------
+// Public Interface
+//------------------------------------------------------------------------------
+
+// TODO(mysticatea): https://github.com/eslint/eslint/issues/6097
+//eslint-disable-next-line valid-jsdoc
 /**
  * Runs npm-scripts which are matched with given patterns.
  *
@@ -110,7 +126,7 @@ function maxLength(length, name) {
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  */
-export default function npmRunAll(
+module.exports = function npmRunAll(
     patternOrPatterns,
     {
         parallel = false,
@@ -174,4 +190,4 @@ export default function npmRunAll(
     catch (err) {
         return Promise.reject(new Error(err.message));
     }
-}
+};

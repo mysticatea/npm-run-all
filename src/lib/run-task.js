@@ -3,17 +3,18 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
+"use strict";
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-import chalk from "chalk";
-import {parse as parseArgs} from "shell-quote";
-import padEnd from "string.prototype.padend";
-import createHeader from "./create-header";
-import createPrefixTransform from "./create-prefix-transform-stream";
-import spawn from "./spawn";
+const chalk = require("chalk");
+const {parse: parseArgs} = require("shell-quote");
+const padEnd = require("string.prototype.padend");
+const createHeader = require("./create-header");
+const createPrefixTransform = require("./create-prefix-transform-stream");
+const spawn = require("./spawn");
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -93,7 +94,7 @@ function detectStreamKind(stream, std) {
  *   This promise object has an extra method: `abort()`.
  * @private
  */
-export default function runTask(
+module.exports = function runTask(
     task,
     {
         stdin,
@@ -126,9 +127,15 @@ export default function runTask(
         );
 
         // Piping stdio.
-        if (stdinKind === "pipe") { stdin.pipe(cp.stdin); }
-        if (stdoutKind === "pipe") { cp.stdout.pipe(stdout, {end: false}); }
-        if (stderrKind === "pipe") { cp.stderr.pipe(stderr, {end: false}); }
+        if (stdinKind === "pipe") {
+            stdin.pipe(cp.stdin);
+        }
+        if (stdoutKind === "pipe") {
+            cp.stdout.pipe(stdout, {end: false});
+        }
+        if (stderrKind === "pipe") {
+            cp.stderr.pipe(stderr, {end: false});
+        }
 
         // Register
         cp.on("error", (err) => {
@@ -149,4 +156,4 @@ export default function runTask(
     };
 
     return promise;
-}
+};

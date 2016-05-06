@@ -3,13 +3,14 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
+"use strict";
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-import {join as joinPath} from "path";
-import readPkg from "read-pkg";
+const {join: joinPath} = require("path");
+const readPkg = require("read-pkg");
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -20,10 +21,10 @@ import readPkg from "read-pkg";
  *
  * @returns {object} package.json's information.
  */
-export default function readPackageJson() {
+module.exports = function readPackageJson() {
     const path = joinPath(process.cwd(), "package.json");
     return readPkg(path).then(body => ({
         taskList: Object.keys(body.scripts || {}),
         packageInfo: {path, body}
     }));
-}
+};

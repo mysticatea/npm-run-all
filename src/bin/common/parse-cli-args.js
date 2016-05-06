@@ -3,12 +3,15 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
+"use strict";
+
+/*eslint no-process-env: "off"*/
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-import assign from "object-assign";
+const assign = require("object-assign");
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -95,6 +98,9 @@ class ArgumentSet {
         addGroup(this.groups, initialValues);
     }
 
+    /**
+     * Gets the last group.
+     */
     get lastGroup() {
         return this.groups[this.groups.length - 1];
     }
@@ -213,6 +219,6 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
  * @param {object} options - A key-value map for the options.
  * @returns {ArgumentSet} The parsed CLI arguments.
  */
-export default function parseCLIArgs(args, initialValues, options) {
+module.exports = function parseCLIArgs(args, initialValues, options) {
     return parseCLIArgsCore(new ArgumentSet(initialValues, options), args);
-}
+};
