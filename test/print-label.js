@@ -5,12 +5,22 @@
  */
 "use strict";
 
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
 const assert = require("power-assert");
 const BufferStream = require("./lib/buffer-stream");
 
 // Test targets.
-const runAll = require("../src/lib");
-const command = require("../src/bin/npm-run-all");
+const nodeApi = require("../src/lib");
+const runAll = require("../src/bin/npm-run-all");
+const runSeq = require("../src/bin/run-s");
+const runPar = require("../src/bin/run-p");
+
+//------------------------------------------------------------------------------
+// Test
+//------------------------------------------------------------------------------
 
 describe("[print-label] npm-run-all", () => {
     before(() => process.chdir("test-workspace"));
@@ -35,25 +45,57 @@ describe("[print-label] npm-run-all", () => {
             "[test-task:echo abc] abc"
         ].join("\n");
 
-        it("lib version", () => {
+        it("Node API", () => {
             const stdout = new BufferStream();
-            return runAll("test-task:echo abc", {stdout, silent: true, printLabel: true})
+            return nodeApi("test-task:echo abc", {stdout, silent: true, printLabel: true})
                 .then(() => {
                     assert.equal(stdout.value, EXPECTED_TEXT);
                 });
         });
 
-        it("command version", () => {
+        it("npm-run-all command (--print-label)", () => {
             const stdout = new BufferStream();
-            return command(["test-task:echo abc", "--silent", "--print-label"], stdout)
+            return runAll(["test-task:echo abc", "--silent", "--print-label"], stdout)
                 .then(() => {
                     assert.equal(stdout.value, EXPECTED_TEXT);
                 });
         });
 
-        it("command version (shorthand)", () => {
+        it("run-s command (--print-label)", () => {
             const stdout = new BufferStream();
-            return command(["test-task:echo abc", "--silent", "-l"], stdout)
+            return runSeq(["test-task:echo abc", "--silent", "--print-label"], stdout)
+                .then(() => {
+                    assert.equal(stdout.value, EXPECTED_TEXT);
+                });
+        });
+
+        it("run-p command (--print-label)", () => {
+            const stdout = new BufferStream();
+            return runPar(["test-task:echo abc", "--silent", "--print-label"], stdout)
+                .then(() => {
+                    assert.equal(stdout.value, EXPECTED_TEXT);
+                });
+        });
+
+        it("npm-run-all command (-l)", () => {
+            const stdout = new BufferStream();
+            return runAll(["test-task:echo abc", "--silent", "-l"], stdout)
+                .then(() => {
+                    assert.equal(stdout.value, EXPECTED_TEXT);
+                });
+        });
+
+        it("run-s command (-l)", () => {
+            const stdout = new BufferStream();
+            return runSeq(["test-task:echo abc", "--silent", "-l"], stdout)
+                .then(() => {
+                    assert.equal(stdout.value, EXPECTED_TEXT);
+                });
+        });
+
+        it("run-p command (-l)", () => {
+            const stdout = new BufferStream();
+            return runPar(["test-task:echo abc", "--silent", "-l"], stdout)
                 .then(() => {
                     assert.equal(stdout.value, EXPECTED_TEXT);
                 });
@@ -109,9 +151,9 @@ describe("[print-label] npm-run-all", () => {
             "[test-task:echo ab  ] ab"
         ].join("\n");
 
-        it("lib version", () => {
+        it("Node API", () => {
             const stdout = new BufferStream();
-            return runAll(
+            return nodeApi(
                     ["test-task:echo a", "test-task:echo abcd", "test-task:echo ab"],
                     {stdout, silent: true, printLabel: true}
                 )
@@ -120,9 +162,20 @@ describe("[print-label] npm-run-all", () => {
                 });
         });
 
-        it("command version", () => {
+        it("npm-run-all command", () => {
             const stdout = new BufferStream();
-            return command(
+            return runAll(
+                    ["test-task:echo a", "test-task:echo abcd", "test-task:echo ab", "--silent", "--print-label"],
+                    stdout
+                )
+                .then(() => {
+                    assert.equal(stdout.value, EXPECTED_TEXT);
+                });
+        });
+
+        it("run-s command", () => {
+            const stdout = new BufferStream();
+            return runSeq(
                     ["test-task:echo a", "test-task:echo abcd", "test-task:echo ab", "--silent", "--print-label"],
                     stdout
                 )
@@ -147,9 +200,9 @@ describe("[print-label] npm-run-all", () => {
             /\n\n/
         ];
 
-        it("lib version", () => {
+        it("Node API", () => {
             const stdout = new BufferStream();
-            return runAll(
+            return nodeApi(
                     ["test-task:echo a", "test-task:echo abcd", "test-task:echo ab"],
                     {stdout, parallel: true, printLabel: true}
                 )
@@ -163,10 +216,26 @@ describe("[print-label] npm-run-all", () => {
                 });
         });
 
-        it("command version", () => {
+        it("npm-run-all command", () => {
             const stdout = new BufferStream();
-            return command(
+            return runAll(
                     ["--parallel", "test-task:echo a", "test-task:echo abcd", "test-task:echo ab", "--print-label"],
+                    stdout
+                )
+                .then(() => {
+                    for (const line of EXPECTED_LINES) {
+                        assert(stdout.value.indexOf(line) !== -1);
+                    }
+                    for (const pattern of UNEXPECTED_PATTERNS) {
+                        assert(!pattern.test(stdout.value));
+                    }
+                });
+        });
+
+        it("run-p command", () => {
+            const stdout = new BufferStream();
+            return runPar(
+                    ["test-task:echo a", "test-task:echo abcd", "test-task:echo ab", "--print-label"],
                     stdout
                 )
                 .then(() => {

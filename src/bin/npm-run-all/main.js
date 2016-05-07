@@ -28,19 +28,17 @@ const parseCLIArgs = require("../common/parse-cli-args");
 module.exports = function npmRunAll(args, stdout, stderr) {
     try {
         const stdin = process.stdin;
-        const {groups, silent, packageConfig} = parseCLIArgs(args);
+        const {
+            continueOnError,
+            groups,
+            packageConfig,
+            printLabel,
+            printName,
+            silent
+        } = parseCLIArgs(args);
 
         return groups.reduce(
-            (
-                prev,
-                {
-                    patterns,
-                    parallel,
-                    continueOnError,
-                    printLabel,
-                    printName
-                }
-            ) => {
+            (prev, {patterns, parallel}) => {
                 if (patterns.length === 0) {
                     return prev;
                 }

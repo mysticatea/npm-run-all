@@ -5,12 +5,22 @@
  */
 "use strict";
 
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
 const assert = require("power-assert");
 const {removeResult} = require("./lib/util");
 
 // Test targets.
-const runAll = require("../src/lib");
-const command = require("../src/bin/npm-run-all");
+const nodeApi = require("../src/lib");
+const runAll = require("../src/bin/npm-run-all");
+const runSeq = require("../src/bin/run-s");
+const runPar = require("../src/bin/run-p");
+
+//------------------------------------------------------------------------------
+// Helpers
+//------------------------------------------------------------------------------
 
 /**
  * Throws an assertion error if a given promise comes to be fulfilled.
@@ -25,48 +35,64 @@ function shouldFail(p) {
     );
 }
 
-describe("[fail] npm-run-all should fail", () => {
+//------------------------------------------------------------------------------
+// Test
+//------------------------------------------------------------------------------
+
+describe("[fail] it should fail", () => {
     before(() => process.chdir("test-workspace"));
     after(() => process.chdir(".."));
 
     beforeEach(removeResult);
 
-    it("if an invalid option exists.", () =>
-        shouldFail(command(["--invalid"]))
-    );
+    describe("if an invalid option exists.", () => {
+        it("npm-run-all command", () => shouldFail(runAll(["--invalid"])));
+        it("run-s command", () => shouldFail(runSeq(["--parallel"])));
+        it("run-p command", () => shouldFail(runPar(["--sequential"])));
+    });
 
-    it("if invalid `options.taskList` is given.", () =>
-        shouldFail(runAll("test-task:append a", {taskList: {invalid: 0}}))
-    );
+    describe("if invalid `options.taskList` is given.", () => {
+        it("Node API", () => shouldFail(nodeApi("test-task:append a", {taskList: {invalid: 0}})));
+    });
 
     describe("if unknown tasks are given:", () => {
-        it("lib version", () => shouldFail(runAll("unknown-task")));
-        it("command version", () => shouldFail(command(["unknown-task"])));
+        it("Node API", () => shouldFail(nodeApi("unknown-task")));
+        it("npm-run-all command", () => shouldFail(runAll(["unknown-task"])));
+        it("run-s command", () => shouldFail(runSeq(["unknown-task"])));
+        it("run-p command", () => shouldFail(runPar(["unknown-task"])));
     });
 
     describe("if unknown tasks are given (2):", () => {
-        it("lib version", () => shouldFail(runAll(["test-task:append:a", "unknown-task"])));
-        it("command version", () => shouldFail(command(["test-task:append:a", "unknown-task"])));
+        it("Node API", () => shouldFail(nodeApi(["test-task:append:a", "unknown-task"])));
+        it("npm-run-all command", () => shouldFail(runAll(["test-task:append:a", "unknown-task"])));
+        it("run-s command", () => shouldFail(runSeq(["test-task:append:a", "unknown-task"])));
+        it("run-p command", () => shouldFail(runPar(["test-task:append:a", "unknown-task"])));
     });
 
     describe("if package.json is not found:", () => {
         before(() => process.chdir("no-package-json"));
         after(() => process.chdir(".."));
 
-        it("lib version", () => shouldFail(runAll(["test-task:append:a"])));
-        it("command version", () => shouldFail(command(["test-task:append:a"])));
+        it("Node API", () => shouldFail(nodeApi(["test-task:append:a"])));
+        it("npm-run-all command", () => shouldFail(runAll(["test-task:append:a"])));
+        it("run-s command", () => shouldFail(runSeq(["test-task:append:a"])));
+        it("run-p command", () => shouldFail(runPar(["test-task:append:a"])));
     });
 
     describe("if package.json does not have scripts field:", () => {
         before(() => process.chdir("no-scripts"));
         after(() => process.chdir(".."));
 
-        it("lib version", () => shouldFail(runAll(["test-task:append:a"])));
-        it("command version", () => shouldFail(command(["test-task:append:a"])));
+        it("Node API", () => shouldFail(nodeApi(["test-task:append:a"])));
+        it("npm-run-all command", () => shouldFail(runAll(["test-task:append:a"])));
+        it("run-s command", () => shouldFail(runSeq(["test-task:append:a"])));
+        it("run-p command", () => shouldFail(runPar(["test-task:append:a"])));
     });
 
     describe("if tasks exited with non-zero code:", () => {
-        it("lib version", () => shouldFail(runAll("test-task:error")));
-        it("command version", () => shouldFail(command(["test-task:error"])));
+        it("Node API", () => shouldFail(nodeApi("test-task:error")));
+        it("npm-run-all command", () => shouldFail(runAll(["test-task:error"])));
+        it("run-s command", () => shouldFail(runSeq(["test-task:error"])));
+        it("run-p command", () => shouldFail(runPar(["test-task:error"])));
     });
 });

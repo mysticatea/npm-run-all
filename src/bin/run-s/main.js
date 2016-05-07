@@ -29,20 +29,13 @@ module.exports = function npmRunAll(args, stdout, stderr) {
     try {
         const stdin = process.stdin;
         const {
-            lastGroup: {
-                patterns,
-                parallel,
-                continueOnError,
-                printLabel,
-                printName
-            },
-            silent,
-            packageConfig
-        } = parseCLIArgs(
-            args,
-            {parallel: false},
-            {singleMode: true}
-        );
+            lastGroup: {patterns, parallel},
+            continueOnError,
+            packageConfig,
+            printLabel,
+            printName,
+            silent
+        } = parseCLIArgs(args, {parallel: false}, {singleMode: true});
 
         if (patterns.length === 0) {
             return Promise.resolve(null);

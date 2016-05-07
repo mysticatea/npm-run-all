@@ -19,7 +19,7 @@ const assign = require("object-assign");
 
 const OVERWRITE_OPTION = /^--([^:]+?):([^=]+?)(?:=(.+))?$/;
 const CONFIG_PATTERN = /^npm_package_config_(.+)$/;
-const CONCAT_OPTIONS = /^-[chlnpPsSv]+$/;
+const CONCAT_OPTIONS = /^-[clnps]+$/;
 
 /**
  * Overwrites a specified package config.
@@ -67,14 +67,8 @@ function createPackageConfig() {
  */
 function addGroup(groups, initialValues) {
     groups.push(assign(
-        {
-            continueOnError: false,
-            parallel: false,
-            patterns: [],
-            printLabel: false,
-            printName: false
-        },
-        initialValues
+        {parallel: false, patterns: []},
+        initialValues || {}
     ));
 }
 
@@ -88,10 +82,11 @@ class ArgumentSet {
      * @param {object} options - A key-value map for the options.
      */
     constructor(initialValues = {}, options = {}) {
+        this.continueOnError = false;
         this.groups = [];
-        this.help = false;
+        this.printLabel = false;
+        this.printName = false;
         this.silent = process.env.npm_config_loglevel === "silent";
-        this.version = false;
         this.singleMode = Boolean(options.singleMode);
         this.packageConfig = createPackageConfig();
 
@@ -120,31 +115,21 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
         switch (arg) {
             case "-c":
             case "--continue-on-error":
-                set.lastGroup.continueOnError = true;
-                break;
-
-            case "-h":
-            case "--help":
-                set.help = true;
+                set.continueOnError = true;
                 break;
 
             case "-l":
             case "--print-label":
-                set.lastGroup.printLabel = true;
+                set.printLabel = true;
                 break;
 
             case "-n":
             case "--print-name":
-                set.lastGroup.printName = true;
+                set.printName = true;
                 break;
 
             case "--silent":
                 set.silent = true;
-                break;
-
-            case "-v":
-            case "--version":
-                set.version = true;
                 break;
 
             case "--color":
@@ -152,7 +137,6 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                 // do nothing.
                 break;
 
-            case "-S":
             case "-s":
             case "--sequential":
             case "--serial":
@@ -163,21 +147,15 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                 if (set.singleMode) {
                     throw new Error(`Invalid Option: ${arg}`);
                 }
-                addGroup(set.groups, {
-                    continueOnError: arg === "-S"
-                });
+                addGroup(set.groups);
                 break;
 
-            case "-P":
             case "-p":
             case "--parallel":
                 if (set.singleMode) {
                     throw new Error(`Invalid Option: ${arg}`);
                 }
-                addGroup(set.groups, {
-                    parallel: true,
-                    continueOnError: arg === "-P"
-                });
+                addGroup(set.groups, {parallel: true});
                 break;
 
             default: {
@@ -217,6 +195,7 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
  * @param {string[]} args - CLI arguments.
  * @param {object} initialValues - A key-value map for the default of new value.
  * @param {object} options - A key-value map for the options.
+ * @param {boolean} options.singleMode - The flag to be single group mode.
  * @returns {ArgumentSet} The parsed CLI arguments.
  */
 module.exports = function parseCLIArgs(args, initialValues, options) {
