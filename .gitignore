@@ -4,6 +4,7 @@
 /lib
 /node_modules
 /npm-debug.log
+/test-workspace/tasks/lib
 /test-workspace/npm-debug.log
 /test-workspace/test.txt
 /test.js
