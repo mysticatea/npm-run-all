@@ -1,3 +1,6 @@
+| index | [npm-run-all] | [run-s] | [run-p] | [Node API] |
+|-------|---------------|---------|---------|------------|
+
 # npm-run-all
 
 [![npm version](https://img.shields.io/npm/v/npm-run-all.svg)](https://www.npmjs.com/package/npm-run-all)
@@ -41,14 +44,14 @@ Both [run-s] and [run-p] are the shorthand commands.
 [run-s] is for sequential, [run-p] is for parallel.
 We can make simple plans with those commands.
 
-[npm-run-all]: docs/npm-run-all.md
-[run-s]: docs/run-s.md
-[run-p]: docs/run-p.md
-
 ## Node API
 
 This `npm-run-all` package provides Node API.
 
 - [Node API]
 
+
+[npm-run-all]: docs/npm-run-all.md
+[run-s]: docs/run-s.md
+[run-p]: docs/run-p.md
 [Node API]: docs/node-api.md
