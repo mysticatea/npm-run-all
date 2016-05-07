@@ -22,7 +22,7 @@ Usage:
     $ npm-run-all [--help | -h | --version | -v]
     $ npm-run-all [tasks] [OPTIONS]
 
-    Run specified tasks in parallel or sequential.
+    Run given npm-scripts in parallel or sequential.
 
     <tasks> : A list of npm-scripts' names and Glob-like patterns.
 

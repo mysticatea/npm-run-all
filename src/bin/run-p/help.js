@@ -22,7 +22,7 @@ Usage:
     $ run-p [--help | -h | --version | -v]
     $ run-p [OPTIONS] <tasks>
 
-    Run specified tasks in parallel.
+    Run given npm-scripts in parallel.
 
     <tasks> : A list of npm-scripts' names and Glob-like patterns.
 

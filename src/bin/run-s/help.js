@@ -22,13 +22,13 @@ Usage:
     $ run-s [--help | -h | --version | -v]
     $ run-s [OPTIONS] <tasks>
 
-    Run specified tasks sequentially.
+    Run given npm-scripts sequentially.
 
     <tasks> : A list of npm-scripts' names and Glob-like patterns.
 
 Options:
     -c, --continue-on-error  - Set the flag to continue executing subsequent
-                               tasks even if a task threw an error. 'run-p'
+                               tasks even if a task threw an error. 'run-s'
                                itself will exit with non-zero code if one or
                                more tasks threw error(s).
     -l, --print-label  - - - - Set the flag to print the task name as a prefix
