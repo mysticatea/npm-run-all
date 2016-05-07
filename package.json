@@ -17,7 +17,7 @@
     "postversion": "git push && git push --tags",
     "pretest": "node scripts/make-slink.js",
     "clean": "rimraf bin coverage docs lib",
-    "lint": "eslint src test test-workspace/tasks/*",
+    "lint": "eslint src test \"test-workspace/tasks/*\"",
     "build": "babel-node src/bin/run-s/index.js clean lint build:*",
     "build:babel": "babel src --out-dir .",
     "build:esdoc": "esdoc -c esdoc.json",
