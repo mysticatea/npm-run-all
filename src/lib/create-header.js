@@ -3,12 +3,13 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
+"use strict";
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-import chalk from "chalk";
+const chalk = require("chalk");
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -24,7 +25,7 @@ import chalk from "chalk";
  * @param {boolean} isTTY - The flag to color the header.
  * @returns {string} The header of a given task.
  */
-export default function createHeader(nameAndArgs, packageInfo, isTTY) {
+module.exports = function createHeader(nameAndArgs, packageInfo, isTTY) {
     if (!packageInfo) {
         return `\n> ${nameAndArgs}\n\n`;
     }
@@ -49,4 +50,4 @@ ${color.open}> ${packageName}@${packageVersion} ${name} ${packagePath}${color.cl
 ${color.open}> ${scriptBody} ${args}${color.close}
 
 `;
-}
+};

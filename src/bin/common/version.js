@@ -9,22 +9,23 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const {join: joinPath} = require("path");
-const readPkg = require("read-pkg");
+const {sync: readPkgUp} = require("read-pkg-up");
 
 //------------------------------------------------------------------------------
 // Public Interface
 //------------------------------------------------------------------------------
 
 /**
- * Reads the package.json in the current directory.
+ * Print a version text.
  *
- * @returns {object} package.json's information.
+ * @param {stream.Writable} output - A writable stream to print.
+ * @returns {Promise} Always a fulfilled promise.
+ * @private
  */
-module.exports = function readPackageJson() {
-    const path = joinPath(process.cwd(), "package.json");
-    return readPkg(path).then(body => ({
-        taskList: Object.keys(body.scripts || {}),
-        packageInfo: {path, body}
-    }));
+module.exports = function printVersion(output) {
+    const version = readPkgUp(__dirname).pkg.version;
+
+    output.write(`v${version}\n`);
+
+    return Promise.resolve(null);
 };

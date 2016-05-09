@@ -3,7 +3,17 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-import {Minimatch} from "minimatch";
+"use strict";
+
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+const {Minimatch} = require("minimatch");
+
+//------------------------------------------------------------------------------
+// Helpers
+//------------------------------------------------------------------------------
 
 const COLON_OR_SLASH = /[:\/]/g;
 const CONVERT_MAP = {":": "/", "/": ":"};
@@ -56,6 +66,7 @@ class TaskSet {
      *
      * @param {string} command - A pattern text to add.
      * @param {string} source - A task name to check.
+     * @returns {void}
      */
     add(command, source) {
         const sourceList = this.sourceMap[command] || (this.sourceMap[command] = []);
@@ -66,6 +77,10 @@ class TaskSet {
     }
 }
 
+//------------------------------------------------------------------------------
+// Public Interface
+//------------------------------------------------------------------------------
+
 /**
  * Enumerates tasks which matches with given patterns.
  *
@@ -74,7 +89,7 @@ class TaskSet {
  * @returns {string[]} Tasks which matches with the patterns.
  * @private
  */
-export default function matchTasks(taskList, patterns) {
+module.exports = function matchTasks(taskList, patterns) {
     const filters = patterns.map(createFilter);
     const candidates = taskList.map(swapColonAndSlash);
     const taskSet = new TaskSet();
@@ -109,4 +124,4 @@ export default function matchTasks(taskList, patterns) {
         throw new Error(`Task not found: "${unknownTasks.join("\", ")}"`);
     }
     return taskSet.result;
-}
+};

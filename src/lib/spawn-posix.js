@@ -3,13 +3,23 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-/* eslint no-param-reassign: 0 */
-import crossSpawn from "cross-spawn-async";
-import getDescendentProcessInfo from "ps-tree";
+"use strict";
+
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+const crossSpawn = require("cross-spawn-async");
+const getDescendentProcessInfo = require("ps-tree");
+
+//------------------------------------------------------------------------------
+// Helpers
+//------------------------------------------------------------------------------
 
 /**
  * Kills the new process and its sub processes.
  * @this ChildProcess
+ * @returns {void}
  */
 function kill() {
     getDescendentProcessInfo(this.pid, (err, descendent) => {
@@ -21,12 +31,16 @@ function kill() {
             try {
                 process.kill(pid);
             }
-            catch (err2) {
+            catch (_err) {
                 // ignore.
             }
         }
     });
 }
+
+//------------------------------------------------------------------------------
+// Public Interface
+//------------------------------------------------------------------------------
 
 /**
  * Launches a new process with the given command.
@@ -41,9 +55,9 @@ function kill() {
  * @returns {ChildProcess} A ChildProcess instance of new process.
  * @private
  */
-export default function spawn(command, args, options) {
+module.exports = function spawn(command, args, options) {
     const child = crossSpawn(command, args, options);
     child.kill = kill;
 
     return child;
-}
+};

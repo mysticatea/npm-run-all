@@ -3,12 +3,13 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
+"use strict";
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-import {Transform} from "stream";
+const {Transform} = require("stream");
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -82,6 +83,6 @@ class PrefixTransform extends Transform {
  * @param {boolean} state.lastIsLinebreak -The flag to check whether the last output is a line break or not.
  * @returns {stream.Transform} The created transform stream.
  */
-export default function createPrefixTransform(prefix, state) {
+module.exports = function createPrefixTransform(prefix, state) {
     return new PrefixTransform(prefix, state);
-}
+};

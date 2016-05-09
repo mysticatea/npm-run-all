@@ -1,13 +1,26 @@
+/**
+ * @author Toru Nagashima
+ * @copyright 2016 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
 "use strict";
 
-var spawn = require("../../src/lib/spawn").default;
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+const spawn = require("../../src/lib/spawn");
+
+//------------------------------------------------------------------------------
+// Public Interface
+//------------------------------------------------------------------------------
 
 module.exports = function spawnWithKill(command, args) {
-    return new Promise(function(resolve, reject) {
-        var cp = spawn(command, args, {});
+    return new Promise((resolve, reject) => {
+        const cp = spawn(command, args, {});
         cp.on("exit", resolve);
         cp.on("error", reject);
 
-        setTimeout(function() { cp.kill(); }, 1000);
+        setTimeout(() => cp.kill(), 1000);
     });
 };

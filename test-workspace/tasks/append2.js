@@ -1,9 +1,10 @@
 "use strict";
 
-var appendResult = require("../../test/lib/util").appendResult;
+var appendResult = require("./lib/util").appendResult;
 
 /**
  * Append a given text into `test.txt`.
+ * @returns {void}
  */
 function append() {
     appendResult(process.argv[2]);

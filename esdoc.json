@@ -1,6 +1,6 @@
 {
     "source": "src",
-    "destination": "docs",
+    "destination": "esdoc",
     "access": ["public", "protected", "private"],
     "plugins": [
         {
