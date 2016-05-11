@@ -97,10 +97,10 @@ module.exports = function matchTasks(taskList, patterns) {
     const unknownSet = Object.create(null);
 
     // Take tasks while keep the order of patterns.
-    for (const filter of filters) {
+    filters.forEach(filter => {
         let found = false;
 
-        for (const candidate of candidates) {
+        candidates.forEach(candidate => {
             if (filter.match(candidate)) {
                 found = true;
                 taskSet.add(
@@ -108,7 +108,7 @@ module.exports = function matchTasks(taskList, patterns) {
                     filter.task
                 );
             }
-        }
+        });
 
         // Built-in tasks should be allowed.
         if (!found && (filter.task === "restart" || filter.task === "env")) {
@@ -118,7 +118,7 @@ module.exports = function matchTasks(taskList, patterns) {
         if (!found) {
             unknownSet[filter.task] = true;
         }
-    }
+    });
 
     const unknownTasks = Object.keys(unknownSet);
     if (unknownTasks.length > 0) {

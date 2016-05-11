@@ -1,7 +1,7 @@
 {
   "name": "npm-run-all",
   "version": "1.8.0",
-  "description": "A CLI tool to run multiple npm-scripts in parallel or sequential / serial.",
+  "description": "A CLI tool to run multiple npm-scripts in parallel or sequential.",
   "bin": {
     "run-p": "bin/run-p/index.js",
     "run-s": "bin/run-s/index.js",
@@ -20,7 +20,7 @@
     "preversion": "npm run build",
     "postversion": "git push && git push --tags",
     "pretest": "node scripts/make-slink.js",
-    "clean": "rimraf bin coverage esdoc lib",
+    "clean": "rimraf bin coverage jsdoc lib",
     "lint": "eslint src test \"test-workspace/tasks/*\"",
     "build": "babel-node src/bin/run-s/index.js clean lint build:*",
     "build:babel": "babel src --out-dir .",
@@ -30,11 +30,11 @@
     "coveralls": "cat coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "babel-runtime": "^6.3.13",
     "chalk": "^1.1.3",
     "cross-spawn-async": "^2.1.9",
     "minimatch": "^3.0.0",
     "object-assign": "^4.0.1",
+    "pinkie-promise": "^2.0.1",
     "ps-tree": "^1.0.1",
     "read-pkg": "^1.1.0",
     "read-pkg-up": "^1.0.1",
@@ -45,7 +45,6 @@
     "babel-cli": "^6.4.0",
     "babel-core": "^6.4.0",
     "babel-plugin-espower": "^2.0.0",
-    "babel-plugin-transform-runtime": "^6.4.3",
     "babel-preset-es2015": "^6.3.13",
     "babel-register": "^6.4.3",
     "coveralls": "^2.11.4",

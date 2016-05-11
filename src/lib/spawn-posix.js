@@ -28,14 +28,14 @@ function kill() {
             return;
         }
 
-        for (const {PID: pid} of descendent) {
+        descendent.forEach(({PID: pid}) => {
             try {
                 process.kill(pid);
             }
             catch (_err) {
                 // ignore.
             }
-        }
+        });
     });
 }
 

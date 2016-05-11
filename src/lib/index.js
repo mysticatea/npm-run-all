@@ -10,6 +10,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
+const Promise = require("pinkie-promise");
 const matchTasks = require("./match-tasks");
 const readPackageJson = require("./read-package-json");
 const runTasksInParallel = require("./run-tasks-in-parallel");
@@ -44,15 +45,15 @@ function toArray(x) {
 function toOverwriteOptions(config) {
     const options = [];
 
-    for (const packageName of Object.keys(config)) {
+    Object.keys(config).forEach(packageName => {
         const packageConfig = config[packageName];
 
-        for (const variableName of Object.keys(packageConfig)) {
+        Object.keys(packageConfig).forEach(variableName => {
             const value = packageConfig[variableName];
 
             options.push(`--${packageName}:${variableName}=${value}`);
-        }
-    }
+        });
+    });
 
     return options;
 }

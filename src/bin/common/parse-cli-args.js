@@ -48,12 +48,12 @@ function createPackageConfig() {
         return retv;
     }
 
-    for (const key of Object.keys(process.env)) {
+    Object.keys(process.env).forEach(key => {
         const m = CONFIG_PATTERN.exec(key);
         if (m != null) {
             overwriteConfig(retv, packageName, m[1], process.env[key]);
         }
-    }
+    });
 
     return retv;
 }
