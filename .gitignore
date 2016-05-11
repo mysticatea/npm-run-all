@@ -1,6 +1,6 @@
 /bin
 /coverage
-/esdoc
+/jsdoc
 /lib
 /node_modules
 /npm-debug.log

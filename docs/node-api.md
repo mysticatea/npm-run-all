@@ -68,5 +68,3 @@ Run npm-scripts.
 
 `runAll` returns a promise that will becomes *fulfilled* when all scripts are completed.
 The promise will become *rejected* when any of the scripts exit with a non-zero code.
-
-See also: https://doc.esdoc.org/github.com/mysticatea/npm-run-all/
