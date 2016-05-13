@@ -31,7 +31,12 @@ describe("[parallel]", () => {
     describe("should run tasks on parallel when was given --parallel option:", () => {
         it("Node API", () =>
             nodeApi(["test-task:append a", "test-task:append b"], {parallel: true})
-                .then(() => {
+                .then(results => {
+                    assert(results.length === 2);
+                    assert(results[0].name === "test-task:append a");
+                    assert(results[0].code === 0);
+                    assert(results[1].name === "test-task:append b");
+                    assert(results[1].code === 0);
                     assert(
                         result() === "abab" ||
                         result() === "baba" ||
@@ -63,14 +68,19 @@ describe("[parallel]", () => {
         );
     });
 
-    describe("should kill all tasks when was given --parallel option if a task exited with non-zero code:", () => {
+    describe("should kill all tasks when was given --parallel option if a task exited with a non-zero code:", () => {
         it("Node API", () =>
             nodeApi(["test-task:append2 a", "test-task:error"], {parallel: true})
                 .then(
                     () => {
                         assert(false, "should fail");
                     },
-                    () => {
+                    (err) => {
+                        assert(err.results.length === 2);
+                        assert(err.results[0].name === "test-task:append2 a");
+                        assert(err.results[0].code === undefined);
+                        assert(err.results[1].name === "test-task:error");
+                        assert(err.results[1].code === 1);
                         assert(result() == null || result() === "a");
                     })
         );
@@ -171,57 +181,82 @@ describe("[parallel]", () => {
     describe("should continue on error when --continue-on-error option was specified:", () => {
         it("Node API", () =>
             nodeApi(["test-task:append a", "test-task:error", "test-task:append b"], {parallel: true, continueOnError: true})
-                .then(() => {
-                    assert(
-                        result() === "abab" ||
-                        result() === "baba" ||
-                        result() === "abba" ||
-                        result() === "baab");
-                })
+                .then(
+                    () => {
+                        assert(false, "should fail.");
+                    },
+                    () => {
+                        assert(
+                            result() === "abab" ||
+                            result() === "baba" ||
+                            result() === "abba" ||
+                            result() === "baab");
+                    }
+                )
         );
 
         it("npm-run-all command (--continue-on-error)", () =>
             runAll(["--continue-on-error", "--parallel", "test-task:append a", "test-task:error", "test-task:append b"])
-                .then(() => {
-                    assert(
-                        result() === "abab" ||
-                        result() === "baba" ||
-                        result() === "abba" ||
-                        result() === "baab");
-                })
+                .then(
+                    () => {
+                        assert(false, "should fail.");
+                    },
+                    () => {
+                        assert(
+                            result() === "abab" ||
+                            result() === "baba" ||
+                            result() === "abba" ||
+                            result() === "baab");
+                    }
+                )
         );
 
         it("npm-run-all command (-c)", () =>
             runAll(["-cp", "test-task:append a", "test-task:error", "test-task:append b"])
-                .then(() => {
-                    assert(
-                        result() === "abab" ||
-                        result() === "baba" ||
-                        result() === "abba" ||
-                        result() === "baab");
-                })
+                .then(
+                    () => {
+                        assert(false, "should fail.");
+                    },
+                    () => {
+                        assert(
+                            result() === "abab" ||
+                            result() === "baba" ||
+                            result() === "abba" ||
+                            result() === "baab");
+                    }
+                )
         );
 
         it("run-p command (--continue-on-error)", () =>
             runPar(["--continue-on-error", "test-task:append a", "test-task:error", "test-task:append b"])
-                .then(() => {
-                    assert(
-                        result() === "abab" ||
-                        result() === "baba" ||
-                        result() === "abba" ||
-                        result() === "baab");
-                })
+                .then(
+                    () => {
+                        assert(false, "should fail.");
+                    },
+                    () => {
+                        assert(
+                            result() === "abab" ||
+                            result() === "baba" ||
+                            result() === "abba" ||
+                            result() === "baab");
+                    }
+                )
         );
 
         it("run-p command (-c)", () =>
             runPar(["-c", "test-task:append a", "test-task:error", "test-task:append b"])
-                .then(() => {
-                    assert(
-                        result() === "abab" ||
-                        result() === "baba" ||
-                        result() === "abba" ||
-                        result() === "baab");
-                })
+                .then(
+                    () => {
+                        assert(false, "should fail.");
+                    },
+                    () => {
+                        assert(
+                            result() === "abab" ||
+                            result() === "baba" ||
+                            result() === "abba" ||
+                            result() === "baab");
+                    }
+                )
         );
     });
 });

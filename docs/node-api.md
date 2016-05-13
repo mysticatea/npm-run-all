@@ -15,6 +15,14 @@ runAll(["clean", "lint", "build:*"], {parallel: false})
     .catch(err => {
         console.log("failed!");
     });
+
+runAll(["build:* -- --watch"], {parallel: true})
+    .then(() => {
+        console.log("done!");
+    })
+    .catch(err => {
+        console.log("failed!");
+    });
 ```
 
 ## runAll
@@ -64,7 +72,22 @@ Run npm-scripts.
     Set `process.stderr` in order to print to stderr.
   - **options.taskList** `string[]|null` --
     The string array of all script names.
-    By default, reads from `package.json` in the current directory.
+    If this is `null`, it reads from `package.json` in the current directory.
+    Default is `null`.
 
 `runAll` returns a promise that will becomes *fulfilled* when all scripts are completed.
 The promise will become *rejected* when any of the scripts exit with a non-zero code.
+
+The promise gives `results` to the fulfilled handler.
+`results` is an array of objects which have 2 properties: `name` and `code`.
+The `name` property is the name of a npm-script.
+The `code` property is the exit code of the npm-script. If the npm-script was not executed, the `code` property is `undefined`.
+
+```js
+runAll(["clean", "lint", "build"])
+    .then(results => {
+        console.log(`${results[0].name}: ${results[0].code}`); // clean: 0
+        console.log(`${results[1].name}: ${results[1].code}`); // lint: 0
+        console.log(`${results[2].name}: ${results[2].code}`); // build: 0
+    });
+```

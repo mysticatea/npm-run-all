@@ -11,25 +11,8 @@
 //------------------------------------------------------------------------------
 
 const Promise = require("pinkie-promise");
+const NpmRunAllError = require("./npm-run-all-error");
 const runTask = require("./run-task");
-
-//------------------------------------------------------------------------------
-// Helpers
-//------------------------------------------------------------------------------
-
-const START_PROMISE = Promise.resolve({code: 0});
-
-/**
- * Throws an error if a given result indicates non-zero exit.
- *
- * @param {{task: string, code: number}} result - A result object.
- * @returns {void}
- */
-function rejectIfNonZeroExit(result) {
-    if (result.code) {
-        throw new Error(`${result.task}: None-Zero Exit(${result.code});`);
-    }
-}
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -46,18 +29,48 @@ function rejectIfNonZeroExit(result) {
  * @private
  */
 module.exports = function runTasksInSequencial(tasks, options) {
-    if (options.continueOnError) {
-        return tasks.reduce(
-            (prev, task) => prev.then(() => runTask(task, options)),
-            START_PROMISE
-        );
+    const results = tasks.map(task => ({name: task, code: undefined}));
+    let errorResult = null;
+    let index = 0;
+
+    /**
+     * Saves a given result and checks the result code.
+     *
+     * @param {{task: string, code: number}} result - The result item.
+     * @returns {void}
+     */
+    function postprocess(result) {
+        if (result == null) {
+            return;
+        }
+        results[index++].code = result.code;
+
+        if (result.code) {
+            if (options.continueOnError) {
+                errorResult = errorResult || result;
+            }
+            else {
+                throw new NpmRunAllError(result, results);
+            }
+        }
     }
 
-    return tasks.reduce(
-        (prev, task) => prev.then(result => {
-            rejectIfNonZeroExit(result);
-            return runTask(task, options);
-        }),
-        START_PROMISE
-    ).then(rejectIfNonZeroExit);
+    return tasks
+        .reduce(
+            (prev, task) => (
+                prev.then(result => (
+                    postprocess(result),
+                    runTask(task, options)
+                ))
+            ),
+            Promise.resolve(null)
+        )
+        .then(result => {
+            postprocess(result);
+
+            if (errorResult != null) {
+                throw new NpmRunAllError(errorResult, results);
+            }
+            return results;
+        });
 };

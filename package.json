@@ -25,7 +25,7 @@
     "build": "babel-node src/bin/run-s/index.js clean lint build:*",
     "build:babel": "babel src --out-dir .",
     "build:jsdoc": "jsdoc -c jsdoc.json",
-    "test": "npm run lint && babel-node node_modules/isparta/bin/isparta cover node_modules/mocha/bin/_mocha -- test/*.js --timeout 60000",
+    "test": "npm run lint && babel-node node_modules/isparta/bin/isparta cover node_modules/mocha/bin/_mocha -- test/*.js --reporter progress --timeout 60000",
     "watch": "mocha test/*.js --require babel-register --timeout 60000 --watch --growl",
     "coveralls": "cat coverage/lcov.info | coveralls"
   },
