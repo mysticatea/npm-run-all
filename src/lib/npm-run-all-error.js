@@ -17,9 +17,9 @@ module.exports = class NpmRunAllError extends Error {
     /**
      * Constructor.
      *
-     * @param {{name: string, code: (number|undefined)}} causeResult -
+     * @param {{name: string, code: number}} causeResult -
      *      The result item of the npm-script which causes an error.
-     * @param {{name: string, code: (number|undefined)}[]} allResults -
+     * @param {Array.<{name: string, code: (number|undefined)}>} allResults -
      *      All result items of npm-scripts.
      */
     constructor(causeResult, allResults) {
@@ -34,13 +34,13 @@ module.exports = class NpmRunAllError extends Error {
         /**
          * The code of a npm-script which exited with a non-zero code.
          * This can be `undefined`.
-         * @type {(number|undefined)}
+         * @type {number}
          */
         this.code = causeResult.code;
 
         /**
          * All result items of npm-scripts.
-         * @type {{name: string, code: (number|undefined)}[]}
+         * @type {Array.<{name: string, code: (number|undefined)}>}
          */
         this.results = allResults;
     }
