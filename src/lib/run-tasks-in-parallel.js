@@ -50,7 +50,7 @@ module.exports = function runTasksInParallel(tasks, options) {
     const parallelPromise = Promise.all(taskPromises.map((promise, index) =>
         promise.then(result => {
             // Save the result.
-            if (!aborted || result.code === 0) {
+            if (!aborted) {
                 results[index].code = result.code;
             }
 
