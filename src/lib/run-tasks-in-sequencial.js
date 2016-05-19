@@ -58,10 +58,10 @@ module.exports = function runTasksInSequencial(tasks, options) {
     return tasks
         .reduce(
             (prev, task) => (
-                prev.then(result => (
+                prev.then(result => ((
                     postprocess(result),
                     runTask(task, options)
-                ))
+                )))
             ),
             Promise.resolve(null)
         )

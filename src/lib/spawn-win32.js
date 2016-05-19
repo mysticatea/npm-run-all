@@ -10,7 +10,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const crossSpawn = require("cross-spawn-async");
+const crossSpawn = require("cross-spawn");
 
 //------------------------------------------------------------------------------
 // Helpers
