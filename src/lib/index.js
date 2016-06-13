@@ -11,6 +11,7 @@
 //------------------------------------------------------------------------------
 
 const Promise = require("pinkie-promise");
+const shellQuote = require("shell-quote");
 const matchTasks = require("./match-tasks");
 const readPackageJson = require("./read-package-json");
 const runTasksInParallel = require("./run-tasks-in-parallel");
@@ -140,7 +141,8 @@ module.exports = function npmRunAll(
         silent = false,
         continueOnError = false,
         printLabel = false,
-        printName = false
+        printName = false,
+        rest = []
     } = {}
 ) {
     try {
@@ -158,6 +160,22 @@ module.exports = function npmRunAll(
         }
         if (packageConfig != null) {
             prefixOptions.push(...toOverwriteOptions(packageConfig));
+        }
+
+        for (let i = 0, len = patterns.length; i < len; ++i) {
+            patterns[i] = patterns[i].replace(/[{]([*@]|\d+)[}]/g, (match, index) => {
+                if (index === "@") {
+                    return shellQuote.quote(rest.slice(1));
+                }
+                if (index === "*") {
+                    return shellQuote.quote([rest.slice(1).join(" ")]);
+                }
+                const position = parseInt(index, 10);
+                if (position >= 0 && position < rest.length) {
+                    return shellQuote.quote([rest[position]]);
+                }
+                return match;
+            });
         }
 
         return Promise.resolve(taskList)
