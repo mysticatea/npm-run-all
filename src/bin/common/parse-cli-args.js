@@ -109,6 +109,11 @@ class ArgumentSet {
  * @returns {ArgumentSet} set itself.
  */
 function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
+    const terminator = args.indexOf("--");
+    if (terminator !== -1) {
+        set.rest = args.slice(terminator);
+        args = args.slice(0, terminator); // eslint-disable-line no-param-reassign
+    }
     for (let i = 0; i < args.length; ++i) {
         const arg = args[i];
 
