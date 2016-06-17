@@ -56,7 +56,7 @@ module.exports = function npmRunAll(args, stdout, stderr) {
                         printName,
                         packageConfig,
                         silent,
-                        rest
+                        arguments: rest
                     }
                 ));
             },

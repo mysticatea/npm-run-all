@@ -86,6 +86,7 @@ class ArgumentSet {
         this.groups = [];
         this.printLabel = false;
         this.printName = false;
+        this.rest = [];
         this.silent = process.env.npm_config_loglevel === "silent";
         this.singleMode = Boolean(options.singleMode);
         this.packageConfig = createPackageConfig();
@@ -109,15 +110,15 @@ class ArgumentSet {
  * @returns {ArgumentSet} set itself.
  */
 function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
-    const terminator = args.indexOf("--");
-    if (terminator !== -1) {
-        set.rest = args.slice(terminator);
-        args = args.slice(0, terminator); // eslint-disable-line no-param-reassign
-    }
+    LOOP:
     for (let i = 0; i < args.length; ++i) {
         const arg = args[i];
 
         switch (arg) {
+            case "--":
+                set.rest = args.slice(1 + i);
+                break LOOP;
+
             case "-c":
             case "--continue-on-error":
                 set.continueOnError = true;

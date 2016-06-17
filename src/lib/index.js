@@ -21,6 +21,8 @@ const runTasksInSequencial = require("./run-tasks-in-sequencial");
 // Helpers
 //------------------------------------------------------------------------------
 
+const ARGS_PATTERN = /[{]([*@]|\d+)[}]/g;
+
 /**
  * Converts a given value to an array.
  *
@@ -32,6 +34,47 @@ function toArray(x) {
         return [];
     }
     return Array.isArray(x) ? x : [x];
+}
+
+/**
+ * Replaces argument placeholders (such as `{1}`) by arguments.
+ *
+ * @param {string[]} patterns - Patterns to replace.
+ * @param {string[]} args - Arguments to replace.
+ * @returns {string[]} replaced
+ */
+function applyArguments(patterns, args) {
+    return patterns.map(pattern => pattern.replace(ARGS_PATTERN, (match, index) => {
+        if (index === "@") {
+            return shellQuote.quote(args);
+        }
+        if (index === "*") {
+            return shellQuote.quote([args.join(" ")]);
+        }
+
+        const position = parseInt(index, 10);
+        if (position >= 1 && position <= args.length) {
+            return shellQuote.quote([args[position - 1]]);
+        }
+
+        return match;
+    }));
+}
+
+/**
+ * Parse patterns.
+ * In parsing process, it replaces argument placeholders (such as `{1}`) by arguments.
+ *
+ * @param {string|string[]} patternOrPatterns - Patterns to run.
+ *      A pattern is a npm-script name or a Glob-like pattern.
+ * @param {string[]} args - Arguments to replace placeholders.
+ * @returns {string[]} Parsed patterns.
+ */
+function parsePatterns(patternOrPatterns, args) {
+    const patterns = toArray(patternOrPatterns);
+    const hasArguments = Array.isArray(args) && args.length > 0;
+
+    return hasArguments ? applyArguments(patterns, args) : patterns;
 }
 
 /**
@@ -142,14 +185,15 @@ module.exports = function npmRunAll(
         continueOnError = false,
         printLabel = false,
         printName = false,
-        rest = []
+        arguments: args = []
     } = {}
 ) {
     try {
-        const patterns = toArray(patternOrPatterns);
+        const patterns = parsePatterns(patternOrPatterns, args);
         if (patterns.length === 0) {
             return Promise.resolve(null);
         }
+
         if (taskList != null && Array.isArray(taskList) === false) {
             throw new Error("Invalid options.taskList");
         }
@@ -160,22 +204,6 @@ module.exports = function npmRunAll(
         }
         if (packageConfig != null) {
             prefixOptions.push(...toOverwriteOptions(packageConfig));
-        }
-
-        for (let i = 0, len = patterns.length; i < len; ++i) {
-            patterns[i] = patterns[i].replace(/[{]([*@]|\d+)[}]/g, (match, index) => {
-                if (index === "@") {
-                    return shellQuote.quote(rest.slice(1));
-                }
-                if (index === "*") {
-                    return shellQuote.quote([rest.slice(1).join(" ")]);
-                }
-                const position = parseInt(index, 10);
-                if (position >= 0 && position < rest.length) {
-                    return shellQuote.quote([rest[position]]);
-                }
-                return match;
-            });
         }
 
         return Promise.resolve(taskList)
