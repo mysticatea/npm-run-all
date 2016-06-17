@@ -28,40 +28,40 @@ describe("[argument-placeholders]", () => {
 
     beforeEach(removeResult);
 
-    describe("If arguments preceded by '--' are nothing, '{1}' should be as is:", () => {
+    describe("If arguments preceded by '--' are nothing, '{1}' should be empty:", () => {
         it("Node API", () =>
             nodeApi("test-task:dump {1}")
-                .then(() => assert(result() === "[\"{1}\"]"))
+                .then(() => assert(result() === "[]"))
         );
 
         it("npm-run-all command", () =>
             runAll(["test-task:dump {1}"])
-                .then(() => assert(result() === "[\"{1}\"]"))
+                .then(() => assert(result() === "[]"))
         );
 
         it("npm-run-all command (only '--' exists)", () =>
             runAll(["test-task:dump {1}", "--"])
-                .then(() => assert(result() === "[\"{1}\"]"))
+                .then(() => assert(result() === "[]"))
         );
 
         it("run-s command", () =>
             runSeq(["test-task:dump {1}"])
-                .then(() => assert(result() === "[\"{1}\"]"))
+                .then(() => assert(result() === "[]"))
         );
 
         it("run-s command (only '--' exists)", () =>
             runSeq(["test-task:dump {1}", "--"])
-                .then(() => assert(result() === "[\"{1}\"]"))
+                .then(() => assert(result() === "[]"))
         );
 
         it("run-p command", () =>
             runPar(["test-task:dump {1}"])
-                .then(() => assert(result() === "[\"{1}\"]"))
+                .then(() => assert(result() === "[]"))
         );
 
         it("run-p command (only '--' exists)", () =>
             runPar(["test-task:dump {1}", "--"])
-                .then(() => assert(result() === "[\"{1}\"]"))
+                .then(() => assert(result() === "[]"))
         );
     });
 
@@ -156,22 +156,22 @@ describe("[argument-placeholders]", () => {
     describe("Every '{1}', '{2}', '{@}' and '{*}' should be replaced by the arguments preceded by '--':", () => {
         it("Node API", () =>
             nodeApi("test-task:dump {1} {2} {3} {@} {*}", {arguments: ["1st", "2nd"]})
-                .then(() => assert(result() === "[\"1st\",\"2nd\",\"{3}\",\"1st\",\"2nd\",\"1st 2nd\"]"))
+                .then(() => assert(result() === "[\"1st\",\"2nd\",\"1st\",\"2nd\",\"1st 2nd\"]"))
         );
 
         it("npm-run-all command", () =>
             runAll(["test-task:dump {1} {2} {3} {@} {*}", "--", "1st", "2nd"])
-                .then(() => assert(result() === "[\"1st\",\"2nd\",\"{3}\",\"1st\",\"2nd\",\"1st 2nd\"]"))
+                .then(() => assert(result() === "[\"1st\",\"2nd\",\"1st\",\"2nd\",\"1st 2nd\"]"))
         );
 
         it("run-s command", () =>
             runSeq(["test-task:dump {1} {2} {3} {@} {*}", "--", "1st", "2nd"])
-                .then(() => assert(result() === "[\"1st\",\"2nd\",\"{3}\",\"1st\",\"2nd\",\"1st 2nd\"]"))
+                .then(() => assert(result() === "[\"1st\",\"2nd\",\"1st\",\"2nd\",\"1st 2nd\"]"))
         );
 
         it("run-p command", () =>
             runPar(["test-task:dump {1} {2} {3} {@} {*}", "--", "1st", "2nd"])
-                .then(() => assert(result() === "[\"1st\",\"2nd\",\"{3}\",\"1st\",\"2nd\",\"1st 2nd\"]"))
+                .then(() => assert(result() === "[\"1st\",\"2nd\",\"1st\",\"2nd\",\"1st 2nd\"]"))
         );
     });
 });

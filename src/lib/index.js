@@ -44,7 +44,7 @@ function toArray(x) {
  * @returns {string[]} replaced
  */
 function applyArguments(patterns, args) {
-    return patterns.map(pattern => pattern.replace(ARGS_PATTERN, (match, index) => {
+    return patterns.map(pattern => pattern.replace(ARGS_PATTERN, (unused, index) => {
         if (index === "@") {
             return shellQuote.quote(args);
         }
@@ -57,7 +57,7 @@ function applyArguments(patterns, args) {
             return shellQuote.quote([args[position - 1]]);
         }
 
-        return match;
+        return "";
     }));
 }
 
@@ -72,9 +72,9 @@ function applyArguments(patterns, args) {
  */
 function parsePatterns(patternOrPatterns, args) {
     const patterns = toArray(patternOrPatterns);
-    const hasArguments = Array.isArray(args) && args.length > 0;
+    const hasPlaceholder = patterns.filter(pattern => ARGS_PATTERN.test(pattern)).length > 0;
 
-    return hasArguments ? applyArguments(patterns, args) : patterns;
+    return hasPlaceholder ? applyArguments(patterns, args) : patterns;
 }
 
 /**
