@@ -163,14 +163,17 @@ module.exports = function npmRunAll(
         }
 
         for (let i = 0, len = patterns.length; i < len; ++i) {
-            patterns[i] = patterns[i].replace(/[{]([*@]|\d+)[}]/g, (match, index) => {
+            patterns[i] = patterns[i].replace(/[{]([*@]|-?\d+)[}]/g, (match, index) => {
                 if (index === "@") {
                     return shellQuote.quote(rest.slice(1));
                 }
                 if (index === "*") {
                     return shellQuote.quote([rest.slice(1).join(" ")]);
                 }
-                const position = parseInt(index, 10);
+                let position = parseInt(index, 10);
+                if (position < 0) {
+                    position = rest.length + position;
+                }
                 if (position >= 0 && position < rest.length) {
                     return shellQuote.quote([rest[position]]);
                 }
