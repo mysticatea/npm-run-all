@@ -163,7 +163,7 @@ module.exports = function npmRunAll(
         }
 
         for (let i = 0, len = patterns.length; i < len; ++i) {
-            patterns[i] = patterns[i].replace(/[{]([*@]|-?\d+)[}]/g, (match, index) => {
+            patterns[i] = patterns[i].replace(/[{]([*@]|-?\d+)[}]/g, (unused, index) => {
                 if (index === "@") {
                     return shellQuote.quote(rest.slice(1));
                 }
@@ -177,7 +177,7 @@ module.exports = function npmRunAll(
                 if (position >= 0 && position < rest.length) {
                     return shellQuote.quote([rest[position]]);
                 }
-                return match;
+                return "";
             });
         }
 
