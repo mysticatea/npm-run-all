@@ -18,12 +18,13 @@ const readPkg = require("read-pkg");
 //------------------------------------------------------------------------------
 
 /**
- * Reads the package.json in the current directory.
- *
+ * Reads the package.json.
+ * @param {string} packageJsonFolder -
+ *   Position of package.json
  * @returns {object} package.json's information.
  */
-module.exports = function readPackageJson() {
-    const path = joinPath(process.cwd(), "package.json");
+module.exports = function readPackageJson(packageJsonFolder) {
+    const path = joinPath(packageJsonFolder, "package.json");
     return readPkg(path).then(body => ({
         taskList: Object.keys(body.scripts || {}),
         packageInfo: {path, body}

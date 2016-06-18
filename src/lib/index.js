@@ -157,6 +157,9 @@ function maxLength(length, name) {
  *   Every value is a map-like object (Pairs of variable name and value).
  *   e.g. `{"npm-run-all": {"test": 777}}`
  *   Default is `null`.
+ * @param {string} options.packageJsonFolder -
+ *   Position of package.json
+ *   Default is process.cwd().
  * @param {boolean} options.silent -
  *   The flag to set `silent` to the log level of npm.
  *   Default is `false`.
@@ -181,6 +184,7 @@ module.exports = function npmRunAll(
         stderr = null,
         taskList = null,
         packageConfig = null,
+        packageJsonFolder = process.cwd(),
         silent = false,
         continueOnError = false,
         printLabel = false,
@@ -211,7 +215,7 @@ module.exports = function npmRunAll(
                 if (taskList != null) {
                     return {taskList, packageInfo: null};
                 }
-                return readPackageJson();
+                return readPackageJson(packageJsonFolder);
             })
             .then(({taskList, packageInfo}) => {    // eslint-disable-line no-shadow
                 const tasks = matchTasks(taskList, patterns);
