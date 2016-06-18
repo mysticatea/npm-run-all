@@ -1,5 +1,4 @@
 /**
- * @module read-package-json
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
@@ -10,23 +9,19 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const {join: joinPath} = require("path");
-const readPkg = require("read-pkg");
+const Promise = require("pinkie-promise");
+const spawn = require("../../src/lib/spawn");
 
 //------------------------------------------------------------------------------
 // Public Interface
 //------------------------------------------------------------------------------
 
-/**
- * Reads the package.json.
- * @param {string} packageJsonFolder -
- *   Position of package.json
- * @returns {object} package.json's information.
- */
-module.exports = function readPackageJson(packageJsonFolder) {
-    const path = joinPath(packageJsonFolder, "package.json");
-    return readPkg(path).then(body => ({
-        taskList: Object.keys(body.scripts || {}),
-        packageInfo: {path, body}
-    }));
+module.exports = function spawnWithKill(command, args) {
+    return new Promise((resolve, reject) => {
+        const cp = spawn(command, args, {});
+        cp.on("exit", resolve);
+        cp.on("error", reject);
+
+        setTimeout(() => cp.kill(), 1000);
+    });
 };
