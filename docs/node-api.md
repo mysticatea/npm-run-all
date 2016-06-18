@@ -35,6 +35,9 @@ Run npm-scripts.
 
 - **patterns** `string|string[]` -- Glob-like patterns for script names.
 - **options** `object`
+  - **options.arguments** `string[]` --
+    An argument list to replace argument placeholders (such as `{1}`, `{2}`). If pattern text has `{1}`, it's replaced by `options.arguments[0]`.
+    Default is an empty array.
   - **options.continueOnError** `boolean` --
     The flag to continue executing other/subsequent scripts even if a script threw an error.
     Returned `Promise` object will be rejected if one or more scripts threw error(s).

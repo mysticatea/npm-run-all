@@ -128,19 +128,19 @@ We can use [glob]-like patterns to specify npm-scripts.
 The difference is one -- the separator is `:` instead of `/`.
 
 ```
-> run-p watch:*
+> npm-run-all --parallel watch:*
 ```
 
 In this case, runs sub scripts of `watch`. For example: `watch:html`, `watch:js`.
 But, doesn't run sub-sub scripts. For example: `watch:js:index`.
 
 ```
-> run-p watch:**
+> npm-run-all --parallel watch:**
 ```
 
 If we use a globstar `**`, runs both sub scripts and sub-sub scripts.
 
-`run-p` reads the actual npm-script list from `package.json` in the current directory, then filters the scripts by glob-like patterns, then runs those.
+`npm-run-all` reads the actual npm-script list from `package.json` in the current directory, then filters the scripts by glob-like patterns, then runs those.
 
 ### Run with arguments
 
@@ -148,11 +148,44 @@ We can enclose a script name or a pattern in quotes to use arguments.
 The following 2 commands are similar.
 
 ```
-> run-p "build:* -- --watch"
+> npm-run-all --parallel "build:* -- --watch"
 > npm run build:aaa -- --watch & npm run build:bbb -- --watch
 ```
 
 When we use a pattern, arguments are forwarded to every matched script.
+
+### Argument placeholders
+
+We can use placeholders to give the arguments preceded by `--` to scripts.
+
+```
+> npm-run-all build "start-server -- --port {1}" -- 8080
+```
+
+This is useful to pass through arguments from `npm run-script` command.
+
+```json
+{
+    "scripts": {
+        "start": "npm-run-all build \"start-server -- --port {1}\" --"
+    }
+}
+```
+
+```
+> npm run start 8080
+
+> example@0.0.0 start /path/to/package.json
+> npm-run-all build "start-server -- --port {1}" -- "8080"
+```
+
+There are the following placeholders:
+
+- `{1}`, `{2}`, ... -- An argument. `{1}` is the 1st argument. `{2}` is the 2nd.
+- `{@}` -- All arguments.
+- `{*}` -- All arguments as combined.
+
+Those are similar to [Shell Parameters](http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameters). But please note arguments are enclosed by double quotes automatically (similar to npm).
 
 ### Known Limitations
 

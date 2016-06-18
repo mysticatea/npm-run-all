@@ -112,12 +112,45 @@ The following 2 commands are the same.
 
 When we use a pattern, arguments are forwarded to every matched script.
 
+### Argument placeholders
+
+We can use placeholders to give the arguments preceded by `--` to scripts.
+
+```
+> run-s build "start-server -- --port {1}" -- 8080
+```
+
+This is useful to pass through arguments from `npm run-script` command.
+
+```json
+{
+    "scripts": {
+        "start": "run-s build \"start-server -- --port {1}\" --"
+    }
+}
+```
+
+```
+> npm run start 8080
+
+> example@0.0.0 start /path/to/package.json
+> run-s build "start-server -- --port {1}" -- "8080"
+```
+
+There are the following placeholders:
+
+- `{1}`, `{2}`, ... -- An argument. `{1}` is the 1st argument. `{2}` is the 2nd.
+- `{@}` -- All arguments.
+- `{*}` -- All arguments as combined.
+
+Those are similar to [Shell Parameters](http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameters). But please note arguments are enclosed by double quotes automatically (similar to npm).
+
 ### Known Limitations
 
 - If `--print-label` option is given, some tools in scripts might stop coloring their output.
   Because some coloring library (e.g. [chalk]) will stop coloring if `process.stdout` is not a TTY.
   `run-s` changes the `process.stdout` of child processes to a pipe in order to add labels to the head of each line if `--print-label` option is given.<br>
-  For example, [eslint] stops coloring under `run-s --print-label`. But [eslint] has `--colors` option to force coloring, we can use it.
+  For example, [eslint] stops coloring under `run-s --print-label`. But [eslint] has `--color` option to force coloring, we can use it.
 
 [glob]: https://www.npmjs.com/package/glob#glob-primer
 [chalk]: https://www.npmjs.com/package/chalk
