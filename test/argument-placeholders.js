@@ -22,7 +22,7 @@ const runPar = require("../src/bin/run-p");
 // Test
 //------------------------------------------------------------------------------
 
-describe("[argument-passthrough]", () => {
+describe("[argument-placeholders]", () => {
     before(() => process.chdir("test-workspace"));
     after(() => process.chdir(".."));
 
