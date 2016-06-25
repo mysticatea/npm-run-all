@@ -4,19 +4,19 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const {Transform} = require("stream");
+const {Transform} = require("stream")
 
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
-const ALL_BR = /\n/g;
+const ALL_BR = /\n/g
 
 /**
  * The transform stream to insert a specific prefix.
@@ -35,10 +35,10 @@ class PrefixTransform extends Transform {
      * @param {boolean} state.lastIsLinebreak -The flag to check whether the last output is a line break or not.
      */
     constructor(prefix, state) {
-        super();
+        super()
 
-        this.prefix = prefix;
-        this.state = state;
+        this.prefix = prefix
+        this.state = state
     }
 
     /**
@@ -50,20 +50,20 @@ class PrefixTransform extends Transform {
      * @returns {void}
      */
     _transform(chunk, encoding, callback) {
-        const prefix = this.prefix;
-        const nPrefix = `\n${prefix}`;
-        const state = this.state;
+        const prefix = this.prefix
+        const nPrefix = `\n${prefix}`
+        const state = this.state
         const firstPrefix =
             state.lastIsLinebreak ? prefix :
             (state.lastPrefix !== prefix) ? "\n" :
-            /* otherwise */ "";
-        const prefixed = `${firstPrefix}${chunk}`.replace(ALL_BR, nPrefix);
-        const index = prefixed.indexOf(prefix, Math.max(0, prefixed.length - prefix.length));
+            /* otherwise */ ""
+        const prefixed = `${firstPrefix}${chunk}`.replace(ALL_BR, nPrefix)
+        const index = prefixed.indexOf(prefix, Math.max(0, prefixed.length - prefix.length))
 
-        state.lastPrefix = prefix;
-        state.lastIsLinebreak = (index !== -1);
+        state.lastPrefix = prefix
+        state.lastIsLinebreak = (index !== -1)
 
-        callback(null, (index !== -1) ? prefixed.slice(0, index) : prefixed);
+        callback(null, (index !== -1) ? prefixed.slice(0, index) : prefixed)
     }
 }
 
@@ -85,5 +85,5 @@ class PrefixTransform extends Transform {
  * @returns {stream.Transform} The created transform stream.
  */
 module.exports = function createPrefixTransform(prefix, state) {
-    return new PrefixTransform(prefix, state);
-};
+    return new PrefixTransform(prefix, state)
+}

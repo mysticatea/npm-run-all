@@ -1,3 +1,3 @@
-"use strict";
+"use strict"
 
-process.stderr.write("STDERR");
+process.stderr.write("STDERR")

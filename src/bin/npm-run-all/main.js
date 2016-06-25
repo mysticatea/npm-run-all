@@ -3,15 +3,15 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const Promise = require("pinkie-promise");
-const runAll = require("../../lib");
-const parseCLIArgs = require("../common/parse-cli-args");
+const Promise = require("pinkie-promise")
+const runAll = require("../../lib")
+const parseCLIArgs = require("../common/parse-cli-args")
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -28,7 +28,7 @@ const parseCLIArgs = require("../common/parse-cli-args");
  */
 module.exports = function npmRunAll(args, stdout, stderr) {
     try {
-        const stdin = process.stdin;
+        const stdin = process.stdin
         const {
             continueOnError,
             groups,
@@ -36,13 +36,13 @@ module.exports = function npmRunAll(args, stdout, stderr) {
             printLabel,
             printName,
             silent,
-            rest
-        } = parseCLIArgs(args);
+            rest,
+        } = parseCLIArgs(args)
 
         return groups.reduce(
             (prev, {patterns, parallel}) => {
                 if (patterns.length === 0) {
-                    return prev;
+                    return prev
                 }
                 return prev.then(() => runAll(
                     patterns,
@@ -56,14 +56,14 @@ module.exports = function npmRunAll(args, stdout, stderr) {
                         printName,
                         packageConfig,
                         silent,
-                        arguments: rest
+                        arguments: rest,
                     }
-                ));
+                ))
             },
             Promise.resolve(null)
-        );
+        )
     }
     catch (err) {
-        return Promise.reject(err);
+        return Promise.reject(err)
     }
-};
+}

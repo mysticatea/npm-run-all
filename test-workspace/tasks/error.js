@@ -1,5 +1,5 @@
-"use strict";
+"use strict"
 
 setTimeout(function() {
-    process.exit(1);
-}, 500);
+    process.exit(1)
+}, 500)

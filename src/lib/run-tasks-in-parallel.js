@@ -4,15 +4,15 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const Promise = require("pinkie-promise");
-const NpmRunAllError = require("./npm-run-all-error");
-const runTask = require("./run-task");
+const Promise = require("pinkie-promise")
+const NpmRunAllError = require("./npm-run-all-error")
+const runTask = require("./run-task")
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -29,9 +29,9 @@ const runTask = require("./run-task");
  * @private
  */
 module.exports = function runTasksInParallel(tasks, options) {
-    const taskPromises = tasks.map(task => runTask(task, options));
-    const results = tasks.map(task => ({name: task, code: undefined}));
-    let aborted = false;
+    const taskPromises = tasks.map(task => runTask(task, options))
+    const results = tasks.map(task => ({name: task, code: undefined}))
+    let aborted = false
 
     /**
      * Aborts all tasks.
@@ -39,35 +39,35 @@ module.exports = function runTasksInParallel(tasks, options) {
      */
     function abortTasks() {
         if (!aborted && !options.continueOnError) {
-            aborted = true;
-            taskPromises.forEach(t => t.abort());
+            aborted = true
+            taskPromises.forEach(t => t.abort())
         }
     }
 
     // When one of tasks exited with non-zero, abort all tasks.
     // And wait for all tasks exit.
-    let errorResult = null;
+    let errorResult = null
     const parallelPromise = Promise.all(taskPromises.map((promise, index) =>
         promise.then(result => {
             // Save the result.
             if (!aborted) {
-                results[index].code = result.code;
+                results[index].code = result.code
             }
 
             // Aborts all tasks if it's an error.
             if (errorResult == null && result.code) {
-                errorResult = errorResult || result;
-                abortTasks();
+                errorResult = errorResult || result
+                abortTasks()
             }
         })
-    ));
-    parallelPromise.catch(abortTasks);
+    ))
+    parallelPromise.catch(abortTasks)
 
     // Make fail if there are tasks that exited non-zero.
     return parallelPromise.then(() => {
         if (errorResult != null) {
-            throw new NpmRunAllError(errorResult, results);
+            throw new NpmRunAllError(errorResult, results)
         }
-        return results;
-    });
-};
+        return results
+    })
+}

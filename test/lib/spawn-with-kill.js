@@ -3,14 +3,14 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const Promise = require("pinkie-promise");
-const spawn = require("../../src/lib/spawn");
+const Promise = require("pinkie-promise")
+const spawn = require("../../src/lib/spawn")
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -18,10 +18,10 @@ const spawn = require("../../src/lib/spawn");
 
 module.exports = function spawnWithKill(command, args) {
     return new Promise((resolve, reject) => {
-        const cp = spawn(command, args, {});
-        cp.on("exit", resolve);
-        cp.on("error", reject);
+        const cp = spawn(command, args, {})
+        cp.on("exit", resolve)
+        cp.on("error", reject)
 
-        setTimeout(() => cp.kill(), 1000);
-    });
-};
+        setTimeout(() => cp.kill(), 1000)
+    })
+}

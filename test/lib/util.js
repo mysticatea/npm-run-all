@@ -3,7 +3,7 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 /*eslint no-var:"off"*/
 
@@ -11,13 +11,13 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var fs = require("fs");
+var fs = require("fs")
 
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
-var FILE_NAME = "test.txt";
+var FILE_NAME = "test.txt"
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -30,15 +30,15 @@ var FILE_NAME = "test.txt";
  */
 exports.result = function result() {
     try {
-        return fs.readFileSync(FILE_NAME, {encoding: "utf8"});
+        return fs.readFileSync(FILE_NAME, {encoding: "utf8"})
     }
     catch (err) {
         if (err.message.indexOf("ENOENT") < 0) {
-            console.error("ERROR:", err.stack);
+            console.error("ERROR:", err.stack)
         }
-        return null;
+        return null
     }
-};
+}
 
 /**
  * Appends text to `test.txt`.
@@ -47,8 +47,8 @@ exports.result = function result() {
  * @returns {void}
  */
 exports.appendResult = function appendResult(content) {
-    fs.appendFileSync(FILE_NAME, content);
-};
+    fs.appendFileSync(FILE_NAME, content)
+}
 
 /**
  * Removes `test.txt`.
@@ -57,11 +57,11 @@ exports.appendResult = function appendResult(content) {
  */
 exports.removeResult = function removeResult() {
     try {
-        fs.unlinkSync(FILE_NAME);
+        fs.unlinkSync(FILE_NAME)
     }
     catch (err) {
         if (err.message.indexOf("ENOENT") < 0) {
-            console.error("ERROR:", err.stack);
+            console.error("ERROR:", err.stack)
         }
     }
-};
+}

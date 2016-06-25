@@ -4,13 +4,13 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const chalk = require("chalk");
+const chalk = require("chalk")
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -28,27 +28,27 @@ const chalk = require("chalk");
  */
 module.exports = function createHeader(nameAndArgs, packageInfo, isTTY) {
     if (!packageInfo) {
-        return `\n> ${nameAndArgs}\n\n`;
+        return `\n> ${nameAndArgs}\n\n`
     }
 
-    const index = nameAndArgs.indexOf(" ");
-    const name = (index === -1) ? nameAndArgs : nameAndArgs.slice(0, index);
-    const args = (index === -1) ? "" : nameAndArgs.slice(index + 1);
+    const index = nameAndArgs.indexOf(" ")
+    const name = (index === -1) ? nameAndArgs : nameAndArgs.slice(0, index)
+    const args = (index === -1) ? "" : nameAndArgs.slice(index + 1)
     const {
         body: {
             name: packageName,
             version: packageVersion,
             scripts: {
-                [name]: scriptBody
-            }
+                [name]: scriptBody,
+            },
         },
-        path: packagePath
-    } = packageInfo || {};
-    const color = isTTY ? chalk.styles.gray : {open: "", close: ""};
+        path: packagePath,
+    } = packageInfo || {}
+    const color = isTTY ? chalk.styles.gray : {open: "", close: ""}
 
     return `
 ${color.open}> ${packageName}@${packageVersion} ${name} ${packagePath}${color.close}
 ${color.open}> ${scriptBody} ${args}${color.close}
 
-`;
-};
+`
+}

@@ -4,7 +4,7 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -23,25 +23,25 @@ module.exports = class NpmRunAllError extends Error {
      *      All result items of npm-scripts.
      */
     constructor(causeResult, allResults) {
-        super(`"${causeResult.task}" exited with ${causeResult.code}.`);
+        super(`"${causeResult.task}" exited with ${causeResult.code}.`)
 
         /**
          * The name of a npm-script which exited with a non-zero code.
          * @type {string}
          */
-        this.name = causeResult.name;
+        this.name = causeResult.name
 
         /**
          * The code of a npm-script which exited with a non-zero code.
          * This can be `undefined`.
          * @type {number}
          */
-        this.code = causeResult.code;
+        this.code = causeResult.code
 
         /**
          * All result items of npm-scripts.
          * @type {Array.<{name: string, code: (number|undefined)}>}
          */
-        this.results = allResults;
+        this.results = allResults
     }
-};
+}

@@ -3,13 +3,13 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const Promise = require("pinkie-promise");
+const Promise = require("pinkie-promise")
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -55,7 +55,7 @@ Examples:
 
 See Also:
     https://github.com/mysticatea/npm-run-all#readme
-`);
+`)
 
-    return Promise.resolve(null);
-};
+    return Promise.resolve(null)
+}

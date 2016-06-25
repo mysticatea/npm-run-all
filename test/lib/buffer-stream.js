@@ -3,13 +3,13 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const {Writable} = require("stream");
+const {Writable} = require("stream")
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -23,13 +23,13 @@ module.exports = class BufferStream extends Writable {
      * Initialize the current data as a empty string.
      */
     constructor() {
-        super();
+        super()
 
         /**
          * Accumulated data.
          * @type {string}
          */
-        this.value = "";
+        this.value = ""
     }
 
     /**
@@ -41,7 +41,7 @@ module.exports = class BufferStream extends Writable {
      * @returns {void}
      */
     _write(chunk, encoding, callback) {
-        this.value += chunk.toString();
-        callback();
+        this.value += chunk.toString()
+        callback()
     }
-};
+}

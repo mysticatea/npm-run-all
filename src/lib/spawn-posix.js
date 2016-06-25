@@ -4,14 +4,14 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const crossSpawn = require("cross-spawn");
-const getDescendentProcessInfo = require("ps-tree");
+const crossSpawn = require("cross-spawn")
+const getDescendentProcessInfo = require("ps-tree")
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -25,18 +25,18 @@ const getDescendentProcessInfo = require("ps-tree");
 function kill() {
     getDescendentProcessInfo(this.pid, (err, descendent) => {
         if (err) {
-            return;
+            return
         }
 
         descendent.forEach(({PID: pid}) => {
             try {
-                process.kill(pid);
+                process.kill(pid)
             }
             catch (_err) {
                 // ignore.
             }
-        });
-    });
+        })
+    })
 }
 
 //------------------------------------------------------------------------------
@@ -57,8 +57,8 @@ function kill() {
  * @private
  */
 module.exports = function spawn(command, args, options) {
-    const child = crossSpawn(command, args, options);
-    child.kill = kill;
+    const child = crossSpawn(command, args, options)
+    child.kill = kill
 
-    return child;
-};
+    return child
+}

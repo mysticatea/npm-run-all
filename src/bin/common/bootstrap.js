@@ -3,7 +3,7 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -31,16 +31,16 @@ function defineMain(name) {
             case undefined:
             case "-h":
             case "--help":
-                return require(`../${name}/help`)(stdout);
+                return require(`../${name}/help`)(stdout)
 
             case "-v":
             case "--version":
-                return require("./version")(stdout);
+                return require("./version")(stdout)
 
             default:
-                return require(`../${name}/main`)(args, stdout, stderr);
+                return require(`../${name}/main`)(args, stdout, stderr)
         }
-    };
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ function defineMain(name) {
 //------------------------------------------------------------------------------
 
 module.exports = function bootstrap(entryModule, name) {
-    const main = entryModule.exports = defineMain(name);
+    const main = entryModule.exports = defineMain(name)
 
     /* eslint-disable no-console, no-process-exit */
     /* istanbul ignore if */
@@ -58,20 +58,20 @@ module.exports = function bootstrap(entryModule, name) {
             process.argv.slice(2),
             process.stdout,
             process.stderr
-        );
+        )
 
         // Error Handling.
         promise.then(
             () => {
                 // I'm not sure why, but maybe the process never exits
                 // on Git Bash (MINGW64)
-                process.exit(0);
+                process.exit(0)
             },
             (err) => {
-                console.error("ERROR:", err.message);
-                process.exit(1);
+                console.error("ERROR:", err.message)
+                process.exit(1)
             }
-        );
+        )
     }
-};
+}
 

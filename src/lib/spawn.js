@@ -4,7 +4,7 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -17,4 +17,4 @@
  */
 module.exports = require(
     process.platform === "win32" ? "./spawn-win32" : "./spawn-posix"
-);
+)

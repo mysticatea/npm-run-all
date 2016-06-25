@@ -4,15 +4,15 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const Promise = require("pinkie-promise");
-const NpmRunAllError = require("./npm-run-all-error");
-const runTask = require("./run-task");
+const Promise = require("pinkie-promise")
+const NpmRunAllError = require("./npm-run-all-error")
+const runTask = require("./run-task")
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -29,9 +29,9 @@ const runTask = require("./run-task");
  * @private
  */
 module.exports = function runTasksInSequencial(tasks, options) {
-    const results = tasks.map(task => ({name: task, code: undefined}));
-    let errorResult = null;
-    let index = 0;
+    const results = tasks.map(task => ({name: task, code: undefined}))
+    let errorResult = null
+    let index = 0
 
     /**
      * Saves a given result and checks the result code.
@@ -41,16 +41,16 @@ module.exports = function runTasksInSequencial(tasks, options) {
      */
     function postprocess(result) {
         if (result == null) {
-            return;
+            return
         }
-        results[index++].code = result.code;
+        results[index++].code = result.code
 
         if (result.code) {
             if (options.continueOnError) {
-                errorResult = errorResult || result;
+                errorResult = errorResult || result
             }
             else {
-                throw new NpmRunAllError(result, results);
+                throw new NpmRunAllError(result, results)
             }
         }
     }
@@ -66,11 +66,11 @@ module.exports = function runTasksInSequencial(tasks, options) {
             Promise.resolve(null)
         )
         .then(result => {
-            postprocess(result);
+            postprocess(result)
 
             if (errorResult != null) {
-                throw new NpmRunAllError(errorResult, results);
+                throw new NpmRunAllError(errorResult, results)
             }
-            return results;
-        });
-};
+            return results
+        })
+}

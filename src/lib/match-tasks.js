@@ -4,20 +4,20 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const {Minimatch} = require("minimatch");
+const {Minimatch} = require("minimatch")
 
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
-const COLON_OR_SLASH = /[:\/]/g;
-const CONVERT_MAP = {":": "/", "/": ":"};
+const COLON_OR_SLASH = /[:\/]/g
+const CONVERT_MAP = {":": "/", "/": ":"}
 
 /**
  * Swaps ":" and "/", in order to use ":" as the separator in minimatch.
@@ -26,7 +26,7 @@ const CONVERT_MAP = {":": "/", "/": ":"};
  * @returns {string} The text which was swapped.
  */
 function swapColonAndSlash(s) {
-    return s.replace(COLON_OR_SLASH, (matched) => CONVERT_MAP[matched]);
+    return s.replace(COLON_OR_SLASH, (matched) => CONVERT_MAP[matched])
 }
 
 /**
@@ -39,14 +39,14 @@ function swapColonAndSlash(s) {
  * @returns {{match: function, task: string, args: string}} The filter object of the pattern.
  */
 function createFilter(pattern) {
-    const trimmed = pattern.trim();
-    const spacePos = trimmed.indexOf(" ");
-    const task = spacePos < 0 ? trimmed : trimmed.slice(0, spacePos);
-    const args = spacePos < 0 ? "" : trimmed.slice(spacePos);
-    const matcher = new Minimatch(swapColonAndSlash(task));
-    const match = matcher.match.bind(matcher);
+    const trimmed = pattern.trim()
+    const spacePos = trimmed.indexOf(" ")
+    const task = spacePos < 0 ? trimmed : trimmed.slice(0, spacePos)
+    const args = spacePos < 0 ? "" : trimmed.slice(spacePos)
+    const matcher = new Minimatch(swapColonAndSlash(task))
+    const match = matcher.match.bind(matcher)
 
-    return {match, task, args};
+    return {match, task, args}
 }
 
 /**
@@ -57,8 +57,8 @@ class TaskSet {
      * Creates a instance.
      */
     constructor() {
-        this.result = [];
-        this.sourceMap = Object.create(null);
+        this.result = []
+        this.sourceMap = Object.create(null)
     }
 
     /**
@@ -70,11 +70,11 @@ class TaskSet {
      * @returns {void}
      */
     add(command, source) {
-        const sourceList = this.sourceMap[command] || (this.sourceMap[command] = []);
+        const sourceList = this.sourceMap[command] || (this.sourceMap[command] = [])
         if (sourceList.length === 0 || sourceList.indexOf(source) !== -1) {
-            this.result.push(command);
+            this.result.push(command)
         }
-        sourceList.push(source);
+        sourceList.push(source)
     }
 }
 
@@ -91,38 +91,38 @@ class TaskSet {
  * @private
  */
 module.exports = function matchTasks(taskList, patterns) {
-    const filters = patterns.map(createFilter);
-    const candidates = taskList.map(swapColonAndSlash);
-    const taskSet = new TaskSet();
-    const unknownSet = Object.create(null);
+    const filters = patterns.map(createFilter)
+    const candidates = taskList.map(swapColonAndSlash)
+    const taskSet = new TaskSet()
+    const unknownSet = Object.create(null)
 
     // Take tasks while keep the order of patterns.
     filters.forEach(filter => {
-        let found = false;
+        let found = false
 
         candidates.forEach(candidate => {
             if (filter.match(candidate)) {
-                found = true;
+                found = true
                 taskSet.add(
                     swapColonAndSlash(candidate) + filter.args,
                     filter.task
-                );
+                )
             }
-        });
+        })
 
         // Built-in tasks should be allowed.
         if (!found && (filter.task === "restart" || filter.task === "env")) {
-            taskSet.add(filter.task + filter.args, filter.task);
-            found = true;
+            taskSet.add(filter.task + filter.args, filter.task)
+            found = true
         }
         if (!found) {
-            unknownSet[filter.task] = true;
+            unknownSet[filter.task] = true
         }
-    });
+    })
 
-    const unknownTasks = Object.keys(unknownSet);
+    const unknownTasks = Object.keys(unknownSet)
     if (unknownTasks.length > 0) {
-        throw new Error(`Task not found: "${unknownTasks.join("\", ")}"`);
+        throw new Error(`Task not found: "${unknownTasks.join("\", ")}"`)
     }
-    return taskSet.result;
-};
+    return taskSet.result
+}

@@ -4,24 +4,24 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const Promise = require("pinkie-promise");
-const shellQuote = require("shell-quote");
-const matchTasks = require("./match-tasks");
-const readPackageJson = require("./read-package-json");
-const runTasksInParallel = require("./run-tasks-in-parallel");
-const runTasksInSequencial = require("./run-tasks-in-sequencial");
+const Promise = require("pinkie-promise")
+const shellQuote = require("shell-quote")
+const matchTasks = require("./match-tasks")
+const readPackageJson = require("./read-package-json")
+const runTasksInParallel = require("./run-tasks-in-parallel")
+const runTasksInSequencial = require("./run-tasks-in-sequencial")
 
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
-const ARGS_PATTERN = /[{]([*@]|\d+)[}]/g;
+const ARGS_PATTERN = /[{]([*@]|\d+)[}]/g
 
 /**
  * Converts a given value to an array.
@@ -31,9 +31,9 @@ const ARGS_PATTERN = /[{]([*@]|\d+)[}]/g;
  */
 function toArray(x) {
     if (x == null) {
-        return [];
+        return []
     }
-    return Array.isArray(x) ? x : [x];
+    return Array.isArray(x) ? x : [x]
 }
 
 /**
@@ -46,19 +46,19 @@ function toArray(x) {
 function applyArguments(patterns, args) {
     return patterns.map(pattern => pattern.replace(ARGS_PATTERN, (match, index) => {
         if (index === "@") {
-            return shellQuote.quote(args);
+            return shellQuote.quote(args)
         }
         if (index === "*") {
-            return shellQuote.quote([args.join(" ")]);
+            return shellQuote.quote([args.join(" ")])
         }
 
-        const position = parseInt(index, 10);
+        const position = parseInt(index, 10)
         if (position >= 1 && position <= args.length) {
-            return shellQuote.quote([args[position - 1]]);
+            return shellQuote.quote([args[position - 1]])
         }
 
-        return match;
-    }));
+        return match
+    }))
 }
 
 /**
@@ -71,10 +71,10 @@ function applyArguments(patterns, args) {
  * @returns {string[]} Parsed patterns.
  */
 function parsePatterns(patternOrPatterns, args) {
-    const patterns = toArray(patternOrPatterns);
-    const hasArguments = Array.isArray(args) && args.length > 0;
+    const patterns = toArray(patternOrPatterns)
+    const hasArguments = Array.isArray(args) && args.length > 0
 
-    return hasArguments ? applyArguments(patterns, args) : patterns;
+    return hasArguments ? applyArguments(patterns, args) : patterns
 }
 
 /**
@@ -87,19 +87,19 @@ function parsePatterns(patternOrPatterns, args) {
  * @returns {string[]} `--:=` style options.
  */
 function toOverwriteOptions(config) {
-    const options = [];
+    const options = []
 
     Object.keys(config).forEach(packageName => {
-        const packageConfig = config[packageName];
+        const packageConfig = config[packageName]
 
         Object.keys(packageConfig).forEach(variableName => {
-            const value = packageConfig[variableName];
+            const value = packageConfig[variableName]
 
-            options.push(`--${packageName}:${variableName}=${value}`);
-        });
-    });
+            options.push(`--${packageName}:${variableName}=${value}`)
+        })
+    })
 
-    return options;
+    return options
 }
 
 /**
@@ -110,7 +110,7 @@ function toOverwriteOptions(config) {
  * @returns {number} The maximum length.
  */
 function maxLength(length, name) {
-    return Math.max(name.length, length);
+    return Math.max(name.length, length)
 }
 
 //------------------------------------------------------------------------------
@@ -185,38 +185,38 @@ module.exports = function npmRunAll(
         continueOnError = false,
         printLabel = false,
         printName = false,
-        arguments: args = []
+        arguments: args = [],
     } = {}
 ) {
     try {
-        const patterns = parsePatterns(patternOrPatterns, args);
+        const patterns = parsePatterns(patternOrPatterns, args)
         if (patterns.length === 0) {
-            return Promise.resolve(null);
+            return Promise.resolve(null)
         }
 
         if (taskList != null && Array.isArray(taskList) === false) {
-            throw new Error("Invalid options.taskList");
+            throw new Error("Invalid options.taskList")
         }
 
-        const prefixOptions = [];
+        const prefixOptions = []
         if (silent) {
-            prefixOptions.push("--silent");
+            prefixOptions.push("--silent")
         }
         if (packageConfig != null) {
-            prefixOptions.push(...toOverwriteOptions(packageConfig));
+            prefixOptions.push(...toOverwriteOptions(packageConfig))
         }
 
         return Promise.resolve(taskList)
             .then(taskList => {    // eslint-disable-line no-shadow
                 if (taskList != null) {
-                    return {taskList, packageInfo: null};
+                    return {taskList, packageInfo: null}
                 }
-                return readPackageJson();
+                return readPackageJson()
             })
             .then(({taskList, packageInfo}) => {    // eslint-disable-line no-shadow
-                const tasks = matchTasks(taskList, patterns);
-                const labelWidth = tasks.reduce(maxLength, 0);
-                const runTasks = parallel ? runTasksInParallel : runTasksInSequencial;
+                const tasks = matchTasks(taskList, patterns)
+                const labelWidth = tasks.reduce(maxLength, 0)
+                const runTasks = parallel ? runTasksInParallel : runTasksInSequencial
 
                 return runTasks(tasks, {
                     stdin,
@@ -228,14 +228,14 @@ module.exports = function npmRunAll(
                         enabled: printLabel,
                         width: labelWidth,
                         lastPrefix: null,
-                        lastIsLinebreak: true
+                        lastIsLinebreak: true,
                     },
                     printName,
-                    packageInfo
-                });
-            });
+                    packageInfo,
+                })
+            })
     }
     catch (err) {
-        return Promise.reject(new Error(err.message));
+        return Promise.reject(new Error(err.message))
     }
-};
+}

@@ -1,4 +1,4 @@
-"use strict";
+"use strict"
 
-var appendResult = require("./lib/util").appendResult;
-appendResult(String(process.env.npm_package_config_test));
+var appendResult = require("./lib/util").appendResult
+appendResult(String(process.env.npm_package_config_test))

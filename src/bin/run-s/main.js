@@ -3,15 +3,15 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const Promise = require("pinkie-promise");
-const runAll = require("../../lib");
-const parseCLIArgs = require("../common/parse-cli-args");
+const Promise = require("pinkie-promise")
+const runAll = require("../../lib")
+const parseCLIArgs = require("../common/parse-cli-args")
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -28,7 +28,7 @@ const parseCLIArgs = require("../common/parse-cli-args");
  */
 module.exports = function npmRunAll(args, stdout, stderr) {
     try {
-        const stdin = process.stdin;
+        const stdin = process.stdin
         const {
             lastGroup: {patterns, parallel},
             continueOnError,
@@ -36,11 +36,11 @@ module.exports = function npmRunAll(args, stdout, stderr) {
             printLabel,
             printName,
             silent,
-            rest
-        } = parseCLIArgs(args, {parallel: false}, {singleMode: true});
+            rest,
+        } = parseCLIArgs(args, {parallel: false}, {singleMode: true})
 
         if (patterns.length === 0) {
-            return Promise.resolve(null);
+            return Promise.resolve(null)
         }
 
         return runAll(
@@ -55,11 +55,11 @@ module.exports = function npmRunAll(args, stdout, stderr) {
                 printName,
                 packageConfig,
                 silent,
-                arguments: rest
+                arguments: rest,
             }
-        );
+        )
     }
     catch (err) {
-        return Promise.reject(err);
+        return Promise.reject(err)
     }
-};
+}

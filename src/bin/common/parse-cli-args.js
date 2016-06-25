@@ -3,7 +3,7 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 /*eslint no-process-env: "off"*/
 
@@ -11,15 +11,15 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const assign = require("object-assign");
+const assign = require("object-assign")
 
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
-const OVERWRITE_OPTION = /^--([^:]+?):([^=]+?)(?:=(.+))?$/;
-const CONFIG_PATTERN = /^npm_package_config_(.+)$/;
-const CONCAT_OPTIONS = /^-[clnps]+$/;
+const OVERWRITE_OPTION = /^--([^:]+?):([^=]+?)(?:=(.+))?$/
+const CONFIG_PATTERN = /^npm_package_config_(.+)$/
+const CONCAT_OPTIONS = /^-[clnps]+$/
 
 /**
  * Overwrites a specified package config.
@@ -31,8 +31,8 @@ const CONCAT_OPTIONS = /^-[clnps]+$/;
  * @returns {void}
  */
 function overwriteConfig(config, packageName, variable, value) {
-    const scope = config[packageName] || (config[packageName] = {}); // eslint-disable-line no-param-reassign
-    scope[variable] = value;
+    const scope = config[packageName] || (config[packageName] = {}) // eslint-disable-line no-param-reassign
+    scope[variable] = value
 }
 
 /**
@@ -42,20 +42,20 @@ function overwriteConfig(config, packageName, variable, value) {
  * @returns {object} Created config object.
  */
 function createPackageConfig() {
-    const retv = {};
-    const packageName = process.env.npm_package_name;
+    const retv = {}
+    const packageName = process.env.npm_package_name
     if (!packageName) {
-        return retv;
+        return retv
     }
 
     Object.keys(process.env).forEach(key => {
-        const m = CONFIG_PATTERN.exec(key);
+        const m = CONFIG_PATTERN.exec(key)
         if (m != null) {
-            overwriteConfig(retv, packageName, m[1], process.env[key]);
+            overwriteConfig(retv, packageName, m[1], process.env[key])
         }
-    });
+    })
 
-    return retv;
+    return retv
 }
 
 /**
@@ -69,7 +69,7 @@ function addGroup(groups, initialValues) {
     groups.push(assign(
         {parallel: false, patterns: []},
         initialValues || {}
-    ));
+    ))
 }
 
 /**
@@ -82,23 +82,23 @@ class ArgumentSet {
      * @param {object} options - A key-value map for the options.
      */
     constructor(initialValues = {}, options = {}) {
-        this.continueOnError = false;
-        this.groups = [];
-        this.printLabel = false;
-        this.printName = false;
-        this.rest = [];
-        this.silent = process.env.npm_config_loglevel === "silent";
-        this.singleMode = Boolean(options.singleMode);
-        this.packageConfig = createPackageConfig();
+        this.continueOnError = false
+        this.groups = []
+        this.printLabel = false
+        this.printName = false
+        this.rest = []
+        this.silent = process.env.npm_config_loglevel === "silent"
+        this.singleMode = Boolean(options.singleMode)
+        this.packageConfig = createPackageConfig()
 
-        addGroup(this.groups, initialValues);
+        addGroup(this.groups, initialValues)
     }
 
     /**
      * Gets the last group.
      */
     get lastGroup() {
-        return this.groups[this.groups.length - 1];
+        return this.groups[this.groups.length - 1]
     }
 }
 
@@ -112,87 +112,87 @@ class ArgumentSet {
 function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
     LOOP:
     for (let i = 0; i < args.length; ++i) {
-        const arg = args[i];
+        const arg = args[i]
 
         switch (arg) {
             case "--":
-                set.rest = args.slice(1 + i);
-                break LOOP;
+                set.rest = args.slice(1 + i)
+                break LOOP
 
             case "-c":
             case "--continue-on-error":
-                set.continueOnError = true;
-                break;
+                set.continueOnError = true
+                break
 
             case "-l":
             case "--print-label":
-                set.printLabel = true;
-                break;
+                set.printLabel = true
+                break
 
             case "-n":
             case "--print-name":
-                set.printName = true;
-                break;
+                set.printName = true
+                break
 
             case "--silent":
-                set.silent = true;
-                break;
+                set.silent = true
+                break
 
             case "--color":
             case "--no-color":
                 // do nothing.
-                break;
+                break
 
             case "-s":
             case "--sequential":
             case "--serial":
                 if (set.singleMode && arg === "-s") {
-                    set.silent = true;
-                    break;
+                    set.silent = true
+                    break
                 }
                 if (set.singleMode) {
-                    throw new Error(`Invalid Option: ${arg}`);
+                    throw new Error(`Invalid Option: ${arg}`)
                 }
-                addGroup(set.groups);
-                break;
+                addGroup(set.groups)
+                break
 
             case "-p":
             case "--parallel":
                 if (set.singleMode) {
-                    throw new Error(`Invalid Option: ${arg}`);
+                    throw new Error(`Invalid Option: ${arg}`)
                 }
-                addGroup(set.groups, {parallel: true});
-                break;
+                addGroup(set.groups, {parallel: true})
+                break
 
             default: {
-                const matched = OVERWRITE_OPTION.exec(arg);
+                const matched = OVERWRITE_OPTION.exec(arg)
                 if (matched) {
                     overwriteConfig(
                         set.packageConfig,
                         matched[1],
                         matched[2],
                         matched[3] || args[++i]
-                    );
+                    )
                 }
                 else if (CONCAT_OPTIONS.test(arg)) {
                     parseCLIArgsCore(
                         set,
                         arg.slice(1).split("").map(c => `-${c}`)
-                    );
+                    )
                 }
                 else if (arg[0] === "-") {
-                    throw new Error(`Invalid Option: ${arg}`);
+                    throw new Error(`Invalid Option: ${arg}`)
                 }
                 else {
-                    set.lastGroup.patterns.push(arg);
+                    set.lastGroup.patterns.push(arg)
                 }
 
-                break;
+                break
             }
         }
     }
 
-    return set;
+    return set
 }
 
 /**
@@ -205,5 +205,5 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
  * @returns {ArgumentSet} The parsed CLI arguments.
  */
 module.exports = function parseCLIArgs(args, initialValues, options) {
-    return parseCLIArgsCore(new ArgumentSet(initialValues, options), args);
-};
+    return parseCLIArgsCore(new ArgumentSet(initialValues, options), args)
+}

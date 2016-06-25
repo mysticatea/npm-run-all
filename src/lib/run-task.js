@@ -4,19 +4,19 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const chalk = require("chalk");
-const Promise = require("pinkie-promise");
-const {parse: parseArgs} = require("shell-quote");
-const padEnd = require("string.prototype.padend");
-const createHeader = require("./create-header");
-const createPrefixTransform = require("./create-prefix-transform-stream");
-const spawn = require("./spawn");
+const chalk = require("chalk")
+const Promise = require("pinkie-promise")
+const {parse: parseArgs} = require("shell-quote")
+const padEnd = require("string.prototype.padend")
+const createHeader = require("./create-header")
+const createPrefixTransform = require("./create-prefix-transform-stream")
+const spawn = require("./spawn")
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -32,17 +32,17 @@ const spawn = require("./spawn");
  */
 function wrapLabeling(taskName, source, labelState) {
     if (source == null || !labelState.enabled) {
-        return source;
+        return source
     }
 
-    const label = padEnd(taskName, labelState.width);
-    const color = source.isTTY ? chalk.gray : (x) => x;
-    const prefix = color(`[${label}] `);
-    const stream = createPrefixTransform(prefix, labelState);
+    const label = padEnd(taskName, labelState.width)
+    const color = source.isTTY ? chalk.gray : (x) => x
+    const prefix = color(`[${label}] `)
+    const stream = createPrefixTransform(prefix, labelState)
 
-    stream.pipe(source);
+    stream.pipe(source)
 
-    return stream;
+    return stream
 }
 
 /**
@@ -58,7 +58,7 @@ function detectStreamKind(stream, std) {
         // `|| !std.isTTY` is needed for the workaround of https://github.com/nodejs/node/issues/5620
         stream !== std || !std.isTTY ? "pipe" :
         /* else */ stream
-    );
+    )
 }
 
 //------------------------------------------------------------------------------
@@ -105,20 +105,20 @@ module.exports = function runTask(
         prefixOptions,
         labelState,
         printName,
-        packageInfo
+        packageInfo,
     }
 ) {
-    let cp = null;
+    let cp = null
     const promise = new Promise((resolve, reject) => {
-        const stdout = wrapLabeling(task, sourceStdout, labelState);
-        const stderr = wrapLabeling(task, sourceStderr, labelState);
-        const stdinKind = detectStreamKind(stdin, process.stdin);
-        const stdoutKind = detectStreamKind(stdout, process.stdout);
-        const stderrKind = detectStreamKind(stderr, process.stderr);
+        const stdout = wrapLabeling(task, sourceStdout, labelState)
+        const stderr = wrapLabeling(task, sourceStderr, labelState)
+        const stdinKind = detectStreamKind(stdin, process.stdin)
+        const stdoutKind = detectStreamKind(stdout, process.stdout)
+        const stderrKind = detectStreamKind(stderr, process.stderr)
 
         // Print task name.
         if (printName && stdout != null) {
-            stdout.write(createHeader(task, packageInfo, sourceStdout.isTTY));
+            stdout.write(createHeader(task, packageInfo, sourceStdout.isTTY))
         }
 
         // Execute.
@@ -126,36 +126,36 @@ module.exports = function runTask(
             "npm",
             ["run-script"].concat(prefixOptions, parseArgs(task)),
             {stdio: [stdinKind, stdoutKind, stderrKind]}
-        );
+        )
 
         // Piping stdio.
         if (stdinKind === "pipe") {
-            stdin.pipe(cp.stdin);
+            stdin.pipe(cp.stdin)
         }
         if (stdoutKind === "pipe") {
-            cp.stdout.pipe(stdout, {end: false});
+            cp.stdout.pipe(stdout, {end: false})
         }
         if (stderrKind === "pipe") {
-            cp.stderr.pipe(stderr, {end: false});
+            cp.stderr.pipe(stderr, {end: false})
         }
 
         // Register
         cp.on("error", (err) => {
-            cp = null;
-            reject(err);
-        });
+            cp = null
+            reject(err)
+        })
         cp.on("close", (code) => {
-            cp = null;
-            resolve({task, code});
-        });
-    });
+            cp = null
+            resolve({task, code})
+        })
+    })
 
     promise.abort = function abort() {
         if (cp != null) {
-            cp.kill();
-            cp = null;
+            cp.kill()
+            cp = null
         }
-    };
+    }
 
-    return promise;
-};
+    return promise
+}

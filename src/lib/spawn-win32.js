@@ -4,13 +4,13 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const crossSpawn = require("cross-spawn");
+const crossSpawn = require("cross-spawn")
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -22,7 +22,7 @@ const crossSpawn = require("cross-spawn");
  * @returns {void}
  */
 function kill() {
-    crossSpawn("taskkill", ["/F", "/T", "/PID", this.pid]);
+    crossSpawn("taskkill", ["/F", "/T", "/PID", this.pid])
 }
 
 //------------------------------------------------------------------------------
@@ -43,8 +43,8 @@ function kill() {
  * @private
  */
 module.exports = function spawn(command, args, options) {
-    const child = crossSpawn(command, args, options);
-    child.kill = kill;
+    const child = crossSpawn(command, args, options)
+    child.kill = kill
 
-    return child;
-};
+    return child
+}

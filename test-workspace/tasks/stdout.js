@@ -1,3 +1,3 @@
-"use strict";
+"use strict"
 
-process.stdout.write("STDOUT");
+process.stdout.write("STDOUT")

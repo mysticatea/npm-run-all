@@ -4,10 +4,10 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Main
 //------------------------------------------------------------------------------
 
-require("../common/bootstrap")(module, "run-p");
+require("../common/bootstrap")(module, "run-p")

@@ -3,14 +3,14 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const Promise = require("pinkie-promise");
-const {sync: readPkgUp} = require("read-pkg-up");
+const Promise = require("pinkie-promise")
+const {sync: readPkgUp} = require("read-pkg-up")
 
 //------------------------------------------------------------------------------
 // Public Interface
@@ -24,9 +24,9 @@ const {sync: readPkgUp} = require("read-pkg-up");
  * @private
  */
 module.exports = function printVersion(output) {
-    const version = readPkgUp(__dirname).pkg.version;
+    const version = readPkgUp(__dirname).pkg.version
 
-    output.write(`v${version}\n`);
+    output.write(`v${version}\n`)
 
-    return Promise.resolve(null);
-};
+    return Promise.resolve(null)
+}
