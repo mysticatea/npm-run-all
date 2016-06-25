@@ -58,6 +58,10 @@ Run npm-scripts.
   - **options.printName** `boolean` --
     Set the flag to print the task name before running each task.
     Default is `false`.
+  - **options.race** `boolean` --
+    Set the flag to kill all npm-scripts when a npm-script finished with zero.
+    This option is valid only with `options.parallel` option.
+    Default is `false`.
   - **options.silent** `boolean` --
     The flag to set `silent` to the log level of npm.
     Default is `false`.

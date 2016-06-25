@@ -49,6 +49,11 @@ describe("[fail] it should fail", () => {
         it("npm-run-all command", () => shouldFail(runAll(["--invalid"])))
         it("run-s command", () => shouldFail(runSeq(["--parallel"])))
         it("run-p command", () => shouldFail(runPar(["--sequential"])))
+
+        it("npm-run-all command with --race without --parallel", () => shouldFail(runAll(["--race"])))
+        it("npm-run-all command with --r without --parallel", () => shouldFail(runAll(["--r"])))
+        it("run-s command with --race", () => shouldFail(runSeq(["--race"])))
+        it("run-s command with --r", () => shouldFail(runSeq(["--r"])))
     })
 
     describe("if invalid `options.taskList` is given.", () => {

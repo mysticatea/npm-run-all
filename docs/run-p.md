@@ -40,6 +40,8 @@ Options:
                                coloring their output if this option was given.
     -n, --print-name   - - - - Set the flag to print the task name before
                                running each task.
+    -r, --race   - - - - - - - Set the flag to kill all tasks when a task
+                               finished with zero.
     -s, --silent   - - - - - - Set 'silent' to the log level of npm.
 
     Shorthand aliases can be combined.

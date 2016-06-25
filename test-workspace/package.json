@@ -18,6 +18,7 @@
     "test-task:append:a:c": "node tasks/append.js ac",
     "test-task:append:a:d": "node tasks/append.js ad",
     "test-task:append:b": "node tasks/append.js b",
+    "test-task:append1": "node tasks/append1.js",
     "test-task:append2": "node tasks/append2.js",
     "test-task:error": "node tasks/error.js",
     "test-task:stdout": "node tasks/stdout.js > test.txt",

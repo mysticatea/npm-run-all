@@ -38,10 +38,8 @@ module.exports = function runTasksInParallel(tasks, options) {
      * @returns {void}
      */
     function abortTasks() {
-        if (!aborted && !options.continueOnError) {
-            aborted = true
-            taskPromises.forEach(t => t.abort())
-        }
+        aborted = true
+        taskPromises.forEach(t => t.abort())
     }
 
     // When one of tasks exited with non-zero, abort all tasks.
@@ -49,19 +47,32 @@ module.exports = function runTasksInParallel(tasks, options) {
     let errorResult = null
     const parallelPromise = Promise.all(taskPromises.map((promise, index) =>
         promise.then(result => {
-            // Save the result.
-            if (!aborted) {
-                results[index].code = result.code
+            if (aborted) {
+                return
             }
+
+            // Save the result.
+            results[index].code = result.code
 
             // Aborts all tasks if it's an error.
             if (errorResult == null && result.code) {
                 errorResult = errorResult || result
+                if (!options.continueOnError) {
+                    abortTasks()
+                }
+            }
+
+            // Aborts all tasks if options.race is true.
+            if (options.race && !result.code) {
                 abortTasks()
             }
         })
     ))
-    parallelPromise.catch(abortTasks)
+    parallelPromise.catch(() => {
+        if (!aborted && !options.continueOnError) {
+            abortTasks()
+        }
+    })
 
     // Make fail if there are tasks that exited non-zero.
     return parallelPromise.then(() => {

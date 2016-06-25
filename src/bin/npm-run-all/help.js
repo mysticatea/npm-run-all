@@ -45,6 +45,9 @@ Options:
     -p, --parallel <tasks>   - Run a group of tasks in parallel.
                                e.g. 'npm-run-all -p foo bar' is similar to
                                     'npm run foo & npm run bar'.
+    -r, --race   - - - - - - - Set the flag to kill all tasks when a task
+                               finished with zero. This option is valid only
+                               with 'parallel' option.
     -s, --sequential <tasks> - Run a group of tasks sequentially.
         --serial <tasks>       e.g. 'npm-run-all -s foo bar' is similar to
                                     'npm run foo && npm run bar'.

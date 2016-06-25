@@ -19,7 +19,7 @@ const assign = require("object-assign")
 
 const OVERWRITE_OPTION = /^--([^:]+?):([^=]+?)(?:=(.+))?$/
 const CONFIG_PATTERN = /^npm_package_config_(.+)$/
-const CONCAT_OPTIONS = /^-[clnps]+$/
+const CONCAT_OPTIONS = /^-[clnprs]+$/
 
 /**
  * Overwrites a specified package config.
@@ -86,6 +86,7 @@ class ArgumentSet {
         this.groups = []
         this.printLabel = false
         this.printName = false
+        this.race = false
         this.rest = []
         this.silent = process.env.npm_config_loglevel === "silent"
         this.singleMode = Boolean(options.singleMode)
@@ -99,6 +100,13 @@ class ArgumentSet {
      */
     get lastGroup() {
         return this.groups[this.groups.length - 1]
+    }
+
+    /**
+     * Gets "parallel" flag.
+     */
+    get parallel() {
+        return this.groups.some(g => g.parallel)
     }
 }
 
@@ -132,6 +140,11 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
             case "-n":
             case "--print-name":
                 set.printName = true
+                break
+
+            case "-r":
+            case "--race":
+                set.race = true
                 break
 
             case "--silent":
@@ -190,6 +203,12 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                 break
             }
         }
+    }
+
+    if (!set.parallel && set.race) {
+        throw new Error(`Invalid Option: ${
+            args.indexOf("--race") !== -1 ? "race" : "r"
+        } (without parallel)`)
     }
 
     return set

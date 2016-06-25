@@ -36,6 +36,7 @@ module.exports = function npmRunAll(args, stdout, stderr) {
             printLabel,
             printName,
             silent,
+            race,
             rest,
         } = parseCLIArgs(args, {parallel: true}, {singleMode: true})
 
@@ -56,6 +57,7 @@ module.exports = function npmRunAll(args, stdout, stderr) {
                 packageConfig,
                 silent,
                 arguments: rest,
+                race,
             }
         )
     }
