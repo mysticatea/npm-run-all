@@ -174,4 +174,48 @@ describe("[argument-placeholders]", () => {
                 .then(() => assert(result() === "[\"1st\",\"2nd\",\"1st\",\"2nd\",\"1st 2nd\"]"))
         )
     })
+
+    describe("'{1:-foo}' should be replaced by 'foo' if arguments are nothing:", () => {
+        it("Node API", () =>
+            nodeApi("test-task:dump {1:-foo} {1}")
+                .then(() => assert(result() === "[\"foo\"]"))
+        )
+
+        it("npm-run-all command", () =>
+            runAll(["test-task:dump {1:-foo} {1}"])
+                .then(() => assert(result() === "[\"foo\"]"))
+        )
+
+        it("run-s command", () =>
+            runSeq(["test-task:dump {1:-foo} {1}"])
+                .then(() => assert(result() === "[\"foo\"]"))
+        )
+
+        it("run-p command", () =>
+            runPar(["test-task:dump {1:-foo} {1}"])
+                .then(() => assert(result() === "[\"foo\"]"))
+        )
+    })
+
+    describe("'{1:=foo}' should be replaced by 'foo' and should affect following '{1}' if arguments are nothing:", () => {
+        it("Node API", () =>
+            nodeApi("test-task:dump {1:=foo} {1}")
+                .then(() => assert(result() === "[\"foo\",\"foo\"]"))
+        )
+
+        it("npm-run-all command", () =>
+            runAll(["test-task:dump {1:=foo} {1}"])
+                .then(() => assert(result() === "[\"foo\",\"foo\"]"))
+        )
+
+        it("run-s command", () =>
+            runSeq(["test-task:dump {1:=foo} {1}"])
+                .then(() => assert(result() === "[\"foo\",\"foo\"]"))
+        )
+
+        it("run-p command", () =>
+            runPar(["test-task:dump {1:=foo} {1}"])
+                .then(() => assert(result() === "[\"foo\",\"foo\"]"))
+        )
+    })
 })

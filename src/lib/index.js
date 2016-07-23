@@ -21,7 +21,7 @@ const runTasksInSequencial = require("./run-tasks-in-sequencial")
 // Helpers
 //------------------------------------------------------------------------------
 
-const ARGS_PATTERN = /[{]([*@]|\d+)[}]/g
+const ARGS_PATTERN = /\{(!)?([*@]|\d+)([^}]+)?}/g
 
 /**
  * Converts a given value to an array.
@@ -44,17 +44,40 @@ function toArray(x) {
  * @returns {string[]} replaced
  */
 function applyArguments(patterns, args) {
-    return patterns.map(pattern => pattern.replace(ARGS_PATTERN, (unused, index) => {
-        if (index === "@") {
+    const defaults = Object.create(null)
+
+    return patterns.map(pattern => pattern.replace(ARGS_PATTERN, (whole, indirectionMark, id, options) => {
+        if (indirectionMark != null) {
+            throw Error(`Invalid Placeholder: ${whole}`)
+        }
+        if (id === "@") {
             return shellQuote.quote(args)
         }
-        if (index === "*") {
+        if (id === "*") {
             return shellQuote.quote([args.join(" ")])
         }
 
-        const position = parseInt(index, 10)
+        const position = parseInt(id, 10)
         if (position >= 1 && position <= args.length) {
             return shellQuote.quote([args[position - 1]])
+        }
+
+        // Address default values
+        if (options != null) {
+            const prefix = options.slice(0, 2)
+
+            if (prefix === ":=") {
+                defaults[id] = shellQuote.quote([options.slice(2)])
+                return defaults[id]
+            }
+            if (prefix === ":-") {
+                return shellQuote.quote([options.slice(2)])
+            }
+
+            throw Error(`Invalid Placeholder: ${whole}`)
+        }
+        if (defaults[id] != null) {
+            return defaults[id]
         }
 
         return ""
