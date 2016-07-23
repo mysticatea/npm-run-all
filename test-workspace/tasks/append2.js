@@ -11,11 +11,7 @@ function append() {
 }
 
 append()
-setTimeout(function() {
-    setTimeout(function() {
-        setTimeout(append, 1000)
-    }, 1000)
-}, 1000)
+setTimeout(append, 3000)
 
 // SIGINT/SIGTERM Handling.
 process.on("SIGINT", function() {
