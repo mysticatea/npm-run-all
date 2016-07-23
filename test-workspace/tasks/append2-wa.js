@@ -1,12 +1,12 @@
 "use strict"
 
-var appendResult = require("./lib/util").appendResult
+var util = require("./lib/util")
 
-appendResult(process.argv[2])
+util.appendResult(process.argv[2])
 setTimeout(function() {
-    appendResult(process.argv[2])
+    util.appendResult(process.argv[2])
     process.exit(0)
-}, 3000)
+}, 10000)
 
 // SIGINT/SIGTERM Handling.
 process.on("SIGINT", function() {

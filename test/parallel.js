@@ -262,37 +262,44 @@ describe("[parallel]", () => {
 
     describe("should abort other tasks when a task finished, when --race option was specified:", () => {
         it("Node API", () =>
-            nodeApi(["test-task:append1 a", "test-task:append2 b"], {parallel: true, race: true})
+            nodeApi(["test-task:append1 a", "test-task:append2wa b"], {parallel: true, race: true})
                 .then(() => {
                     assert(result() === "a" || result() === "ab" || result() === "ba")
                 })
         )
 
         it("npm-run-all command (--race)", () =>
-            runAll(["--race", "--parallel", "test-task:append1 a", "test-task:append2 b"])
+            runAll(["--race", "--parallel", "test-task:append1 a", "test-task:append2wa b"])
                 .then(() => {
                     assert(result() === "a" || result() === "ab" || result() === "ba")
                 })
         )
 
         it("npm-run-all command (-r)", () =>
-            runAll(["-rp", "test-task:append1 a", "test-task:append2 b"])
+            runAll(["-rp", "test-task:append1 a", "test-task:append2wa b"])
                 .then(() => {
                     assert(result() === "a" || result() === "ab" || result() === "ba")
                 })
         )
 
         it("run-p command (--race)", () =>
-            runPar(["--race", "test-task:append1 a", "test-task:append2 b"])
+            runPar(["--race", "test-task:append1 a", "test-task:append2wa b"])
                 .then(() => {
                     assert(result() === "a" || result() === "ab" || result() === "ba")
                 })
         )
 
         it("run-p command (-r)", () =>
-            runPar(["-r", "test-task:append1 a", "test-task:append2 b"])
+            runPar(["-r", "test-task:append1 a", "test-task:append2wa b"])
                 .then(() => {
                     assert(result() === "a" || result() === "ab" || result() === "ba")
+                })
+        )
+
+        it("run-p command (no -r)", () =>
+            runPar(["test-task:append1 a", "test-task:append2wa b"])
+                .then(() => {
+                    assert(result() === "abb" || result() === "bab")
                 })
         )
     })
