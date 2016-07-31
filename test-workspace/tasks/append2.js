@@ -6,7 +6,7 @@ appendResult(process.argv[2])
 setTimeout(function() {
     appendResult(process.argv[2])
     process.exit(0)
-}, 3000)
+}, 2000)
 
 // SIGINT/SIGTERM Handling.
 process.on("SIGINT", function() {
