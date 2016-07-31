@@ -207,12 +207,12 @@ describe("[print-label] npm-run-all", () => {
                     {stdout, parallel: true, printLabel: true}
                 )
                 .then(() => {
-                    for (const line of EXPECTED_LINES) {
+                    EXPECTED_LINES.forEach(line => {
                         assert(stdout.value.indexOf(line) !== -1)
-                    }
-                    for (const pattern of UNEXPECTED_PATTERNS) {
+                    })
+                    UNEXPECTED_PATTERNS.forEach(pattern => {
                         assert(!pattern.test(stdout.value))
-                    }
+                    })
                 })
         })
 
@@ -223,12 +223,12 @@ describe("[print-label] npm-run-all", () => {
                     stdout
                 )
                 .then(() => {
-                    for (const line of EXPECTED_LINES) {
+                    EXPECTED_LINES.forEach(line => {
                         assert(stdout.value.indexOf(line) !== -1)
-                    }
-                    for (const pattern of UNEXPECTED_PATTERNS) {
+                    })
+                    UNEXPECTED_PATTERNS.forEach(pattern => {
                         assert(!pattern.test(stdout.value))
-                    }
+                    })
                 })
         })
 
@@ -239,12 +239,12 @@ describe("[print-label] npm-run-all", () => {
                     stdout
                 )
                 .then(() => {
-                    for (const line of EXPECTED_LINES) {
+                    EXPECTED_LINES.forEach(line => {
                         assert(stdout.value.indexOf(line) !== -1)
-                    }
-                    for (const pattern of UNEXPECTED_PATTERNS) {
+                    })
+                    UNEXPECTED_PATTERNS.forEach(pattern => {
                         assert(!pattern.test(stdout.value))
-                    }
+                    })
                 })
         })
     })

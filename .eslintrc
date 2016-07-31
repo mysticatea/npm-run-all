@@ -5,7 +5,8 @@
         "ecmaVersion": 6
     },
     "rules": {
-        "node/no-unsupported-features": "off"
+        "node/no-unsupported-features": "off",
+        "no-restricted-syntax": ["error", "ForOfStatement"]
     },
     "settings": {
         "node": {
