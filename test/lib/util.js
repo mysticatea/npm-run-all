@@ -5,13 +5,14 @@
  */
 "use strict"
 
-/*eslint no-var:"off"*/
+/*eslint-disable no-var, prefer-arrow-callback*/
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
 var fs = require("fs")
+var Promise = require("pinkie-promise")
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -64,4 +65,16 @@ exports.removeResult = function removeResult() {
             console.error("ERROR:", err.stack)
         }
     }
+}
+
+/**
+ * Delay.
+ *
+ * @param {number} timeoutInMillis - The time to delay.
+ * @returns {Promise<void>} The promise which fulfilled after the given time.
+ */
+exports.delay = function delay(timeoutInMillis) {
+    return new Promise(function(resolve) {
+        setTimeout(resolve, timeoutInMillis)
+    })
 }

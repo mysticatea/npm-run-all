@@ -23,7 +23,7 @@ $ npm-run-all --parallel watch:*
 ## Installation
 
 ```
-npm install npm-run-all
+$ npm install npm-run-all
 ```
 
 - Requires `Node@>=0.10` and `npm@>=2`
