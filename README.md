@@ -13,11 +13,11 @@
 A CLI tool to run multiple npm-scripts in parallel or sequential.
 
 ```
-> npm-run-all clean lint build:*
+$ npm-run-all clean lint build:*
 ```
 
 ```
-> npm-run-all clean --parallel "build:* -- --watch"
+$ npm-run-all --parallel watch:*
 ```
 
 ## Installation
@@ -31,7 +31,7 @@ npm install npm-run-all
 
 ## CLI Commands
 
-This `npm-run-all` package introduces 3 CLI commands.
+This `npm-run-all` package provides 3 CLI commands.
 
 - [npm-run-all]
 - [run-s]
@@ -40,7 +40,7 @@ This `npm-run-all` package introduces 3 CLI commands.
 The main command is [npm-run-all].
 We can make complex plans with [npm-run-all] command.
 
-Both [run-s] and [run-p] are the shorthand commands.
+Both [run-s] and [run-p] are shorthand commands.
 [run-s] is for sequential, [run-p] is for parallel.
 We can make simple plans with those commands.
 
@@ -50,6 +50,36 @@ This `npm-run-all` package provides Node API.
 
 - [Node API]
 
+## Changelog
+
+- https://github.com/mysticatea/npm-run-all/releases
+
+## Contributing
+
+Thank you for contributing!
+
+### Bug Reports or Feature Requests
+
+Please use GitHub Issues.
+
+### Correct Documents
+
+Please use GitHub Pull Requests.
+
+I'm not familiar with English, so I especially thank you for documents' corrections.
+
+### Feature Implementing
+
+Please use GitHub Pull Requests.
+
+There are some npm-scripts to help developments.
+Those work on Windows, Mac, or Linux (by the way, I'm developping `npm-run-all` on Windows).
+
+- **npm test** - Run tests and collect coverage.
+- **npm run build** - Make `lib` directory from `src` directory.
+- **npm run clean** - Delete directories (folders) which are created by other commands.
+- **npm run lint** - Run ESLint.
+- **npm run watch** - Run tests (not collect coverage) when each file was modified.
 
 [npm-run-all]: docs/npm-run-all.md
 [run-s]: docs/run-s.md
