@@ -1,6 +1,6 @@
 {
   "name": "npm-run-all",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "A CLI tool to run multiple npm-scripts in parallel or sequential.",
   "bin": {
     "run-p": "bin/run-p/index.js",
