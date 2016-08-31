@@ -18,7 +18,8 @@ const assign = require("object-assign")
 //------------------------------------------------------------------------------
 
 const OVERWRITE_OPTION = /^--([^:]+?):([^=]+?)(?:=(.+))?$/
-const CONFIG_PATTERN = /^npm_package_config_(.+)$/
+const CONFIG_OPTION = /^--([^=]+?)(?:=(.+))$/
+const PACKAGE_CONFIG_PATTERN = /^npm_package_config_(.+)$/
 const CONCAT_OPTIONS = /^-[clnprs]+$/
 
 /**
@@ -49,7 +50,7 @@ function createPackageConfig() {
     }
 
     Object.keys(process.env).forEach(key => {
-        const m = CONFIG_PATTERN.exec(key)
+        const m = PACKAGE_CONFIG_PATTERN.exec(key)
         if (m != null) {
             overwriteConfig(retv, packageName, m[1], process.env[key])
         }
@@ -91,6 +92,7 @@ class ArgumentSet {
         this.silent = process.env.npm_config_loglevel === "silent"
         this.singleMode = Boolean(options.singleMode)
         this.packageConfig = createPackageConfig()
+        this.config = {}
 
         addGroup(this.groups, initialValues)
     }
@@ -178,14 +180,17 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                 break
 
             default: {
-                const matched = OVERWRITE_OPTION.exec(arg)
-                if (matched) {
+                let matched = null
+                if ((matched = OVERWRITE_OPTION.exec(arg))) {
                     overwriteConfig(
                         set.packageConfig,
                         matched[1],
                         matched[2],
                         matched[3] || args[++i]
                     )
+                }
+                else if ((matched = CONFIG_OPTION.exec(arg))) {
+                    set.config[matched[1]] = matched[2]
                 }
                 else if (CONCAT_OPTIONS.test(arg)) {
                     parseCLIArgsCore(
