@@ -133,22 +133,22 @@ describe("[common]", () => {
 
     describe("should run a task by npm (check an environment variable):", () => {
         it("Node API", () =>
-            nodeApi("test-task:env-check")
+            nodeApi("test-task:package-config")
                 .then(() => assert(result() === "OK"))
         )
 
         it("npm-run-all command", () =>
-            runAll(["test-task:env-check"])
+            runAll(["test-task:package-config"])
                 .then(() => assert(result() === "OK"))
         )
 
         it("run-s command", () =>
-            runSeq(["test-task:env-check"])
+            runSeq(["test-task:package-config"])
                 .then(() => assert(result() === "OK"))
         )
 
         it("run-p command", () =>
-            runPar(["test-task:env-check"])
+            runPar(["test-task:package-config"])
                 .then(() => assert(result() === "OK"))
         )
     })
