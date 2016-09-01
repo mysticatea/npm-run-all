@@ -32,6 +32,7 @@ module.exports = function npmRunAll(args, stdout, stderr) {
         const {
             lastGroup: {patterns, parallel},
             continueOnError,
+            config,
             packageConfig,
             printLabel,
             printName,
@@ -54,6 +55,7 @@ module.exports = function npmRunAll(args, stdout, stderr) {
                 continueOnError,
                 printLabel,
                 printName,
+                config,
                 packageConfig,
                 silent,
                 arguments: rest,

@@ -126,6 +126,17 @@ function toOverwriteOptions(config) {
 }
 
 /**
+ * Converts a given config object to an `--a=b` style option array.
+ *
+ * @param {object|null} config -
+ *   A map-like object to set configs.
+ * @returns {string[]} `--a=b` style options.
+ */
+function toConfigOptions(config) {
+    return Object.keys(config).map(key => `--${key}=${config[key]}`)
+}
+
+/**
  * Gets the maximum length.
  *
  * @param {number} length - The current maximum length.
@@ -203,6 +214,7 @@ module.exports = function npmRunAll(
         stdout = null,
         stderr = null,
         taskList = null,
+        config = null,
         packageConfig = null,
         silent = false,
         continueOnError = false,
@@ -228,6 +240,9 @@ module.exports = function npmRunAll(
         }
         if (packageConfig != null) {
             prefixOptions.push(...toOverwriteOptions(packageConfig))
+        }
+        if (config != null) {
+            prefixOptions.push(...toConfigOptions(config))
         }
 
         return Promise.resolve(taskList)
