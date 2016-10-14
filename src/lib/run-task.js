@@ -124,7 +124,7 @@ module.exports = function runTask(
         // Execute.
         cp = spawn(
             "npm",
-            ["run-script"].concat(prefixOptions, parseArgs(task)),
+            ["run"].concat(prefixOptions, parseArgs(task)),
             {stdio: [stdinKind, stdoutKind, stderrKind]}
         )
 
