@@ -125,7 +125,7 @@ We can use placeholders to give the arguments preceded by `--` to scripts.
 > run-p "start-server -- --port {1}" -- 8080
 ```
 
-This is useful to pass through arguments from `npm run-script` command.
+This is useful to pass through arguments from `npm run` command.
 
 ```json
 {
