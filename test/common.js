@@ -10,14 +10,9 @@
 //------------------------------------------------------------------------------
 
 const assert = require("power-assert")
-const {result, removeResult} = require("./lib/util")
-const BufferStream = require("./lib/buffer-stream")
-
-// Test targets.
 const nodeApi = require("../src/lib")
-const runAll = require("../src/bin/npm-run-all")
-const runSeq = require("../src/bin/run-s")
-const runPar = require("../src/bin/run-p")
+const BufferStream = require("./lib/buffer-stream")
+const {result, removeResult, runAll, runPar, runSeq} = require("./lib/util")
 
 //------------------------------------------------------------------------------
 // Test
@@ -261,13 +256,22 @@ describe("[common]", () => {
                 )
         })
 
+        /**
+         * Strip unknown istanbul's warnings.
+         * @param {string} str - The string to be stripped.
+         * @returns {string} The stripped string.
+         */
+        function stripIstanbulWarnings(str) {
+            return str.replace(/File \[.+?] ignored, nothing could be mapped\r?\n/, "")
+        }
+
         it("npm-run-all command", () => {
             const stdout = new BufferStream()
             const stderr = new BufferStream()
             return runAll(["--silent", "test-task:error"], stdout, stderr)
                 .then(
                     () => assert(false, "Should fail."),
-                    () => assert(stdout.value === "" && stderr.value === "")
+                    () => assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
                 )
         })
 
@@ -277,7 +281,7 @@ describe("[common]", () => {
             return runSeq(["--silent", "test-task:error"], stdout, stderr)
                 .then(
                     () => assert(false, "Should fail."),
-                    () => assert(stdout.value === "" && stderr.value === "")
+                    () => assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
                 )
         })
 
@@ -287,7 +291,7 @@ describe("[common]", () => {
             return runPar(["--silent", "test-task:error"], stdout, stderr)
                 .then(
                     () => assert(false, "Should fail."),
-                    () => assert(stdout.value === "" && stderr.value === "")
+                    () => assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
                 )
         })
     })

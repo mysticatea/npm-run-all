@@ -10,13 +10,9 @@
 //------------------------------------------------------------------------------
 
 const assert = require("power-assert")
-const {result, removeResult, delay} = require("./lib/util")
-const spawnWithKill = require("./lib/spawn-with-kill")
-
-// Test targets.
 const nodeApi = require("../src/lib")
-const runAll = require("../src/bin/npm-run-all")
-const runPar = require("../src/bin/run-p")
+const spawnWithKill = require("./lib/spawn-with-kill")
+const {delay, result, removeResult, runAll, runPar} = require("./lib/util")
 
 //------------------------------------------------------------------------------
 // Test
@@ -26,7 +22,7 @@ describe("[parallel]", () => {
     before(() => process.chdir("test-workspace"))
     after(() => process.chdir(".."))
 
-    beforeEach(removeResult)
+    beforeEach(() => delay(1000).then(removeResult))
 
     describe("should run tasks on parallel when was given --parallel option:", () => {
         it("Node API", () =>

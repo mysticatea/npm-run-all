@@ -10,13 +10,8 @@
 //------------------------------------------------------------------------------
 
 const assert = require("power-assert")
-const {result, removeResult} = require("./lib/util")
-
-// Test targets.
 const nodeApi = require("../src/lib")
-const runAll = require("../src/bin/npm-run-all")
-const runSeq = require("../src/bin/run-s")
-const runPar = require("../src/bin/run-p")
+const {result, removeResult, runAll, runPar, runSeq} = require("./lib/util")
 
 //------------------------------------------------------------------------------
 // Test

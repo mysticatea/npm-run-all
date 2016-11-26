@@ -44,7 +44,7 @@ module.exports = function npmRunAll(args, stdout, stderr) {
             return Promise.resolve(null)
         }
 
-        return runAll(
+        const promise = runAll(
             patterns,
             {
                 stdout,
@@ -60,8 +60,20 @@ module.exports = function npmRunAll(args, stdout, stderr) {
                 arguments: rest,
             }
         )
+
+        if (!silent) {
+            promise.catch(err => {
+                //eslint-disable-next-line no-console
+                console.error("ERROR:", err.message)
+            })
+        }
+
+        return promise
     }
     catch (err) {
+        //eslint-disable-next-line no-console
+        console.error("ERROR:", err.message)
+
         return Promise.reject(err)
     }
 }

@@ -53,12 +53,10 @@ module.exports = function bootstrap(entryModule, name) {
     /* eslint-disable no-console, no-process-exit */
     /* istanbul ignore if */
     if (require.main === entryModule) {
+        const argv = process.argv.slice(2)
+
         // Execute.
-        const promise = main(
-            process.argv.slice(2),
-            process.stdout,
-            process.stderr
-        )
+        const promise = main(argv, process.stdout, process.stderr)
 
         // Error Handling.
         promise.then(
@@ -67,8 +65,7 @@ module.exports = function bootstrap(entryModule, name) {
                 // on Git Bash (MINGW64)
                 process.exit(0)
             },
-            (err) => {
-                console.error("ERROR:", err.message)
+            () => {
                 process.exit(1)
             }
         )

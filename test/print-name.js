@@ -11,15 +11,11 @@
 
 /* eslint-disable no-trailing-spaces */
 const assert = require("power-assert")
+const nodeApi = require("../src/lib")
 const createHeader = require("../src/lib/create-header")
 const readPackageJson = require("../src/lib/read-package-json")
 const BufferStream = require("./lib/buffer-stream")
-
-// Test targets.
-const nodeApi = require("../src/lib")
-const runAll = require("../src/bin/npm-run-all")
-const runSeq = require("../src/bin/run-s")
-const runPar = require("../src/bin/run-p")
+const {runAll, runPar, runSeq} = require("./lib/util")
 
 //------------------------------------------------------------------------------
 // Test

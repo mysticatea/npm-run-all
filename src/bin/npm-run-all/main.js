@@ -41,7 +41,7 @@ module.exports = function npmRunAll(args, stdout, stderr) {
             rest,
         } = parseCLIArgs(args)
 
-        return groups.reduce(
+        const promise = groups.reduce(
             (prev, {patterns, parallel}) => {
                 if (patterns.length === 0) {
                     return prev
@@ -66,8 +66,20 @@ module.exports = function npmRunAll(args, stdout, stderr) {
             },
             Promise.resolve(null)
         )
+
+        if (!silent) {
+            promise.catch(err => {
+                //eslint-disable-next-line no-console
+                console.error("ERROR:", err.message)
+            })
+        }
+
+        return promise
     }
     catch (err) {
+        //eslint-disable-next-line no-console
+        console.error("ERROR:", err.message)
+
         return Promise.reject(err)
     }
 }

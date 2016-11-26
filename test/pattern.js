@@ -10,13 +10,9 @@
 //------------------------------------------------------------------------------
 
 const assert = require("power-assert")
-const {result, removeResult} = require("./lib/util")
-
-// Test targets.
 const nodeApi = require("../src/lib")
-const runAll = require("../src/bin/npm-run-all")
-const runSeq = require("../src/bin/run-s")
-const runPar = require("../src/bin/run-p")
+const BufferStream = require("./lib/buffer-stream")
+const {result, removeResult, runAll, runPar, runSeq} = require("./lib/util")
 
 //------------------------------------------------------------------------------
 // Test
@@ -129,28 +125,31 @@ describe("[pattern] it should run matched tasks if glob like patterns are given.
                 )
         )
 
-        it("npm-run-all command", () =>
-            runAll(["a"])
+        it("npm-run-all command", () => {
+            const stderr = new BufferStream()
+            return runAll(["a"], null, stderr)
                 .then(
                     () => assert(false, "should not match"),
-                    (err) => assert((/not found/i).test(err.message))
+                    () => assert((/not found/i).test(stderr.value))
                 )
-        )
+        })
 
-        it("run-s command", () =>
-            runSeq(["a"])
+        it("run-s command", () => {
+            const stderr = new BufferStream()
+            return runSeq(["a"], null, stderr)
                 .then(
                     () => assert(false, "should not match"),
-                    (err) => assert((/not found/i).test(err.message))
+                    () => assert((/not found/i).test(stderr.value))
                 )
-        )
+        })
 
-        it("run-p command", () =>
-            runPar(["a"])
+        it("run-p command", () => {
+            const stderr = new BufferStream()
+            return runPar(["a"], null, stderr)
                 .then(
                     () => assert(false, "should not match"),
-                    (err) => assert((/not found/i).test(err.message))
+                    () => assert((/not found/i).test(stderr.value))
                 )
-        )
+        })
     })
 })

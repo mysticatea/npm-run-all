@@ -10,13 +10,9 @@
 //------------------------------------------------------------------------------
 
 const assert = require("power-assert")
-const {result, removeResult} = require("./lib/util")
-const spawnWithKill = require("./lib/spawn-with-kill")
-
-// Test targets.
 const nodeApi = require("../src/lib")
-const runAll = require("../src/bin/npm-run-all")
-const runSeq = require("../src/bin/run-s")
+const spawnWithKill = require("./lib/spawn-with-kill")
+const {result, removeResult, runAll, runSeq} = require("./lib/util")
 
 //------------------------------------------------------------------------------
 // Test
