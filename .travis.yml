@@ -6,7 +6,10 @@ node_js:
   - "4"
   - "5"
   - "6"
+  - "7"
 before_install:
   - npm install -g npm@latest
+script:
+  - npm test -- --reporter dot
 after_success:
   - npm run coveralls
