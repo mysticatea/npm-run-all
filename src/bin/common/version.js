@@ -24,7 +24,7 @@ const {sync: readPkgUp} = require("read-pkg-up")
  * @private
  */
 module.exports = function printVersion(output) {
-    const version = readPkgUp(__dirname).pkg.version
+    const version = readPkgUp({cwd: __dirname}).pkg.version
 
     output.write(`v${version}\n`)
 
