@@ -10,4 +10,4 @@
 // Main
 //------------------------------------------------------------------------------
 
-require("../common/bootstrap")(module, "npm-run-all")
+require("../common/bootstrap")("npm-run-all")

@@ -10,4 +10,4 @@
 // Main
 //------------------------------------------------------------------------------
 
-require("../common/bootstrap")(module, "run-p")
+require("../common/bootstrap")("run-p")
