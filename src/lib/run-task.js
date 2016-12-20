@@ -22,6 +22,25 @@ const spawn = require("./spawn")
 // Helpers
 //------------------------------------------------------------------------------
 
+const colors = [chalk.cyan, chalk.green, chalk.magenta, chalk.yellow, chalk.red]
+
+/**
+ * Select a color from given task name.
+ *
+ * @param {string} taskName - The task name.
+ * @returns {function} A colorize function that provided by `chalk`
+ */
+function selectColor(taskName) {
+    let hash = 0
+
+    for (const i in taskName) {
+        hash = ((hash << 5) - hash) + taskName.charCodeAt(i)
+        hash |= 0
+    }
+
+    return colors[Math.abs(hash) % colors.length]
+}
+
 /**
  * Wraps stdout/stderr with a transform stream to add the task name as prefix.
  *
@@ -36,7 +55,7 @@ function wrapLabeling(taskName, source, labelState) {
     }
 
     const label = padEnd(taskName, labelState.width)
-    const color = source.isTTY ? chalk.gray : (x) => x
+    const color = source.isTTY ? selectColor(taskName) : (x) => x
     const prefix = color(`[${label}] `)
     const stream = createPrefixTransform(prefix, labelState)
 
