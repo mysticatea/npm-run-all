@@ -112,7 +112,7 @@ module.exports = function matchTasks(taskList, patterns) {
         })
 
         // Built-in tasks should be allowed.
-        if (!found && fullList.indexOf(filter.task) > -1) {
+        if (!found && (fullList.indexOf(filter.task) > -1 || filter.task === "env")) {
             taskSet.add(filter.task + filter.args, filter.task)
             found = true
         }
