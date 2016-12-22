@@ -228,6 +228,13 @@ describe("[common]", () => {
         it("run-p command", () => runPar(["env"]))
     })
 
+    describe("should be able to use any built-in task that can't be run with 'run' prefix:", () => {
+        it("Node API", () => nodeApi("help"))
+        it("npm-run-all command", () => runAll(["help"]))
+        it("run-s command", () => runSeq(["help"]))
+        it("run-p command", () => runPar(["help"]))
+    })
+
     if (process.platform === "win32") {
         describe("issue14", () => {
             it("Node API", () => nodeApi("test-task:issue14:win32"))
