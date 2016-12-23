@@ -11,6 +11,7 @@
 //------------------------------------------------------------------------------
 
 const {Minimatch} = require("minimatch")
+const {fullList} = require("npm")
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -111,7 +112,7 @@ module.exports = function matchTasks(taskList, patterns) {
         })
 
         // Built-in tasks should be allowed.
-        if (!found && (filter.task === "restart" || filter.task === "env")) {
+        if (!found && (fullList.indexOf(filter.task) > -1 || filter.task === "env")) {
             taskSet.add(filter.task + filter.args, filter.task)
             found = true
         }

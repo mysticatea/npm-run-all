@@ -17,6 +17,7 @@ const padEnd = require("string.prototype.padend")
 const createHeader = require("./create-header")
 const createPrefixTransform = require("./create-prefix-transform-stream")
 const spawn = require("./spawn")
+const {fullList} = require("npm")
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -140,10 +141,13 @@ module.exports = function runTask(
             stdout.write(createHeader(task, packageInfo, sourceStdout.isTTY))
         }
 
+        const parsedTask = parseArgs(task)
+        const run = fullList.indexOf(parsedTask[0]) > -1 ? [] : ["run"]
+
         // Execute.
         cp = spawn(
             "npm",
-            ["run"].concat(prefixOptions, parseArgs(task)),
+            run.concat(prefixOptions, parsedTask),
             {stdio: [stdinKind, stdoutKind, stderrKind]}
         )
 
