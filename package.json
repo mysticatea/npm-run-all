@@ -3,9 +3,9 @@
   "version": "3.1.2",
   "description": "A CLI tool to run multiple npm-scripts in parallel or sequential.",
   "bin": {
-    "run-p": "bin/run-p/index.js",
-    "run-s": "bin/run-s/index.js",
-    "npm-run-all": "bin/npm-run-all/index.js"
+    "run-p": "src/bin/run-p/index.js",
+    "run-s": "src/bin/run-s/index.js",
+    "npm-run-all": "src/bin/npm-run-all/index.js"
   },
   "main": "lib/index.js",
   "files": [
