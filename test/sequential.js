@@ -150,7 +150,7 @@ describe("[sequencial] npm-run-all", () => {
         it("npm-run-all command", () =>
             spawnWithKill(
                 "node",
-                ["../node_modules/babel/bin/babel-node.js", "../bin/npm-run-all.js", "test-task:append2 a"]
+                ["../bin/npm-run-all.js", "test-task:append2 a"]
             )
             .then(() => {
                 assert(result() == null || result() === "a")
@@ -160,7 +160,7 @@ describe("[sequencial] npm-run-all", () => {
         it("run-s command", () =>
             spawnWithKill(
                 "node",
-                ["../node_modules/babel/bin/babel-node.js", "../bin/run-s/index.js", "test-task:append2 a"]
+                ["../bin/run-s/index.js", "test-task:append2 a"]
             )
             .then(() => {
                 assert(result() == null || result() === "a")

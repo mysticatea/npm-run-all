@@ -12,6 +12,7 @@
 const cp = require("child_process")
 const fs = require("fs")
 const path = require("path")
+const BufferStream = require("./buffer-stream")
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -39,6 +40,7 @@ function spawn(filePath, args, stdout, stderr) {
             [filePath].concat(args),
             {stdio: "pipe"}
         )
+        const error = new BufferStream()
 
         if (stdout != null) {
             child.stdout.pipe(stdout)
@@ -46,7 +48,13 @@ function spawn(filePath, args, stdout, stderr) {
         if (stderr != null) {
             child.stderr.pipe(stderr)
         }
+        else {
+            child.stderr.pipe(error)
+        }
         child.on("close", (exitCode) => {
+            if (error.value) {
+                console.log(error.value)
+            }
             if (exitCode) {
                 reject(new Error("Exited with non-zero code."))
             }
