@@ -9,7 +9,6 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const Promise = require("pinkie-promise")
 const runAll = require("../../lib")
 const parseCLIArgs = require("../common/parse-cli-args")
 

@@ -8,12 +8,6 @@
 /*eslint-disable no-process-env */
 
 //------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
-const assign = require("object-assign")
-
-//------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
@@ -67,7 +61,7 @@ function createPackageConfig() {
  * @returns {void}
  */
 function addGroup(groups, initialValues) {
-    groups.push(assign(
+    groups.push(Object.assign(
         {parallel: false, patterns: []},
         initialValues || {}
     ))

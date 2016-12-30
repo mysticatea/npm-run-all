@@ -11,7 +11,6 @@
 //------------------------------------------------------------------------------
 
 const chalk = require("chalk")
-const Promise = require("pinkie-promise")
 const parseArgs = require("shell-quote").parse
 const padEnd = require("string.prototype.padend")
 const createHeader = require("./create-header")

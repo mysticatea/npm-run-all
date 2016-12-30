@@ -10,7 +10,6 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const Promise = require("pinkie-promise")
 const NpmRunAllError = require("./npm-run-all-error")
 const runTask = require("./run-task")
 

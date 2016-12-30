@@ -10,7 +10,6 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const Promise = require("pinkie-promise")
 const shellQuote = require("shell-quote")
 const matchTasks = require("./match-tasks")
 const readPackageJson = require("./read-package-json")
