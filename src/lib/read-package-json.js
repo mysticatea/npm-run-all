@@ -10,7 +10,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const {join: joinPath} = require("path")
+const joinPath = require("path").join
 const readPkg = require("read-pkg")
 
 //------------------------------------------------------------------------------

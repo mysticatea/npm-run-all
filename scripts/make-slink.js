@@ -3,20 +3,20 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict";
+"use strict"
 
-var fs = require("fs");
-var path = require("path");
+const fs = require("fs")
+const path = require("path")
 
 try {
     fs.symlinkSync(
         path.resolve(__dirname, "../test/lib"),
         path.resolve(__dirname, "../test-workspace/tasks/lib"),
         "junction"
-    );
+    )
 }
 catch (err) {
     if (err.code !== "EEXIST") {
-        throw err;
+        throw err
     }
 }

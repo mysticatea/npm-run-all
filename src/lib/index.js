@@ -151,8 +151,6 @@ function maxLength(length, name) {
 // Public Interface
 //------------------------------------------------------------------------------
 
-// TODO(mysticatea): https://github.com/eslint/eslint/issues/6097
-//eslint-disable-next-line valid-jsdoc
 /**
  * Runs npm-scripts which are matched with given patterns.
  *
@@ -206,24 +204,20 @@ function maxLength(length, name) {
  * @returns {Promise}
  *   A promise object which becomes fullfilled when all npm-scripts are completed.
  */
-module.exports = function npmRunAll(
-    patternOrPatterns,
-    {
-        parallel = false,
-        stdin = null,
-        stdout = null,
-        stderr = null,
-        taskList = null,
-        config = null,
-        packageConfig = null,
-        silent = false,
-        continueOnError = false,
-        printLabel = false,
-        printName = false,
-        arguments: args = [],
-        race = false,
-    } = {}
-) {
+module.exports = function npmRunAll(patternOrPatterns, options) {
+    const parallel = Boolean(options && options.parallel)
+    const stdin = (options && options.stdin) || null
+    const stdout = (options && options.stdout) || null
+    const stderr = (options && options.stderr) || null
+    const taskList = (options && options.taskList) || null
+    const config = (options && options.config) || null
+    const packageConfig = (options && options.packageConfig) || null
+    const args = (options && options.arguments) || null
+    const silent = Boolean(options && options.silent)
+    const continueOnError = Boolean(options && options.continueOnError)
+    const printLabel = Boolean(options && options.printLabel)
+    const printName = Boolean(options && options.printName)
+    const race = Boolean(options && options.race)
     try {
         const patterns = parsePatterns(patternOrPatterns, args)
         if (patterns.length === 0) {
@@ -234,26 +228,21 @@ module.exports = function npmRunAll(
             throw new Error("Invalid options.taskList")
         }
 
-        const prefixOptions = []
-        if (silent) {
-            prefixOptions.push("--silent")
-        }
-        if (packageConfig != null) {
-            prefixOptions.push(...toOverwriteOptions(packageConfig))
-        }
-        if (config != null) {
-            prefixOptions.push(...toConfigOptions(config))
-        }
+        const prefixOptions = [].concat(
+            silent ? ["--silent"] : [],
+            packageConfig ? toOverwriteOptions(packageConfig) : [],
+            config ? toConfigOptions(config) : []
+        )
 
-        return Promise.resolve(taskList)
-            .then(taskList => {    // eslint-disable-line no-shadow
+        return Promise.resolve()
+            .then(() => {
                 if (taskList != null) {
                     return {taskList, packageInfo: null}
                 }
                 return readPackageJson()
             })
-            .then(({taskList, packageInfo}) => {    // eslint-disable-line no-shadow
-                const tasks = matchTasks(taskList, patterns)
+            .then(x => {
+                const tasks = matchTasks(x.taskList, patterns)
                 const labelWidth = tasks.reduce(maxLength, 0)
                 const runTasks = parallel ? runTasksInParallel : runTasksInSequencial
 
@@ -270,7 +259,7 @@ module.exports = function npmRunAll(
                         lastIsLinebreak: true,
                     },
                     printName,
-                    packageInfo,
+                    packageInfo: x.packageInfo,
                     race,
                 })
             })

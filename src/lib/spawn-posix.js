@@ -28,9 +28,9 @@ function kill() {
             return
         }
 
-        descendent.forEach(({PID: pid}) => {
+        descendent.forEach(child => {
             try {
-                process.kill(pid)
+                process.kill(child.PID)
             }
             catch (_err) {
                 // ignore.

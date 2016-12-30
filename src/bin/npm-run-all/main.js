@@ -29,45 +29,35 @@ const parseCLIArgs = require("../common/parse-cli-args")
 module.exports = function npmRunAll(args, stdout, stderr) {
     try {
         const stdin = process.stdin
-        const {
-            continueOnError,
-            groups,
-            config,
-            packageConfig,
-            printLabel,
-            printName,
-            silent,
-            race,
-            rest,
-        } = parseCLIArgs(args)
+        const argv = parseCLIArgs(args)
 
-        const promise = groups.reduce(
-            (prev, {patterns, parallel}) => {
-                if (patterns.length === 0) {
+        const promise = argv.groups.reduce(
+            (prev, group) => {
+                if (group.patterns.length === 0) {
                     return prev
                 }
                 return prev.then(() => runAll(
-                    patterns,
+                    group.patterns,
                     {
                         stdout,
                         stderr,
                         stdin,
-                        parallel,
-                        continueOnError,
-                        printLabel,
-                        printName,
-                        config,
-                        packageConfig,
-                        silent,
-                        arguments: rest,
-                        race,
+                        parallel: group.parallel,
+                        continueOnError: argv.continueOnError,
+                        printLabel: argv.printLabel,
+                        printName: argv.printName,
+                        config: argv.config,
+                        packageConfig: argv.packageConfig,
+                        silent: argv.silent,
+                        arguments: argv.rest,
+                        race: argv.race,
                     }
                 ))
             },
             Promise.resolve(null)
         )
 
-        if (!silent) {
+        if (!argv.silent) {
             promise.catch(err => {
                 //eslint-disable-next-line no-console
                 console.error("ERROR:", err.message)

@@ -10,13 +10,13 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const {Minimatch} = require("minimatch")
+const Minimatch = require("minimatch").Minimatch
 
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
-const COLON_OR_SLASH = /[:\/]/g
+const COLON_OR_SLASH = /[:/]/g
 const CONVERT_MAP = {":": "/", "/": ":"}
 
 /**

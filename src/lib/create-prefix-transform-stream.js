@@ -10,7 +10,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const {Transform} = require("stream")
+const stream = require("stream")
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -27,7 +27,7 @@ const ALL_BR = /\n/g
  *
  * @private
  */
-class PrefixTransform extends Transform {
+class PrefixTransform extends stream.Transform {
     /**
      * @param {string} prefix - A prefix text to be inserted.
      * @param {object} state - A state object.

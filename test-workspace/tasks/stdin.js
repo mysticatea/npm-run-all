@@ -1,11 +1,11 @@
 "use strict"
 
-var appendResult = require("./lib/util").appendResult
+const appendResult = require("./lib/util").appendResult
 
-process.stdin.on("data", function(chunk) {
+process.stdin.on("data", (chunk) => {
     appendResult(chunk.toString())
     process.exit(0)
 })
-setTimeout(function() {
+setTimeout(() => {
     process.exit(1)
 }, 5000)

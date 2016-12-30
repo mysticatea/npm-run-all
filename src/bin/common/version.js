@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 const Promise = require("pinkie-promise")
-const {sync: readPkgUp} = require("read-pkg-up")
+const readPkgUp = require("read-pkg-up").sync
 
 //------------------------------------------------------------------------------
 // Public Interface

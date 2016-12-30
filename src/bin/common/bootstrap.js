@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 // Public Interface
 //------------------------------------------------------------------------------
-/*eslint-disable no-console, no-process-exit */
+/*eslint-disable no-process-exit */
 
 module.exports = function bootstrap(name) {
     const argv = process.argv.slice(2)

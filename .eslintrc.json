@@ -1,12 +1,9 @@
 {
     "root": true,
-    "extends": ["mysticatea/base", "mysticatea/node"],
-    "parserOptions": {
-        "ecmaVersion": 6
-    },
+    "extends": ["mysticatea", "mysticatea/node"],
     "rules": {
-        "node/no-unsupported-features": "off",
-        "no-restricted-syntax": ["error", "ForOfStatement"]
+        "prefer-rest-params": "off",
+        "prefer-spread": "off"
     },
     "settings": {
         "node": {

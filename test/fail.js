@@ -11,7 +11,11 @@
 
 const assert = require("power-assert")
 const nodeApi = require("../src/lib")
-const {removeResult, runAll, runPar, runSeq} = require("./lib/util")
+const util = require("./lib/util")
+const removeResult = util.removeResult
+const runAll = util.runAll
+const runPar = util.runPar
+const runSeq = util.runSeq
 
 //------------------------------------------------------------------------------
 // Helpers

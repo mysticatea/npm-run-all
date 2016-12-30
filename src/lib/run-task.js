@@ -12,7 +12,7 @@
 
 const chalk = require("chalk")
 const Promise = require("pinkie-promise")
-const {parse: parseArgs} = require("shell-quote")
+const parseArgs = require("shell-quote").parse
 const padEnd = require("string.prototype.padend")
 const createHeader = require("./create-header")
 const createPrefixTransform = require("./create-prefix-transform-stream")
@@ -115,35 +115,29 @@ function detectStreamKind(stream, std) {
  *   This promise object has an extra method: `abort()`.
  * @private
  */
-module.exports = function runTask(
-    task,
-    {
-        stdin,
-        stdout: sourceStdout,
-        stderr: sourceStderr,
-        prefixOptions,
-        labelState,
-        printName,
-        packageInfo,
-    }
-) {
+module.exports = function runTask(task, options) {
     let cp = null
     const promise = new Promise((resolve, reject) => {
-        const stdout = wrapLabeling(task, sourceStdout, labelState)
-        const stderr = wrapLabeling(task, sourceStderr, labelState)
+        const stdin = options.stdin
+        const stdout = wrapLabeling(task, options.stdout, options.labelState)
+        const stderr = wrapLabeling(task, options.stderr, options.labelState)
         const stdinKind = detectStreamKind(stdin, process.stdin)
         const stdoutKind = detectStreamKind(stdout, process.stdout)
         const stderrKind = detectStreamKind(stderr, process.stderr)
 
         // Print task name.
-        if (printName && stdout != null) {
-            stdout.write(createHeader(task, packageInfo, sourceStdout.isTTY))
+        if (options.printName && stdout != null) {
+            stdout.write(createHeader(
+                task,
+                options.packageInfo,
+                options.stdout.isTTY
+            ))
         }
 
         // Execute.
         cp = spawn(
             "npm",
-            ["run"].concat(prefixOptions, parseArgs(task)),
+            ["run"].concat(options.prefixOptions, parseArgs(task)),
             {stdio: [stdinKind, stdoutKind, stderrKind]}
         )
 

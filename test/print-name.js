@@ -9,13 +9,15 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-/* eslint-disable no-trailing-spaces */
 const assert = require("power-assert")
 const nodeApi = require("../src/lib")
 const createHeader = require("../src/lib/create-header")
 const readPackageJson = require("../src/lib/read-package-json")
 const BufferStream = require("./lib/buffer-stream")
-const {runAll, runPar, runSeq} = require("./lib/util")
+const util = require("./lib/util")
+const runAll = util.runAll
+const runPar = util.runPar
+const runSeq = util.runSeq
 
 //------------------------------------------------------------------------------
 // Test

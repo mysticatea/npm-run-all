@@ -5,7 +5,7 @@
  */
 "use strict"
 
-/*eslint no-process-env: "off"*/
+/*eslint-disable no-process-env */
 
 //------------------------------------------------------------------------------
 // Requirements
@@ -32,7 +32,7 @@ const CONCAT_OPTIONS = /^-[clnprs]+$/
  * @returns {void}
  */
 function overwriteConfig(config, packageName, variable, value) {
-    const scope = config[packageName] || (config[packageName] = {}) // eslint-disable-line no-param-reassign
+    const scope = config[packageName] || (config[packageName] = {})
     scope[variable] = value
 }
 
@@ -82,7 +82,7 @@ class ArgumentSet {
      * @param {object} initialValues - A key-value map for the default of new value.
      * @param {object} options - A key-value map for the options.
      */
-    constructor(initialValues = {}, options = {}) {
+    constructor(initialValues, options) {
         this.continueOnError = false
         this.groups = []
         this.printLabel = false
@@ -90,7 +90,7 @@ class ArgumentSet {
         this.race = false
         this.rest = []
         this.silent = process.env.npm_config_loglevel === "silent"
-        this.singleMode = Boolean(options.singleMode)
+        this.singleMode = Boolean(options && options.singleMode)
         this.packageConfig = createPackageConfig()
         this.config = {}
 
@@ -231,3 +231,5 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
 module.exports = function parseCLIArgs(args, initialValues, options) {
     return parseCLIArgsCore(new ArgumentSet(initialValues, options), args)
 }
+
+/*eslint-enable */

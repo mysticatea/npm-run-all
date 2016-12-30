@@ -34,16 +34,10 @@ module.exports = function createHeader(nameAndArgs, packageInfo, isTTY) {
     const index = nameAndArgs.indexOf(" ")
     const name = (index === -1) ? nameAndArgs : nameAndArgs.slice(0, index)
     const args = (index === -1) ? "" : nameAndArgs.slice(index + 1)
-    const {
-        body: {
-            name: packageName,
-            version: packageVersion,
-            scripts: {
-                [name]: scriptBody,
-            },
-        },
-        path: packagePath,
-    } = packageInfo || {}
+    const packageName = packageInfo.body.name
+    const packageVersion = packageInfo.body.version
+    const scriptBody = packageInfo.body.scripts[name]
+    const packagePath = packageInfo.path
     const color = isTTY ? chalk.styles.gray : {open: "", close: ""}
 
     return `

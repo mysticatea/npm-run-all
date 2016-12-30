@@ -13,7 +13,7 @@
     "lib"
   ],
   "engines": {
-    "node": ">= 0.10",
+    "node": ">= 4",
     "npm": ">= 2"
   },
   "scripts": {
@@ -42,15 +42,15 @@
     "string.prototype.padend": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^6.0.51",
+    "@types/node": "^4.0.30",
     "babel-cli": "^6.4.0",
     "babel-core": "^6.4.0",
     "babel-plugin-espower": "^2.0.0",
     "babel-preset-es2015": "^6.3.13",
     "babel-register": "^6.4.3",
     "coveralls": "^2.11.4",
-    "eslint": "^2.13.1",
-    "eslint-config-mysticatea": "^4.0.0",
+    "eslint": "^3.12.2",
+    "eslint-config-mysticatea": "^7.0.1",
     "jsdoc": "^3.4.0",
     "mocha": "^2.3.4",
     "nyc": "^7.1.0",

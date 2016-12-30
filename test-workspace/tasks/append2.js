@@ -1,17 +1,17 @@
 "use strict"
 
-var appendResult = require("./lib/util").appendResult
+const appendResult = require("./lib/util").appendResult
 
 appendResult(process.argv[2])
-setTimeout(function() {
+setTimeout(() => {
     appendResult(process.argv[2])
     process.exit(0)
 }, 2000)
 
 // SIGINT/SIGTERM Handling.
-process.on("SIGINT", function() {
+process.on("SIGINT", () => {
     process.exit(0)
 })
-process.on("SIGTERM", function() {
+process.on("SIGTERM", () => {
     process.exit(0)
 })

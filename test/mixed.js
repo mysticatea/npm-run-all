@@ -10,7 +10,10 @@
 //------------------------------------------------------------------------------
 
 const assert = require("power-assert")
-const {result, removeResult, runAll} = require("./lib/util")
+const util = require("./lib/util")
+const result = util.result
+const removeResult = util.removeResult
+const runAll = util.runAll
 
 //------------------------------------------------------------------------------
 // Test

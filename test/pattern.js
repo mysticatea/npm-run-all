@@ -12,7 +12,12 @@
 const assert = require("power-assert")
 const nodeApi = require("../src/lib")
 const BufferStream = require("./lib/buffer-stream")
-const {result, removeResult, runAll, runPar, runSeq} = require("./lib/util")
+const util = require("./lib/util")
+const result = util.result
+const removeResult = util.removeResult
+const runAll = util.runAll
+const runPar = util.runPar
+const runSeq = util.runSeq
 
 //------------------------------------------------------------------------------
 // Test

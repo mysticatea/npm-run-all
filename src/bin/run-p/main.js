@@ -29,41 +29,32 @@ const parseCLIArgs = require("../common/parse-cli-args")
 module.exports = function npmRunAll(args, stdout, stderr) {
     try {
         const stdin = process.stdin
-        const {
-            lastGroup: {patterns, parallel},
-            continueOnError,
-            config,
-            packageConfig,
-            printLabel,
-            printName,
-            silent,
-            race,
-            rest,
-        } = parseCLIArgs(args, {parallel: true}, {singleMode: true})
+        const argv = parseCLIArgs(args, {parallel: true}, {singleMode: true})
+        const group = argv.lastGroup
 
-        if (patterns.length === 0) {
+        if (group.patterns.length === 0) {
             return Promise.resolve(null)
         }
 
         const promise = runAll(
-            patterns,
+            group.patterns,
             {
                 stdout,
                 stderr,
                 stdin,
-                parallel,
-                continueOnError,
-                printLabel,
-                printName,
-                config,
-                packageConfig,
-                silent,
-                arguments: rest,
-                race,
+                parallel: group.parallel,
+                continueOnError: argv.continueOnError,
+                printLabel: argv.printLabel,
+                printName: argv.printName,
+                config: argv.config,
+                packageConfig: argv.packageConfig,
+                silent: argv.silent,
+                arguments: argv.rest,
+                race: argv.race,
             }
         )
 
-        if (!silent) {
+        if (!argv.silent) {
             promise.catch(err => {
                 //eslint-disable-next-line no-console
                 console.error("ERROR:", err.message)

@@ -1,5 +1,5 @@
 "use strict"
 
-setTimeout(function() {
+setTimeout(() => {
     process.exit(1)
 }, 500)

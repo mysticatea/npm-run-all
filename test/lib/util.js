@@ -5,25 +5,23 @@
  */
 "use strict"
 
-/*eslint-disable no-var, prefer-arrow-callback*/
-
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-var cp = require("child_process")
-var fs = require("fs")
-var path = require("path")
-var Promise = require("pinkie-promise")
+const cp = require("child_process")
+const fs = require("fs")
+const path = require("path")
+const Promise = require("pinkie-promise")
 
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
-var FILE_NAME = "test.txt"
-var NPM_RUN_ALL = path.resolve(__dirname, "../../src/bin/npm-run-all/index.js")
-var RUN_P = path.resolve(__dirname, "../../src/bin/run-p/index.js")
-var RUN_S = path.resolve(__dirname, "../../src/bin/run-s/index.js")
+const FILE_NAME = "test.txt"
+const NPM_RUN_ALL = path.resolve(__dirname, "../../src/bin/npm-run-all/index.js")
+const RUN_P = path.resolve(__dirname, "../../src/bin/run-p/index.js")
+const RUN_S = path.resolve(__dirname, "../../src/bin/run-s/index.js")
 
 /**
  * Spawns the given script with the given arguments.
@@ -36,8 +34,8 @@ var RUN_S = path.resolve(__dirname, "../../src/bin/run-s/index.js")
  *  process finished.
  */
 function spawn(filePath, args, stdout, stderr) {
-    return new Promise(function(resolve, reject) {
-        var child = cp.spawn(
+    return new Promise((resolve, reject) => {
+        const child = cp.spawn(
             process.execPath,
             [filePath].concat(args),
             {stdio: "pipe"}
@@ -70,15 +68,15 @@ function spawn(filePath, args, stdout, stderr) {
  *
  * @returns {string|null} The result text.
  */
-exports.result = function result() {
+module.exports.result = function result() {
     try {
         return fs.readFileSync(FILE_NAME, {encoding: "utf8"})
     }
     catch (err) {
-        if (err.message.indexOf("ENOENT") < 0) {
-            console.error("ERROR:", err.stack)
+        if (err.code === "ENOENT") {
+            return null
         }
-        return null
+        throw err
     }
 }
 
@@ -88,7 +86,7 @@ exports.result = function result() {
  * @param {string} content - A text to append.
  * @returns {void}
  */
-exports.appendResult = function appendResult(content) {
+module.exports.appendResult = function appendResult(content) {
     fs.appendFileSync(FILE_NAME, content)
 }
 
@@ -97,14 +95,15 @@ exports.appendResult = function appendResult(content) {
  *
  * @returns {void}
  */
-exports.removeResult = function removeResult() {
+module.exports.removeResult = function removeResult() {
     try {
         fs.unlinkSync(FILE_NAME)
     }
     catch (err) {
-        if (err.message.indexOf("ENOENT") < 0) {
-            console.error("ERROR:", err.stack)
+        if (err.code === "ENOENT") {
+            return
         }
+        throw err
     }
 }
 
@@ -114,8 +113,8 @@ exports.removeResult = function removeResult() {
  * @param {number} timeoutInMillis - The time to delay.
  * @returns {Promise<void>} The promise which fulfilled after the given time.
  */
-exports.delay = function delay(timeoutInMillis) {
-    return new Promise(function(resolve) {
+module.exports.delay = function delay(timeoutInMillis) {
+    return new Promise(resolve => {
         setTimeout(resolve, timeoutInMillis)
     })
 }
@@ -129,7 +128,7 @@ exports.delay = function delay(timeoutInMillis) {
  * @returns {Promise<void>} The promise which becomes fulfilled if the child
  *  process finished.
  */
-exports.runAll = function runAll(args, stdout, stderr) {
+module.exports.runAll = function runAll(args, stdout, stderr) {
     return spawn(NPM_RUN_ALL, args, stdout, stderr)
 }
 
@@ -142,7 +141,7 @@ exports.runAll = function runAll(args, stdout, stderr) {
  * @returns {Promise<void>} The promise which becomes fulfilled if the child
  *  process finished.
  */
-exports.runPar = function runPar(args, stdout, stderr) {
+module.exports.runPar = function runPar(args, stdout, stderr) {
     return spawn(RUN_P, args, stdout, stderr)
 }
 
@@ -155,6 +154,6 @@ exports.runPar = function runPar(args, stdout, stderr) {
  * @returns {Promise<void>} The promise which becomes fulfilled if the child
  *  process finished.
  */
-exports.runSeq = function runSeq(args, stdout, stderr) {
+module.exports.runSeq = function runSeq(args, stdout, stderr) {
     return spawn(RUN_S, args, stdout, stderr)
 }
