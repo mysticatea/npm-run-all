@@ -17,16 +17,15 @@
     "npm": ">= 2"
   },
   "scripts": {
-    "preversion": "npm run build",
+    "_mocha": "mocha \"test/*.js\" --compilers js:babel-register --timeout 60000",
+    "clean": "rimraf .nyc_output coverage jsdoc \"test-workspace/{build,test.txt}\"",
+    "docs": "jsdoc -c jsdoc.json",
+    "lint": "eslint bin lib scripts test \"test-workspace/tasks/*.js\"",
+    "pretest": "node scripts/make-slink.js && npm run lint",
+    "preversion": "npm test",
     "postversion": "git push && git push --tags",
-    "pretest": "node scripts/make-slink.js",
-    "clean": "rimraf bin coverage jsdoc lib",
-    "lint": "eslint src test \"test-workspace/tasks/*\"",
-    "build": "babel-node src/bin/run-s/index.js clean lint build:*",
-    "build:babel": "babel src --out-dir .",
-    "build:jsdoc": "jsdoc -c jsdoc.json",
-    "test": "npm run lint && nyc --require babel-register mocha \"test/*.js\" --reporter progress --timeout 60000",
-    "watch": "mocha \"test/*.js\" --compilers js:babel-register --timeout 60000 --watch --growl",
+    "test": "nyc npm run _mocha",
+    "watch": "npm run _mocha -- --watch --growl",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {
@@ -41,10 +40,7 @@
   },
   "devDependencies": {
     "@types/node": "^4.0.30",
-    "babel-cli": "^6.4.0",
-    "babel-core": "^6.4.0",
-    "babel-plugin-espower": "^2.0.0",
-    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-power-assert": "^1.0.0",
     "babel-register": "^6.4.3",
     "coveralls": "^2.11.4",
     "eslint": "^3.12.2",

@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 const assert = require("power-assert")
-const nodeApi = require("../src/lib")
+const nodeApi = require("../lib")
 const spawnWithKill = require("./lib/spawn-with-kill")
 const util = require("./lib/util")
 const result = util.result
@@ -150,7 +150,7 @@ describe("[sequencial] npm-run-all", () => {
         it("npm-run-all command", () =>
             spawnWithKill(
                 "node",
-                ["../node_modules/babel/bin/babel-node.js", "../src/bin/npm-run-all.js", "test-task:append2 a"]
+                ["../node_modules/babel/bin/babel-node.js", "../bin/npm-run-all.js", "test-task:append2 a"]
             )
             .then(() => {
                 assert(result() == null || result() === "a")
@@ -160,7 +160,7 @@ describe("[sequencial] npm-run-all", () => {
         it("run-s command", () =>
             spawnWithKill(
                 "node",
-                ["../node_modules/babel/bin/babel-node.js", "../src/bin/run-s/index.js", "test-task:append2 a"]
+                ["../node_modules/babel/bin/babel-node.js", "../bin/run-s/index.js", "test-task:append2 a"]
             )
             .then(() => {
                 assert(result() == null || result() === "a")

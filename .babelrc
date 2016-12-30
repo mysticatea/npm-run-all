@@ -1,4 +1,5 @@
 {
-    "presets": ["es2015"],
-    "plugins": ["espower"]
+    "presets": ["power-assert"],
+    "only": "/test/*.js",
+    "sourceMaps": "inline"
 }

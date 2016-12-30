@@ -18,9 +18,9 @@ const path = require("path")
 //------------------------------------------------------------------------------
 
 const FILE_NAME = "test.txt"
-const NPM_RUN_ALL = path.resolve(__dirname, "../../src/bin/npm-run-all/index.js")
-const RUN_P = path.resolve(__dirname, "../../src/bin/run-p/index.js")
-const RUN_S = path.resolve(__dirname, "../../src/bin/run-s/index.js")
+const NPM_RUN_ALL = path.resolve(__dirname, "../../bin/npm-run-all/index.js")
+const RUN_P = path.resolve(__dirname, "../../bin/run-p/index.js")
+const RUN_S = path.resolve(__dirname, "../../bin/run-s/index.js")
 
 /**
  * Spawns the given script with the given arguments.

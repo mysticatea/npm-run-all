@@ -10,9 +10,9 @@
 //------------------------------------------------------------------------------
 
 const assert = require("power-assert")
-const nodeApi = require("../src/lib")
-const createHeader = require("../src/lib/create-header")
-const readPackageJson = require("../src/lib/read-package-json")
+const nodeApi = require("../lib")
+const createHeader = require("../lib/create-header")
+const readPackageJson = require("../lib/read-package-json")
 const BufferStream = require("./lib/buffer-stream")
 const util = require("./lib/util")
 const runAll = util.runAll

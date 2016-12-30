@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 const assert = require("power-assert")
-const nodeApi = require("../src/lib")
+const nodeApi = require("../lib")
 const spawnWithKill = require("./lib/spawn-with-kill")
 const util = require("./lib/util")
 const delay = util.delay
@@ -161,7 +161,7 @@ describe("[parallel]", () => {
         it("npm-run-all command", () =>
             spawnWithKill(
                 "node",
-                ["../node_modules/babel/bin/babel-node.js", "../src/bin/npm-run-all/index.js", "--parallel", "test-task:append2 a"]
+                ["../node_modules/babel/bin/babel-node.js", "../bin/npm-run-all/index.js", "--parallel", "test-task:append2 a"]
             )
             .then(() => {
                 assert(result() == null || result() === "a")
@@ -171,7 +171,7 @@ describe("[parallel]", () => {
         it("run-p command", () =>
             spawnWithKill(
                 "node",
-                ["../node_modules/babel/bin/babel-node.js", "../src/bin/run-p/index.js", "test-task:append2 a"]
+                ["../node_modules/babel/bin/babel-node.js", "../bin/run-p/index.js", "test-task:append2 a"]
             )
             .then(() => {
                 assert(result() == null || result() === "a")

@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 const assert = require("power-assert")
-const nodeApi = require("../src/lib")
+const nodeApi = require("../lib")
 const util = require("./lib/util")
 const removeResult = util.removeResult
 const runAll = util.runAll

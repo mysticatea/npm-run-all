@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 const assert = require("power-assert")
-const nodeApi = require("../src/lib")
+const nodeApi = require("../lib")
 const BufferStream = require("./lib/buffer-stream")
 const util = require("./lib/util")
 const result = util.result
