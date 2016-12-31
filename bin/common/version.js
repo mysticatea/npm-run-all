@@ -6,12 +6,6 @@
 "use strict"
 
 //------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
-const readPkgUp = require("read-pkg-up").sync
-
-//------------------------------------------------------------------------------
 // Public Interface
 //------------------------------------------------------------------------------
 
@@ -23,7 +17,7 @@ const readPkgUp = require("read-pkg-up").sync
  * @private
  */
 module.exports = function printVersion(output) {
-    const version = readPkgUp({cwd: __dirname}).pkg.version
+    const version = require("../../package.json").version
 
     output.write(`v${version}\n`)
 
