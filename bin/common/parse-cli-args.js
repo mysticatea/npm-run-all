@@ -79,6 +79,7 @@ class ArgumentSet {
     constructor(initialValues, options) {
         this.continueOnError = false
         this.groups = []
+        this.maxParallel = 0
         this.printLabel = false
         this.printName = false
         this.race = false
@@ -123,6 +124,11 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                 set.rest = args.slice(1 + i)
                 break LOOP
 
+            case "--color":
+            case "--no-color":
+                // do nothing.
+                break
+
             case "-c":
             case "--continue-on-error":
                 set.continueOnError = true
@@ -147,9 +153,11 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                 set.silent = true
                 break
 
-            case "--color":
-            case "--no-color":
-                // do nothing.
+            case "--max-parallel":
+                set.maxParallel = parseInt(args[++i], 10)
+                if (!Number.isFinite(set.maxParallel) || set.maxParallel <= 0) {
+                    throw new Error(`Invalid Option: --max-parallel ${args[i]}`)
+                }
                 break
 
             case "-s":
@@ -205,9 +213,11 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
     }
 
     if (!set.parallel && set.race) {
-        throw new Error(`Invalid Option: ${
-            args.indexOf("--race") !== -1 ? "race" : "r"
-        } (without parallel)`)
+        const race = args.indexOf("--race") !== -1 ? "race" : "r"
+        throw new Error(`Invalid Option: ${race} (without parallel)`)
+    }
+    if (!set.parallel && set.maxParallel !== 0) {
+        throw new Error("Invalid Option: --max-parallel (without parallel)")
     }
 
     return set

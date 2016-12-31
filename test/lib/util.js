@@ -52,11 +52,8 @@ function spawn(filePath, args, stdout, stderr) {
             child.stderr.pipe(error)
         }
         child.on("close", (exitCode) => {
-            if (error.value) {
-                console.log(error.value)
-            }
             if (exitCode) {
-                reject(new Error("Exited with non-zero code."))
+                reject(new Error(error.value || "Exited with non-zero code."))
             }
             else {
                 resolve()

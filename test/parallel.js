@@ -310,4 +310,46 @@ describe("[parallel]", () => {
                 })
         )
     })
+
+    describe("should run tasks in parallel-2 when was given --max-parallel 2 option:", () => {
+        it("Node API", () =>
+            nodeApi(["test-task:append a", "test-task:append b", "test-task:append c"], {parallel: true, maxParallel: 2})
+                .then(results => {
+                    assert(results.length === 3)
+                    assert(results[0].name === "test-task:append a")
+                    assert(results[0].code === 0)
+                    assert(results[1].name === "test-task:append b")
+                    assert(results[1].code === 0)
+                    assert(results[2].name === "test-task:append c")
+                    assert(results[2].code === 0)
+                    assert(
+                        result() === "ababcc" ||
+                        result() === "babacc" ||
+                        result() === "abbacc" ||
+                        result() === "baabcc")
+                })
+        )
+
+        it("npm-run-all command", () =>
+            runAll(["--parallel", "test-task:append a", "test-task:append b", "test-task:append c", "--max-parallel", "2"])
+                .then(() => {
+                    assert(
+                        result() === "ababcc" ||
+                        result() === "babacc" ||
+                        result() === "abbacc" ||
+                        result() === "baabcc")
+                })
+        )
+
+        it("run-p command", () =>
+            runPar(["test-task:append a", "test-task:append b", "test-task:append c", "--max-parallel", "2"])
+                .then(() => {
+                    assert(
+                        result() === "ababcc" ||
+                        result() === "babacc" ||
+                        result() === "abbacc" ||
+                        result() === "baabcc")
+                })
+        )
+    })
 })

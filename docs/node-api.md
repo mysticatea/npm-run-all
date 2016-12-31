@@ -45,6 +45,9 @@ Run npm-scripts.
   - **options.parallel** `boolean` --
     The flag to run scripts in parallel.
     Default is `false`.
+  - **options.maxParallel** `number` --
+    The maximum number of parallelism.
+    Default is `Number.POSITIVE_INFINITY`.
   - **options.packageConfig** `object|null` --
     The map-like object to overwrite package configs.
     Keys are package names.

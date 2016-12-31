@@ -36,6 +36,8 @@ Options:
                                other/subsequent tasks even if a task threw an
                                error. 'npm-run-all' itself will exit with
                                non-zero code if one or more tasks threw error(s)
+    --max-parallel <number>  - Set the maximum number of parallelism. Default is
+                               unlimited.
     -l, --print-label  - - - - Set the flag to print the task name as a prefix
                                on each line of output. Tools in tasks may stop
                                coloring their output if this option was given.
@@ -109,7 +111,7 @@ npm-run-all clean lint --parallel watch:html watch:js
 ```
 
 1. First, this runs `clean` and `lint` sequentially / serially.
-2. Next, runs `watch:html` and `watch:js` in parallell.
+2. Next, runs `watch:html` and `watch:js` in parallel.
 
 ```
 npm-run-all a b --parallel c d --sequential e f --parallel g h i
@@ -121,9 +123,9 @@ npm-run-all a b --parallel c d --serial e f --parallel g h i
 ```
 
 1. First, runs `a` and `b` sequentially / serially.
-2. Second, runs `c` and `d` in parallell.
+2. Second, runs `c` and `d` in parallel.
 3. Third, runs `e` and `f` sequentially / serially.
-4. Lastly, runs `g`, `h`, and `i` in parallell.
+4. Lastly, runs `g`, `h`, and `i` in parallel.
 
 ### Glob-like pattern matching for script names
 

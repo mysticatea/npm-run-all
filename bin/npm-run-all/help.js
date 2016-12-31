@@ -31,6 +31,8 @@ Options:
                                other/subsequent tasks even if a task threw an
                                error. 'npm-run-all' itself will exit with
                                non-zero code if one or more tasks threw error(s)
+    --max-parallel <number>  - Set the maximum number of parallelism. Default is
+                               unlimited.
     -l, --print-label  - - - - Set the flag to print the task name as a prefix
                                on each line of output. Tools in tasks may stop
                                coloring their output if this option was given.
