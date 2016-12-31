@@ -4,12 +4,5 @@
     "rules": {
         "prefer-rest-params": "off",
         "prefer-spread": "off"
-    },
-    "settings": {
-        "node": {
-            "convertPath": {
-                "src/**/*.js": ["^src/(.+)$", "$1"]
-            }
-        }
     }
 }
