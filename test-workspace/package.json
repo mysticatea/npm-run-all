@@ -33,7 +33,10 @@
     "test-task:issue14:win32": "..\\node_modules\\.bin\\rimraf build && mkdir %npm_package_config_DEST% && cd build",
     "test-task:issue14:posix": "../node_modules/.bin/rimraf build && mkdir $npm_package_config_DEST && cd build",
     "test-task:echo": "node tasks/echo.js",
-    "test-task:dump": "node tasks/dump.js"
+    "test-task:dump": "node tasks/dump.js",
+    "test-task:nest-append:npm-run-all": "node ../bin/npm-run-all/index.js test-task:append",
+    "test-task:nest-append:run-s": "node ../bin/run-s/index.js test-task:append",
+    "test-task:nest-append:run-p": "node ../bin/run-p/index.js test-task:append"
   },
   "repository": {
     "type": "git",

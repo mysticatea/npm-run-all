@@ -48,6 +48,9 @@ Run npm-scripts.
   - **options.maxParallel** `number` --
     The maximum number of parallelism.
     Default is `Number.POSITIVE_INFINITY`.
+  - **options.npmPath** `string` --
+    The path to npm.
+    Default is `process.env.NPM_EXECPATH` or `"npm"`.
   - **options.packageConfig** `object|null` --
     The map-like object to overwrite package configs.
     Keys are package names.

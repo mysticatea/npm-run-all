@@ -37,6 +37,11 @@ Options:
                                threw error(s).
     --max-parallel <number>  - Set the maximum number of parallelism. Default is
                                unlimited.
+    --npm-path <string>  - - - Set the path to npm. Default is the value of
+                               environment variable NPM_EXECPATH.
+                               If the variable is not defined, then it's "npm."
+                               In this case, the "npm" command must be found in
+                               environment variable PATH.
     -l, --print-label  - - - - Set the flag to print the task name as a prefix
                                on each line of output. Tools in tasks may stop
                                coloring their output if this option was given.

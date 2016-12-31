@@ -49,6 +49,7 @@ module.exports = function npmRunAll(args, stdout, stderr) {
                 packageConfig: argv.packageConfig,
                 silent: argv.silent,
                 arguments: argv.rest,
+                npmPath: argv.npmPath,
             }
         )
 

@@ -22,6 +22,7 @@ const FILE_NAME = "test.txt"
 const NPM_RUN_ALL = path.resolve(__dirname, "../../bin/npm-run-all/index.js")
 const RUN_P = path.resolve(__dirname, "../../bin/run-p/index.js")
 const RUN_S = path.resolve(__dirname, "../../bin/run-s/index.js")
+const YARN = path.resolve(__dirname, "../../node_modules/yarn/bin/yarn.js")
 
 /**
  * Spawns the given script with the given arguments.
@@ -40,6 +41,7 @@ function spawn(filePath, args, stdout, stderr) {
             [filePath].concat(args),
             {stdio: "pipe"}
         )
+        const out = new BufferStream()
         const error = new BufferStream()
 
         if (stdout != null) {
@@ -51,6 +53,7 @@ function spawn(filePath, args, stdout, stderr) {
         else {
             child.stderr.pipe(error)
         }
+        child.stdout.pipe(out)
         child.on("close", (exitCode) => {
             if (exitCode) {
                 reject(new Error(error.value || "Exited with non-zero code."))
@@ -161,3 +164,18 @@ module.exports.runPar = function runPar(args, stdout, stderr) {
 module.exports.runSeq = function runSeq(args, stdout, stderr) {
     return spawn(RUN_S, args, stdout, stderr)
 }
+
+/**
+ * Executes `yarn run` with the given arguments.
+ *
+ * @param {string[]} args - The arguments to execute.
+ * @param {Writable} [stdout] - The writable stream to receive stdout.
+ * @param {Writable} [stderr] - The writable stream to receive stderr.
+ * @returns {Promise<void>} The promise which becomes fulfilled if the child
+ *  process finished.
+ */
+module.exports.runWithYarn = function runWithYarn(args, stdout, stderr) {
+    return spawn(YARN, ["run"].concat(args), stdout, stderr)
+}
+
+module.exports.YARN_PATH = YARN

@@ -77,17 +77,18 @@ class ArgumentSet {
      * @param {object} options - A key-value map for the options.
      */
     constructor(initialValues, options) {
+        this.config = {}
         this.continueOnError = false
         this.groups = []
         this.maxParallel = 0
+        this.npmPath = null
+        this.packageConfig = createPackageConfig()
         this.printLabel = false
         this.printName = false
         this.race = false
         this.rest = []
         this.silent = process.env.npm_config_loglevel === "silent"
         this.singleMode = Boolean(options && options.singleMode)
-        this.packageConfig = createPackageConfig()
-        this.config = {}
 
         addGroup(this.groups, initialValues)
     }
@@ -179,6 +180,10 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                     throw new Error(`Invalid Option: ${arg}`)
                 }
                 addGroup(set.groups, {parallel: true})
+                break
+
+            case "--npm-path":
+                set.npmPath = args[++i] || null
                 break
 
             default: {
