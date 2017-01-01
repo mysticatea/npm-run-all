@@ -26,7 +26,7 @@ $ npm-run-all --parallel watch:*
 $ npm install npm-run-all
 ```
 
-- Requires `Node@>=0.10` and `npm@>=2`
+- It requires `Node@>=4` and `npm@>=2`
 - The `npm-run-all` package introduces 3 CLI commands: `npm-run-all`, `run-s`, and `run-p`.
 
 ## CLI Commands
