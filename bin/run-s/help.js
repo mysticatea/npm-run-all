@@ -32,7 +32,7 @@ Options:
                                itself will exit with non-zero code if one or
                                more tasks threw error(s).
     --npm-path <string>  - - - Set the path to npm. Default is the value of
-                               environment variable NPM_EXECPATH.
+                               environment variable npm_execpath.
                                If the variable is not defined, then it's "npm."
                                In this case, the "npm" command must be found in
                                environment variable PATH.
