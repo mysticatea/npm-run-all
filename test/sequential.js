@@ -13,6 +13,7 @@ const assert = require("power-assert")
 const nodeApi = require("../lib")
 const spawnWithKill = require("./lib/spawn-with-kill")
 const util = require("./lib/util")
+const delay = util.delay
 const result = util.result
 const removeResult = util.removeResult
 const runAll = util.runAll
@@ -26,7 +27,7 @@ describe("[sequencial] npm-run-all", () => {
     before(() => process.chdir("test-workspace"))
     after(() => process.chdir(".."))
 
-    beforeEach(removeResult)
+    beforeEach(() => delay(1000).then(removeResult))
 
     describe("should run tasks sequentially:", () => {
         it("Node API", () =>
