@@ -7,4 +7,4 @@ node_js:
 script:
   - npm test
 after_success:
-  - npm run coveralls
+  - npm run codecov
