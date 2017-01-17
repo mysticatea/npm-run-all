@@ -13,8 +13,7 @@
     "lib"
   ],
   "engines": {
-    "node": ">= 4",
-    "npm": ">= 2"
+    "node": ">= 4"
   },
   "scripts": {
     "_mocha": "mocha \"test/*.js\" --compilers js:babel-register --timeout 60000",

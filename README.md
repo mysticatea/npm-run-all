@@ -22,11 +22,13 @@ $ npm-run-all --parallel watch:*
 
 ## Installation
 
-```
-$ npm install npm-run-all
+```bash
+$ npm install npm-run-all --save-dev
+# or
+$ yarn add npm-run-all --dev
 ```
 
-- It requires `Node@>=4` and `npm@>=2`
+- It requires `Node@>=4`.
 - The `npm-run-all` package introduces 3 CLI commands: `npm-run-all`, `run-s`, and `run-p`.
 
 ## CLI Commands
