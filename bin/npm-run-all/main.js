@@ -42,7 +42,7 @@ module.exports = function npmRunAll(args, stdout, stderr) {
                         stderr,
                         stdin,
                         parallel: group.parallel,
-                        maxParallel: argv.maxParallel,
+                        maxParallel: group.parallel ? argv.maxParallel : 1,
                         continueOnError: argv.continueOnError,
                         printLabel: argv.printLabel,
                         printName: argv.printName,
@@ -50,7 +50,7 @@ module.exports = function npmRunAll(args, stdout, stderr) {
                         packageConfig: argv.packageConfig,
                         silent: argv.silent,
                         arguments: argv.rest,
-                        race: argv.race,
+                        race: group.parallel && argv.race,
                         npmPath: argv.npmPath,
                     }
                 ))
