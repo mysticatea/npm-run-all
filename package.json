@@ -10,7 +10,8 @@
   "main": "lib/index.js",
   "files": [
     "bin",
-    "lib"
+    "lib",
+    "docs"
   ],
   "engines": {
     "node": ">= 4"
