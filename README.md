@@ -46,6 +46,9 @@ Both [run-s] and [run-p] are shorthand commands.
 [run-s] is for sequential, [run-p] is for parallel.
 We can make simple plans with those commands.
 
+### Yarn Compatibility
+
+If a script is invoked with Yarn, npm-run-all will correctly use Yarn to execute the plan's child scripts.
 ## Node API
 
 This `npm-run-all` package provides Node API.
