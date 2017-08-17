@@ -22,7 +22,7 @@ const runSeq = util.runSeq
 // Test
 //------------------------------------------------------------------------------
 
-describe.only("[aggregated-output] npm-run-all", () => {
+describe("[aggregated-output] npm-run-all", () => {
     before(() => process.chdir("test-workspace"))
     after(() => process.chdir(".."))
 
@@ -78,8 +78,11 @@ describe.only("[aggregated-output] npm-run-all", () => {
                     assert.equal(stdout.value, EXPECTED_SERIALIZED_TEXT)
                 }))
 
-        it("run-p command", () => runPar(
-                    ["test-task:delayed first 300", "test-task:delayed second 100", "test-task:delayed third 200", "--silent", "--aggregateOutput"],
+        it("run-p command", () => runPar([
+            "test-task:delayed first 300",
+            "test-task:delayed second 100",
+            "test-task:delayed third 200",
+            "--silent", "--aggregateOutput"],
                     stdout
                 )
                 .then(() => {
