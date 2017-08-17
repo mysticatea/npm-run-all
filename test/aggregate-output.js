@@ -79,9 +79,9 @@ describe("[aggregated-output] npm-run-all", () => {
                 }))
 
         it("run-p command", () => runPar([
-            "test-task:delayed first 300",
-            "test-task:delayed second 100",
-            "test-task:delayed third 200",
+            "test-task:delayed first 3000",
+            "test-task:delayed second 1000",
+            "test-task:delayed third 2000",
             "--silent", "--aggregateOutput"],
                     stdout
                 )
