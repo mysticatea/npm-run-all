@@ -14,7 +14,7 @@
 const OVERWRITE_OPTION = /^--([^:]+?):([^=]+?)(?:=(.+))?$/
 const CONFIG_OPTION = /^--([^=]+?)(?:=(.+))$/
 const PACKAGE_CONFIG_PATTERN = /^npm_package_config_(.+)$/
-const CONCAT_OPTIONS = /^-[clnprs]+$/
+const CONCAT_OPTIONS = /^-[clmnprs]+$/
 
 /**
  * Overwrites a specified package config.
@@ -182,6 +182,17 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                 addGroup(set.groups, {parallel: true})
                 break
 
+            case "-m":
+            case "--mute":
+                var muteTask = !!set.lastGroup.patterns.length
+                if (muteTask) {
+                  var task = set.lastGroup.patterns.pop()
+                  set.lastGroup.patterns.push([task, '--mute'])
+                } else {
+                  set.lastGroup.mute = true
+                }
+                break
+
             case "--npm-path":
                 set.npmPath = args[++i] || null
                 break
@@ -209,7 +220,8 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                     throw new Error(`Invalid Option: ${arg}`)
                 }
                 else {
-                    set.lastGroup.patterns.push(arg)
+                    var isMute = set.lastGroup.mute
+                    set.lastGroup.patterns.push(isMute ? [arg, '--mute'] : arg)
                 }
 
                 break
