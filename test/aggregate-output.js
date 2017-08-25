@@ -63,7 +63,7 @@ describe("[aggregated-output] npm-run-all", () => {
                 }))
 
         it("npm-run-all command", () => runAll(
-                    ["test-task:delayed first 300", "test-task:delayed second 100", "test-task:delayed third 200", "--silent", "--aggregateOutput"],
+                    ["test-task:delayed first 300", "test-task:delayed second 100", "test-task:delayed third 200", "--silent", "--aggregate-output"],
                     stdout
                 )
                 .then(() => {
@@ -71,7 +71,7 @@ describe("[aggregated-output] npm-run-all", () => {
                 }))
 
         it("run-s command", () => runSeq(
-                    ["test-task:delayed first 300", "test-task:delayed second 100", "test-task:delayed third 200", "--silent", "--aggregateOutput"],
+                    ["test-task:delayed first 300", "test-task:delayed second 100", "test-task:delayed third 200", "--silent", "--aggregate-output"],
                     stdout
                 )
                 .then(() => {
@@ -82,7 +82,7 @@ describe("[aggregated-output] npm-run-all", () => {
             "test-task:delayed first 3000",
             "test-task:delayed second 1000",
             "test-task:delayed third 2000",
-            "--silent", "--aggregateOutput"],
+            "--silent", "--aggregate-output"],
                     stdout
                 )
                 .then(() => {

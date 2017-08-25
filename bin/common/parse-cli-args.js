@@ -174,7 +174,7 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                 addGroup(set.groups)
                 break
 
-            case "--aggregateOutput":
+            case "--aggregate-output":
                 set.aggregateOutput = true
                 break
 
