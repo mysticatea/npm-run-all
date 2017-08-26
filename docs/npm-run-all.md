@@ -3,25 +3,6 @@
 
 # `npm-run-all` command
 
-A CLI command to run given npm-scripts in parallel or sequential.
-
-```
-> npm-run-all clean lint build:*
-
-> npm-run-all --parallel watch:*
-```
-
-## Installation
-
-```
-> npm install -g npm-run-all
-```
-
-- Requires `Node@>=0.10` and `npm@>=2`
-- The `npm-run-all` package introduces 3 CLI commands: `npm-run-all`, `run-s`, and `run-p`.
-
-## Usage
-
 ```
 Usage:
     $ npm-run-all [--help | -h | --version | -v]
@@ -88,7 +69,7 @@ On the other hand, this `npm-run-all` command runs multiple scripts in parallel 
 ### Run scripts sequentially
 
 ```
-npm-run-all clean lint build
+$ npm-run-all clean lint build
 ```
 
 This is same as `npm run clean && npm run lint && npm run build`.
@@ -99,7 +80,7 @@ If `--continue-on-error` option is given, this behavior will be disabled.
 ### Run scripts in parallel
 
 ```
-npm-run-all --parallel lint build
+$ npm-run-all --parallel lint build
 ```
 
 This is similar to `npm run lint & npm run build`.
@@ -112,19 +93,19 @@ If `--continue-on-error` option is given, this behavior will be disabled.
 ### Run a mix of sequential and parallel scripts
 
 ```
-npm-run-all clean lint --parallel watch:html watch:js
+$ npm-run-all clean lint --parallel watch:html watch:js
 ```
 
 1. First, this runs `clean` and `lint` sequentially / serially.
 2. Next, runs `watch:html` and `watch:js` in parallel.
 
 ```
-npm-run-all a b --parallel c d --sequential e f --parallel g h i
+$ npm-run-all a b --parallel c d --sequential e f --parallel g h i
 ```
 or
 
 ```
-npm-run-all a b --parallel c d --serial e f --parallel g h i
+$ npm-run-all a b --parallel c d --serial e f --parallel g h i
 ```
 
 1. First, runs `a` and `b` sequentially / serially.
@@ -138,14 +119,14 @@ We can use [glob]-like patterns to specify npm-scripts.
 The difference is one -- the separator is `:` instead of `/`.
 
 ```
-> npm-run-all --parallel watch:*
+$ npm-run-all --parallel watch:*
 ```
 
 In this case, runs sub scripts of `watch`. For example: `watch:html`, `watch:js`.
 But, doesn't run sub-sub scripts. For example: `watch:js:index`.
 
 ```
-> npm-run-all --parallel watch:**
+$ npm-run-all --parallel watch:**
 ```
 
 If we use a globstar `**`, runs both sub scripts and sub-sub scripts.
@@ -158,8 +139,8 @@ We can enclose a script name or a pattern in quotes to use arguments.
 The following 2 commands are similar.
 
 ```
-> npm-run-all --parallel "build:* -- --watch"
-> npm run build:aaa -- --watch & npm run build:bbb -- --watch
+$ npm-run-all --parallel "build:* -- --watch"
+$ npm run build:aaa -- --watch & npm run build:bbb -- --watch
 ```
 
 When we use a pattern, arguments are forwarded to every matched script.
@@ -169,7 +150,7 @@ When we use a pattern, arguments are forwarded to every matched script.
 We can use placeholders to give the arguments preceded by `--` to scripts.
 
 ```
-> npm-run-all build "start-server -- --port {1}" -- 8080
+$ npm-run-all build "start-server -- --port {1}" -- 8080
 ```
 
 This is useful to pass through arguments from `npm run` command.
@@ -183,7 +164,7 @@ This is useful to pass through arguments from `npm run` command.
 ```
 
 ```
-> npm run start 8080
+$ npm run start 8080
 
 > example@0.0.0 start /path/to/package.json
 > npm-run-all build "start-server -- --port {1}" -- "8080"

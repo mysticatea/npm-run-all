@@ -12,15 +12,14 @@
 
 A CLI tool to run multiple npm-scripts in parallel or sequential.
 
-```
-$ npm-run-all clean lint build:*
-```
+## ⤴️ Motivation
 
-```
-$ npm-run-all --parallel watch:*
-```
+- **Simplify.** The official `npm run-script` command cannot run multiple scripts, so if we want to run multiple scripts, it's redundant a bit. Let's shorten it by glob-like patterns.<br>
+  Before: `npm run clean && npm run build:css && npm run build:js && npm run build:html`<br>
+  After: `npm-run-all clean build:*`
+- **Cross platform.** We sometimes use `&` to run multiple command in parallel, but `cmd.exe` (`npm run-script` uses it by default) does not support the `&`. Half of Node.js users is using it on Windows, so the use of `&` might block contributions. `npm-run-all --parallel` works well on Windows as well.
 
-## Installation
+## 💿 Installation
 
 ```bash
 $ npm install npm-run-all --save-dev
@@ -29,9 +28,10 @@ $ yarn add npm-run-all --dev
 ```
 
 - It requires `Node@>=4`.
-- The `npm-run-all` package introduces 3 CLI commands: `npm-run-all`, `run-s`, and `run-p`.
 
-## CLI Commands
+## 📖 Usage
+
+### CLI Commands
 
 This `npm-run-all` package provides 3 CLI commands.
 
@@ -46,22 +46,23 @@ Both [run-s] and [run-p] are shorthand commands.
 [run-s] is for sequential, [run-p] is for parallel.
 We can make simple plans with those commands.
 
-### Yarn Compatibility
+#### Yarn Compatibility
 
-If a script is invoked with Yarn, npm-run-all will correctly use Yarn to execute the plan's child scripts.
-## Node API
+If a script is invoked with Yarn, `npm-run-all` will correctly use Yarn to execute the plan's child scripts.
+
+### Node API
 
 This `npm-run-all` package provides Node API.
 
 - [Node API]
 
-## Changelog
+## 📰 Changelog
 
 - https://github.com/mysticatea/npm-run-all/releases
 
-## Contributing
+## 🍻 Contributing
 
-Thank you for contributing!
+Welcome♡
 
 ### Bug Reports or Feature Requests
 
@@ -73,18 +74,16 @@ Please use GitHub Pull Requests.
 
 I'm not familiar with English, so I especially thank you for documents' corrections.
 
-### Feature Implementing
+### Implementing
 
 Please use GitHub Pull Requests.
 
 There are some npm-scripts to help developments.
-Those work on Windows, Mac, or Linux (by the way, I'm developping `npm-run-all` on Windows).
 
 - **npm test** - Run tests and collect coverage.
-- **npm run build** - Make `lib` directory from `src` directory.
-- **npm run clean** - Delete directories (folders) which are created by other commands.
+- **npm run clean** - Delete temporary files.
 - **npm run lint** - Run ESLint.
-- **npm run watch** - Run tests (not collect coverage) when each file was modified.
+- **npm run watch** - Run tests (not collect coverage) on every file change.
 
 [npm-run-all]: docs/npm-run-all.md
 [run-s]: docs/run-s.md

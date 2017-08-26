@@ -7,21 +7,6 @@ A CLI command to run given npm-scripts sequentially.
 This command is the shorthand of `npm-run-all -s`.
 
 ```
-> run-s lint build:* test
-```
-
-## Installation
-
-```
-> npm install -g npm-run-all
-```
-
-- Requires `Node@>=0.10` and `npm@>=2`
-- The `npm-run-all` package introduces 3 CLI commands: `npm-run-all`, `run-s`, and `run-p`.
-
-## Usage
-
-```
 Usage:
     $ run-s [--help | -h | --version | -v]
     $ run-s [OPTIONS] <tasks>
@@ -79,8 +64,8 @@ The following 2 commands are the same.
 The `run-s` command is shorter.
 
 ```
-> run-s clean lint build
-> npm run clean && npm run lint && npm run build
+$ run-s clean lint build
+$ npm run clean && npm run lint && npm run build
 ```
 
 **Note:** If a script exited with a non-zero code, the following scripts are not run.
@@ -91,14 +76,14 @@ We can use [glob]-like patterns to specify npm-scripts.
 The difference is one -- the separator is `:` instead of `/`.
 
 ```
-> run-s build:*
+$ run-s build:*
 ```
 
 In this case, runs sub scripts of `build`. For example: `build:html`, `build:js`.
 But, doesn't run sub-sub scripts. For example: `build:js:index`.
 
 ```
-> run-s build:**
+$ run-s build:**
 ```
 
 If we use a globstar `**`, runs both sub scripts and sub-sub scripts.
@@ -111,8 +96,8 @@ We can enclose a script name or a pattern in quotes to use arguments.
 The following 2 commands are the same.
 
 ```
-> run-s start:server "delay 3000" start:client
-> npm run start:server && npm run delay 3000 && npm run start:client
+$ run-s start:server "delay 3000" start:client
+$ npm run start:server && npm run delay 3000 && npm run start:client
 ```
 
 When we use a pattern, arguments are forwarded to every matched script.
@@ -122,7 +107,7 @@ When we use a pattern, arguments are forwarded to every matched script.
 We can use placeholders to give the arguments preceded by `--` to scripts.
 
 ```
-> run-s build "start-server -- --port {1}" -- 8080
+$ run-s build "start-server -- --port {1}" -- 8080
 ```
 
 This is useful to pass through arguments from `npm run` command.
@@ -136,7 +121,7 @@ This is useful to pass through arguments from `npm run` command.
 ```
 
 ```
-> npm run start 8080
+$ npm run start 8080
 
 > example@0.0.0 start /path/to/package.json
 > run-s build "start-server -- --port {1}" -- "8080"

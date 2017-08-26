@@ -7,21 +7,6 @@ A CLI command to run given npm-scripts in parallel.
 This command is the shorthand of `npm-run-all -p`.
 
 ```
-> run-p watch:*
-```
-
-## Installation
-
-```
-> npm install -g npm-run-all
-```
-
-- Requires `Node@>=0.10` and `npm@>=2`
-- The `npm-run-all` package introduces 3 CLI commands: `npm-run-all`, `run-s`, and `run-p`.
-
-## Usage
-
-```
 Usage:
     $ run-p [--help | -h | --version | -v]
     $ run-p [OPTIONS] <tasks>
@@ -85,8 +70,8 @@ The following 2 commands are similar.
 The `run-p` command is shorter and **available on Windows**.
 
 ```
-> run-p lint build
-> npm run lint & npm run build
+$ run-p lint build
+$ npm run lint & npm run build
 ```
 
 **Note1:** If a script exited with a non-zero code, the other scripts and those descendant processes are killed with `SIGTERM` (On Windows, with `taskkill.exe /F /T`).
@@ -100,14 +85,14 @@ We can use [glob]-like patterns to specify npm-scripts.
 The difference is one -- the separator is `:` instead of `/`.
 
 ```
-> run-p watch:*
+$ run-p watch:*
 ```
 
 In this case, runs sub scripts of `watch`. For example: `watch:html`, `watch:js`.
 But, doesn't run sub-sub scripts. For example: `watch:js:index`.
 
 ```
-> run-p watch:**
+$ run-p watch:**
 ```
 
 If we use a globstar `**`, runs both sub scripts and sub-sub scripts.
@@ -120,8 +105,8 @@ We can enclose a script name or a pattern in quotes to use arguments.
 The following 2 commands are similar.
 
 ```
-> run-p "build:* -- --watch"
-> npm run build:aaa -- --watch & npm run build:bbb -- --watch
+$ run-p "build:* -- --watch"
+$ npm run build:aaa -- --watch & npm run build:bbb -- --watch
 ```
 
 When we use a pattern, arguments are forwarded to every matched script.
@@ -131,7 +116,7 @@ When we use a pattern, arguments are forwarded to every matched script.
 We can use placeholders to give the arguments preceded by `--` to scripts.
 
 ```
-> run-p "start-server -- --port {1}" -- 8080
+$ run-p "start-server -- --port {1}" -- 8080
 ```
 
 This is useful to pass through arguments from `npm run` command.
@@ -145,7 +130,7 @@ This is useful to pass through arguments from `npm run` command.
 ```
 
 ```
-> npm run start 8080
+$ npm run start 8080
 
 > example@0.0.0 start /path/to/package.json
 > run-p "start-server -- --port {1}" -- "8080"

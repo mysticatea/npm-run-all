@@ -5,7 +5,7 @@
 
 A Node module to run given npm-scripts in parallel or sequential.
 
-```
+```js
 const runAll = require("npm-run-all");
 
 runAll(["clean", "lint", "build:*"], {parallel: false})
