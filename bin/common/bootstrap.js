@@ -24,6 +24,13 @@ module.exports = function bootstrap(name) {
             return require("./version")(process.stdout)
 
         default:
+            // https://github.com/mysticatea/npm-run-all/issues/105
+            // Avoid MaxListenersExceededWarnings.
+            process.stdout.setMaxListeners(0)
+            process.stderr.setMaxListeners(0)
+            process.stdin.setMaxListeners(0)
+
+            // Main
             return require(`../${name}/main`)(
                 argv,
                 process.stdout,

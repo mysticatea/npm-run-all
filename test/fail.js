@@ -12,6 +12,7 @@
 const assert = require("power-assert")
 const nodeApi = require("../lib")
 const util = require("./lib/util")
+const delay = util.delay
 const removeResult = util.removeResult
 const runAll = util.runAll
 const runPar = util.runPar
@@ -43,6 +44,7 @@ describe("[fail] it should fail", () => {
     after(() => process.chdir(".."))
 
     beforeEach(removeResult)
+    afterEach(() => delay(1000))
 
     describe("if an invalid option exists.", () => {
         it("npm-run-all command", () => shouldFail(runAll(["--invalid"])))

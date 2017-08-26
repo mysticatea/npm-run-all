@@ -330,4 +330,27 @@ describe("[common]", () => {
             assert(false, "Should fail.")
         })
     })
+
+    // https://github.com/mysticatea/npm-run-all/issues/105
+    describe("should not print MaxListenersExceededWarning when it runs 10 tasks:", () => {
+        const tasks = Array.from({ length: 10 }, () => "test-task:append:a")
+
+        it("npm-run-all command", async () => {
+            const buf = new BufferStream()
+            await runAll(tasks, null, buf)
+            assert(buf.value.indexOf("MaxListenersExceededWarning") === -1)
+        })
+
+        it("run-s command", async () => {
+            const buf = new BufferStream()
+            await runSeq(tasks, null, buf)
+            assert(buf.value.indexOf("MaxListenersExceededWarning") === -1)
+        })
+
+        it("run-p command", async () => {
+            const buf = new BufferStream()
+            await runPar(tasks, null, buf)
+            assert(buf.value.indexOf("MaxListenersExceededWarning") === -1)
+        })
+    })
 })

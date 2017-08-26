@@ -104,3 +104,9 @@ runAll(["clean", "lint", "build"])
         console.log(`${results[2].name}: ${results[2].code}`); // build: 0
     });
 ```
+
+## About MaxListenersExceededWarning
+
+- If you use `options.stdin`, `options.stdout`, or `options.stderr` in parallel mode, please configure max listeners by [emitter.setMaxListeners(n)](https://nodejs.org/api/events.html#events_emitter_setmaxlisteners_n) properly.
+- If you don't use those options and `process.stdXXX.isTTY` is `false`, please configure max listeners of the `process.stdXXX` properly. In that case, `npm-run-all` uses piping to connect to child processes.<br>
+  On the other hand, if `process.stdXXX.isTTY` is `true`, `npm-run-all` uses `inherit` option, so the configuration is unnecessary.
