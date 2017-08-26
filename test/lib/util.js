@@ -39,7 +39,7 @@ function spawn(filePath, args, stdout, stderr) {
         const child = cp.spawn(
             process.execPath,
             [filePath].concat(args),
-            {stdio: "pipe"}
+            { stdio: "pipe" }
         )
         const out = new BufferStream()
         const error = new BufferStream()
@@ -77,7 +77,7 @@ function spawn(filePath, args, stdout, stderr) {
  */
 module.exports.result = function result() {
     try {
-        return fs.readFileSync(FILE_NAME, {encoding: "utf8"})
+        return fs.readFileSync(FILE_NAME, { encoding: "utf8" })
     }
     catch (err) {
         if (err.code === "ENOENT") {

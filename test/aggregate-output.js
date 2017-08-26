@@ -54,40 +54,42 @@ describe("[aggregated-output] npm-run-all", () => {
             stdout = new BufferStream()
         })
 
-        it("Node API", () => nodeApi(
-                    ["test-task:delayed first 300", "test-task:delayed second 100", "test-task:delayed third 200"],
-                    {stdout, silent: true, aggregateOutput: true}
-                )
-                .then(() => {
-                    assert.equal(stdout.value, EXPECTED_SERIALIZED_TEXT)
-                }))
+        it("Node API", async () => {
+            await nodeApi(
+                ["test-task:delayed first 300", "test-task:delayed second 100", "test-task:delayed third 200"],
+                { stdout, silent: true, aggregateOutput: true }
+            )
+            assert.equal(stdout.value, EXPECTED_SERIALIZED_TEXT)
+        })
 
-        it("npm-run-all command", () => runAll(
-                    ["test-task:delayed first 300", "test-task:delayed second 100", "test-task:delayed third 200", "--silent", "--aggregate-output"],
-                    stdout
-                )
-                .then(() => {
-                    assert.equal(stdout.value, EXPECTED_SERIALIZED_TEXT)
-                }))
+        it("npm-run-all command", async () => {
+            await runAll(
+                ["test-task:delayed first 300", "test-task:delayed second 100", "test-task:delayed third 200", "--silent", "--aggregate-output"],
+                stdout
+            )
+            assert.equal(stdout.value, EXPECTED_SERIALIZED_TEXT)
+        })
 
-        it("run-s command", () => runSeq(
-                    ["test-task:delayed first 300", "test-task:delayed second 100", "test-task:delayed third 200", "--silent", "--aggregate-output"],
-                    stdout
-                )
-                .then(() => {
-                    assert.equal(stdout.value, EXPECTED_SERIALIZED_TEXT)
-                }))
+        it("run-s command", async () => {
+            await runSeq(
+                ["test-task:delayed first 300", "test-task:delayed second 100", "test-task:delayed third 200", "--silent", "--aggregate-output"],
+                stdout
+            )
+            assert.equal(stdout.value, EXPECTED_SERIALIZED_TEXT)
+        })
 
-        it("run-p command", () => runPar([
-            "test-task:delayed first 3000",
-            "test-task:delayed second 1000",
-            "test-task:delayed third 2000",
-            "--silent", "--aggregate-output"],
-                    stdout
-                )
-                .then(() => {
-                    assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
-                }))
+        it("run-p command", async () => {
+            await runPar(
+                [
+                    "test-task:delayed first 3000",
+                    "test-task:delayed second 1000",
+                    "test-task:delayed third 2000",
+                    "--silent", "--aggregate-output",
+                ],
+                stdout
+            )
+            assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
+        })
     })
 })
 

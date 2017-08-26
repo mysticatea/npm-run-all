@@ -36,11 +36,11 @@ module.exports = class BufferStream extends stream.Writable {
      * Accumulates written data.
      *
      * @param {string|Buffer} chunk - A written data.
-     * @param {string} encoding - The encoding of chunk.
+     * @param {string} _encoding - The encoding of chunk.
      * @param {function} callback - The callback to notify done.
      * @returns {void}
      */
-    _write(chunk, encoding, callback) {
+    _write(chunk, _encoding, callback) {
         this.value += chunk.toString()
         callback()
     }

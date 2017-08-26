@@ -1,5 +1,6 @@
 {
     "presets": ["power-assert"],
+    "plugins": ["transform-async-to-generator"],
     "only": "/test/*.js",
     "sourceMaps": "inline"
 }

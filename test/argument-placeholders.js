@@ -67,7 +67,7 @@ describe("[argument-placeholders]", () => {
 
     describe("'{1}' should be replaced by the 1st argument preceded by '--':", () => {
         it("Node API", () =>
-            nodeApi("test-task:dump {1}", {arguments: ["1st", "2nd"]})
+            nodeApi("test-task:dump {1}", { arguments: ["1st", "2nd"] })
                 .then(() => assert(result() === "[\"1st\"]"))
         )
 
@@ -89,7 +89,7 @@ describe("[argument-placeholders]", () => {
 
     describe("'{2}' should be replaced by the 2nd argument preceded by '--':", () => {
         it("Node API", () =>
-            nodeApi("test-task:dump {2}", {arguments: ["1st", "2nd"]})
+            nodeApi("test-task:dump {2}", { arguments: ["1st", "2nd"] })
                 .then(() => assert(result() === "[\"2nd\"]"))
         )
 
@@ -111,7 +111,7 @@ describe("[argument-placeholders]", () => {
 
     describe("'{@}' should be replaced by the every argument preceded by '--':", () => {
         it("Node API", () =>
-            nodeApi("test-task:dump {@}", {arguments: ["1st", "2nd"]})
+            nodeApi("test-task:dump {@}", { arguments: ["1st", "2nd"] })
                 .then(() => assert(result() === "[\"1st\",\"2nd\"]"))
         )
 
@@ -133,7 +133,7 @@ describe("[argument-placeholders]", () => {
 
     describe("'{*}' should be replaced by the all arguments preceded by '--':", () => {
         it("Node API", () =>
-            nodeApi("test-task:dump {*}", {arguments: ["1st", "2nd"]})
+            nodeApi("test-task:dump {*}", { arguments: ["1st", "2nd"] })
                 .then(() => assert(result() === "[\"1st 2nd\"]"))
         )
 
@@ -155,7 +155,7 @@ describe("[argument-placeholders]", () => {
 
     describe("Every '{1}', '{2}', '{@}' and '{*}' should be replaced by the arguments preceded by '--':", () => {
         it("Node API", () =>
-            nodeApi("test-task:dump {1} {2} {3} {@} {*}", {arguments: ["1st", "2nd"]})
+            nodeApi("test-task:dump {1} {2} {3} {@} {*}", { arguments: ["1st", "2nd"] })
                 .then(() => assert(result() === "[\"1st\",\"2nd\",\"1st\",\"2nd\",\"1st 2nd\"]"))
         )
 

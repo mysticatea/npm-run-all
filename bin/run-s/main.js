@@ -28,7 +28,7 @@ const parseCLIArgs = require("../common/parse-cli-args")
 module.exports = function npmRunAll(args, stdout, stderr) {
     try {
         const stdin = process.stdin
-        const argv = parseCLIArgs(args, {parallel: false}, {singleMode: true})
+        const argv = parseCLIArgs(args, { parallel: false }, { singleMode: true })
         const group = argv.lastGroup
 
         if (group.patterns.length === 0) {

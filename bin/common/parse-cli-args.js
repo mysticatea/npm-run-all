@@ -43,12 +43,12 @@ function createPackageConfig() {
         return retv
     }
 
-    Object.keys(process.env).forEach(key => {
+    for (const key of Object.keys(process.env)) {
         const m = PACKAGE_CONFIG_PATTERN.exec(key)
         if (m != null) {
             overwriteConfig(retv, packageName, m[1], process.env[key])
         }
-    })
+    }
 
     return retv
 }
@@ -62,7 +62,7 @@ function createPackageConfig() {
  */
 function addGroup(groups, initialValues) {
     groups.push(Object.assign(
-        {parallel: false, patterns: []},
+        { parallel: false, patterns: [] },
         initialValues || {}
     ))
 }
@@ -183,7 +183,7 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                 if (set.singleMode) {
                     throw new Error(`Invalid Option: ${arg}`)
                 }
-                addGroup(set.groups, {parallel: true})
+                addGroup(set.groups, { parallel: true })
                 break
 
             case "--npm-path":

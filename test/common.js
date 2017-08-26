@@ -30,192 +30,210 @@ describe("[common]", () => {
     beforeEach(removeResult)
 
     describe("should print a help text if arguments are nothing.", () => {
-        it("npm-run-all command", () => {
+        it("npm-run-all command", async () => {
             const buf = new BufferStream()
-            return runAll([], buf)
-                .then(() => assert(/Usage:/.test(buf.value)))
+            await runAll([], buf)
+            assert(/Usage:/.test(buf.value))
         })
 
-        it("run-s command", () => {
+        it("run-s command", async () => {
             const buf = new BufferStream()
-            return runSeq([], buf)
-                .then(() => assert(/Usage:/.test(buf.value)))
+            await runSeq([], buf)
+            assert(/Usage:/.test(buf.value))
         })
 
-        it("run-p command", () => {
+        it("run-p command", async () => {
             const buf = new BufferStream()
-            return runPar([], buf)
-                .then(() => assert(/Usage:/.test(buf.value)))
+            await runPar([], buf)
+            assert(/Usage:/.test(buf.value))
         })
     })
 
     describe("should print a help text if the first argument is --help (-h)", () => {
-        it("npm-run-all command (-h)", () => {
+        it("npm-run-all command (-h)", async () => {
             const buf = new BufferStream()
-            return runAll(["-h"], buf)
-                .then(() => assert(/Usage:/.test(buf.value)))
+            await runAll(["-h"], buf)
+            assert(/Usage:/.test(buf.value))
         })
 
-        it("run-s command (-h)", () => {
+        it("run-s command (-h)", async () => {
             const buf = new BufferStream()
-            return runSeq(["-h"], buf)
-                .then(() => assert(/Usage:/.test(buf.value)))
+            await runSeq(["-h"], buf)
+            assert(/Usage:/.test(buf.value))
         })
 
-        it("run-p command (-h)", () => {
+        it("run-p command (-h)", async () => {
             const buf = new BufferStream()
-            return runPar(["-h"], buf)
-                .then(() => assert(/Usage:/.test(buf.value)))
+            await runPar(["-h"], buf)
+            assert(/Usage:/.test(buf.value))
         })
 
-        it("npm-run-all command (--help)", () => {
+        it("npm-run-all command (--help)", async () => {
             const buf = new BufferStream()
-            return runAll(["--help"], buf)
-                .then(() => assert(/Usage:/.test(buf.value)))
+            await runAll(["--help"], buf)
+            assert(/Usage:/.test(buf.value))
         })
 
-        it("run-s command (--help)", () => {
+        it("run-s command (--help)", async () => {
             const buf = new BufferStream()
-            return runSeq(["--help"], buf)
-                .then(() => assert(/Usage:/.test(buf.value)))
+            await runSeq(["--help"], buf)
+            assert(/Usage:/.test(buf.value))
         })
 
-        it("run-p command (--help)", () => {
+        it("run-p command (--help)", async () => {
             const buf = new BufferStream()
-            return runPar(["--help"], buf)
-                .then(() => assert(/Usage:/.test(buf.value)))
+            await runPar(["--help"], buf)
+            assert(/Usage:/.test(buf.value))
         })
     })
 
     describe("should print a version number if the first argument is --version (-v)", () => {
-        it("npm-run-all command (-v)", () => {
+        it("npm-run-all command (-v)", async () => {
             const buf = new BufferStream()
-            return runAll(["-v"], buf)
-                .then(() => assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value)))
+            await runAll(["-v"], buf)
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
 
-        it("run-s command (-v)", () => {
+        it("run-s command (-v)", async () => {
             const buf = new BufferStream()
-            return runSeq(["-v"], buf)
-                .then(() => assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value)))
+            await runSeq(["-v"], buf)
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
 
-        it("run-p command (-v)", () => {
+        it("run-p command (-v)", async () => {
             const buf = new BufferStream()
-            return runPar(["-v"], buf)
-                .then(() => assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value)))
+            await runPar(["-v"], buf)
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
 
-        it("npm-run-all command (--version)", () => {
+        it("npm-run-all command (--version)", async () => {
             const buf = new BufferStream()
-            return runAll(["--version"], buf)
-                .then(() => assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value)))
+            await runAll(["--version"], buf)
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
 
-        it("run-s command (--version)", () => {
+        it("run-s command (--version)", async () => {
             const buf = new BufferStream()
-            return runSeq(["--version"], buf)
-                .then(() => assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value)))
+            await runSeq(["--version"], buf)
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
 
-        it("run-p command (--version)", () => {
+        it("run-p command (--version)", async () => {
             const buf = new BufferStream()
-            return runPar(["--version"], buf)
-                .then(() => assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value)))
+            await runPar(["--version"], buf)
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
     })
 
     describe("should do nothing if a task list is empty.", () => {
-        it("Node API", () =>
-            nodeApi(null).then(() => assert(result() == null))
+        it("Node API", async () => {
+            await nodeApi(null)
+            assert(result() == null)
+        }
         )
     })
 
     describe("should run a task by npm (check an environment variable):", () => {
-        it("Node API", () =>
-            nodeApi("test-task:package-config")
-                .then(() => assert(result() === "OK"))
+        it("Node API", async () => {
+            await nodeApi("test-task:package-config")
+            assert(result() === "OK")
+        }
         )
 
-        it("npm-run-all command", () =>
-            runAll(["test-task:package-config"])
-                .then(() => assert(result() === "OK"))
+        it("npm-run-all command", async () => {
+            await runAll(["test-task:package-config"])
+            assert(result() === "OK")
+        }
         )
 
-        it("run-s command", () =>
-            runSeq(["test-task:package-config"])
-                .then(() => assert(result() === "OK"))
+        it("run-s command", async () => {
+            await runSeq(["test-task:package-config"])
+            assert(result() === "OK")
+        }
         )
 
-        it("run-p command", () =>
-            runPar(["test-task:package-config"])
-                .then(() => assert(result() === "OK"))
+        it("run-p command", async () => {
+            await runPar(["test-task:package-config"])
+            assert(result() === "OK")
+        }
         )
     })
 
     describe("stdin can be used in tasks:", () => {
-        it("Node API", () =>
-            nodeApi("test-task:stdin")
-                .then(() => assert(result().trim() === "STDIN"))
+        it("Node API", async () => {
+            await nodeApi("test-task:stdin")
+            assert(result().trim() === "STDIN")
+        }
         )
 
-        it("npm-run-all command", () =>
-            runAll(["test-task:stdin"])
-                .then(() => assert(result().trim() === "STDIN"))
+        it("npm-run-all command", async () => {
+            await runAll(["test-task:stdin"])
+            assert(result().trim() === "STDIN")
+        }
         )
 
-        it("run-s command", () =>
-            runSeq(["test-task:stdin"])
-                .then(() => assert(result().trim() === "STDIN"))
+        it("run-s command", async () => {
+            await runSeq(["test-task:stdin"])
+            assert(result().trim() === "STDIN")
+        }
         )
 
-        it("run-p command", () =>
-            runPar(["test-task:stdin"])
-                .then(() => assert(result().trim() === "STDIN"))
+        it("run-p command", async () => {
+            await runPar(["test-task:stdin"])
+            assert(result().trim() === "STDIN")
+        }
         )
     })
 
     describe("stdout can be used in tasks:", () => {
-        it("Node API", () =>
-            nodeApi("test-task:stdout")
-                .then(() => assert(result() === "STDOUT"))
+        it("Node API", async () => {
+            await nodeApi("test-task:stdout")
+            assert(result() === "STDOUT")
+        }
         )
 
-        it("npm-run-all command", () =>
-            runAll(["test-task:stdout"])
-                .then(() => assert(result() === "STDOUT"))
+        it("npm-run-all command", async () => {
+            await runAll(["test-task:stdout"])
+            assert(result() === "STDOUT")
+        }
         )
 
-        it("run-s command", () =>
-            runSeq(["test-task:stdout"])
-                .then(() => assert(result() === "STDOUT"))
+        it("run-s command", async () => {
+            await runSeq(["test-task:stdout"])
+            assert(result() === "STDOUT")
+        }
         )
 
-        it("run-p command", () =>
-            runPar(["test-task:stdout"])
-                .then(() => assert(result() === "STDOUT"))
+        it("run-p command", async () => {
+            await runPar(["test-task:stdout"])
+            assert(result() === "STDOUT")
+        }
         )
     })
 
     describe("stderr can be used in tasks:", () => {
-        it("Node API", () =>
-            nodeApi("test-task:stderr")
-                .then(() => assert(result() === "STDERR"))
+        it("Node API", async () => {
+            await nodeApi("test-task:stderr")
+            assert(result() === "STDERR")
+        }
         )
 
-        it("npm-run-all command", () =>
-            runAll(["test-task:stderr"])
-                .then(() => assert(result() === "STDERR"))
+        it("npm-run-all command", async () => {
+            await runAll(["test-task:stderr"])
+            assert(result() === "STDERR")
+        }
         )
 
-        it("run-s command", () =>
-            runSeq(["test-task:stderr"])
-                .then(() => assert(result() === "STDERR"))
+        it("run-s command", async () => {
+            await runSeq(["test-task:stderr"])
+            assert(result() === "STDERR")
+        }
         )
 
-        it("run-p command", () =>
-            runPar(["test-task:stderr"])
-                .then(() => assert(result() === "STDERR"))
+        it("run-p command", async () => {
+            await runPar(["test-task:stderr"])
+            assert(result() === "STDERR")
+        }
         )
     })
 
@@ -251,14 +269,17 @@ describe("[common]", () => {
     }
 
     describe("should not print log if silent option was given:", () => {
-        it("Node API", () => {
+        it("Node API", async () => {
             const stdout = new BufferStream()
             const stderr = new BufferStream()
-            return nodeApi("test-task:error", {silent: true, stdout, stderr})
-                .then(
-                    () => assert(false, "Should fail."),
-                    () => assert(stdout.value === "" && stderr.value === "")
-                )
+            try {
+                await nodeApi("test-task:error", { silent: true, stdout, stderr })
+            }
+            catch (_err) {
+                assert(stdout.value === "" && stderr.value === "")
+                return
+            }
+            assert(false, "Should fail.")
         })
 
         /**
@@ -270,34 +291,43 @@ describe("[common]", () => {
             return str.replace(/File \[.+?] ignored, nothing could be mapped\r?\n/, "")
         }
 
-        it("npm-run-all command", () => {
+        it("npm-run-all command", async () => {
             const stdout = new BufferStream()
             const stderr = new BufferStream()
-            return runAll(["--silent", "test-task:error"], stdout, stderr)
-                .then(
-                    () => assert(false, "Should fail."),
-                    () => assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
-                )
+            try {
+                await runAll(["--silent", "test-task:error"], stdout, stderr)
+            }
+            catch (_err) {
+                assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
+                return
+            }
+            assert(false, "Should fail.")
         })
 
-        it("run-s command", () => {
+        it("run-s command", async () => {
             const stdout = new BufferStream()
             const stderr = new BufferStream()
-            return runSeq(["--silent", "test-task:error"], stdout, stderr)
-                .then(
-                    () => assert(false, "Should fail."),
-                    () => assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
-                )
+            try {
+                await runSeq(["--silent", "test-task:error"], stdout, stderr)
+            }
+            catch (_err) {
+                assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
+                return
+            }
+            assert(false, "Should fail.")
         })
 
-        it("run-p command", () => {
+        it("run-p command", async () => {
             const stdout = new BufferStream()
             const stderr = new BufferStream()
-            return runPar(["--silent", "test-task:error"], stdout, stderr)
-                .then(
-                    () => assert(false, "Should fail."),
-                    () => assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
-                )
+            try {
+                await runPar(["--silent", "test-task:error"], stdout, stderr)
+            }
+            catch (_err) {
+                assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
+                return
+            }
+            assert(false, "Should fail.")
         })
     })
 })

@@ -56,7 +56,7 @@ describe("[fail] it should fail", () => {
     })
 
     describe("if invalid `options.taskList` is given.", () => {
-        it("Node API", () => shouldFail(nodeApi("test-task:append a", {taskList: {invalid: 0}})))
+        it("Node API", () => shouldFail(nodeApi("test-task:append a", { taskList: { invalid: 0 } })))
     })
 
     describe("if unknown tasks are given:", () => {
