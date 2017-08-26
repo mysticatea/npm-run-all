@@ -174,6 +174,10 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                 addGroup(set.groups)
                 break
 
+            case "--aggregate-output":
+                set.aggregateOutput = true
+                break
+
             case "-p":
             case "--parallel":
                 if (set.singleMode) {

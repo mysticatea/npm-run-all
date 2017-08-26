@@ -33,6 +33,8 @@ Options:
                                threw error(s).
     --max-parallel <number>  - Set the maximum number of parallelism. Default is
                                unlimited.
+    --aggregate-output       - Avoid interleaving output by delaying printing of
+                               each command's output until it has finished.
     --npm-path <string>  - - - Set the path to npm. Default is the value of
                                environment variable npm_execpath.
                                If the variable is not defined, then it's "npm."
