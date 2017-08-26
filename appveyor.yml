@@ -1,21 +1,24 @@
+version: '{build}'
+shallow_clone: true
+matrix:
+  fast_finish: true
+
 environment:
   matrix:
-    - nodejs_version: '8'
+    - nodejs_version: '4.0.0'
     - nodejs_version: '4'
     - nodejs_version: '6'
-    - nodejs_version: '7'
+    - nodejs_version: '8'
+
 install:
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
   - set AVA_APPVEYOR=true
-  - npm install
-matrix:
-  fast_finish: true
-build: off
-version: '{build}'
-shallow_clone: true
-clone_depth: 1
-test_script:
   - node --version
   - npm --version
+  - npm install
+
+build: off
+
+test_script:
   - npm test

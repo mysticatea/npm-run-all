@@ -1,10 +1,12 @@
 sudo: false
+
 language: node_js
 node_js:
-  - "8"
+  - "4.0.0"
   - "4"
   - "6"
-  - "7"
+  - "8"
+
 script:
   - npm test
 after_success:
