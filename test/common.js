@@ -251,6 +251,13 @@ describe("[common]", () => {
         it("run-p command", () => runPar(["env"]))
     })
 
+    describe("should be able to use `install` built-in task:", () => {
+        it("Node API", () => nodeApi("install"))
+        it("npm-run-all command", () => runAll(["install"]))
+        it("run-s command", () => runSeq(["install"]))
+        it("run-p command", () => runPar(["install"]))
+    })
+
     if (process.platform === "win32") {
         describe("issue14", () => {
             it("Node API", () => nodeApi("test-task:issue14:win32"))
