@@ -5,4 +5,4 @@
 /test-workspace/tasks/lib
 /test-workspace/test.txt
 /test.js
-npm-debug.log
+/*.log
