@@ -51,7 +51,8 @@
     "mocha": "^3.5.0",
     "nyc": "^11.1.0",
     "power-assert": "^1.4.4",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "yarn": "^1.2.1"
   },
   "repository": "mysticatea/npm-run-all",
   "keywords": [
