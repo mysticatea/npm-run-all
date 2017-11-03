@@ -13,6 +13,8 @@ Usage:
     <tasks> : A list of npm-scripts' names and Glob-like patterns.
 
 Options:
+    --aggregate-output   - - - Avoid interleaving output by delaying printing of
+                               each command's output until it has finished.
     -c, --continue-on-error  - Set the flag to continue executing
                                other/subsequent tasks even if a task threw an
                                error. 'npm-run-all' itself will exit with

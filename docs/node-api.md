@@ -35,6 +35,10 @@ Run npm-scripts.
 
 - **patterns** `string|string[]` -- Glob-like patterns for script names.
 - **options** `object`
+  - **options.aggregateOutput** `boolean` --
+    The flag to avoid interleaving output by delaying printing of each command's output until it has finished.
+    This option is valid only with `options.parallel` option.
+    Default is `false`.
   - **options.arguments** `string[]` --
     An argument list to replace argument placeholders (such as `{1}`, `{2}`). If pattern text has `{1}`, it's replaced by `options.arguments[0]`.
     Default is an empty array.
@@ -47,6 +51,7 @@ Run npm-scripts.
     Default is `false`.
   - **options.maxParallel** `number` --
     The maximum number of parallelism.
+    This option is valid only with `options.parallel` option.
     Default is `Number.POSITIVE_INFINITY`.
   - **options.npmPath** `string` --
     The path to npm.

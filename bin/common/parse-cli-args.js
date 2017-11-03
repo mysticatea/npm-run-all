@@ -221,8 +221,11 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
         }
     }
 
+    if (!set.parallel && set.aggregateOutput) {
+        throw new Error("Invalid Option: --aggregate-output (without parallel)")
+    }
     if (!set.parallel && set.race) {
-        const race = args.indexOf("--race") !== -1 ? "race" : "r"
+        const race = args.indexOf("--race") !== -1 ? "--race" : "-r"
         throw new Error(`Invalid Option: ${race} (without parallel)`)
     }
     if (!set.parallel && set.maxParallel !== 0) {
