@@ -14,7 +14,6 @@ const assert = require("power-assert")
 const BufferStream = require("./lib/buffer-stream")
 const util = require("./lib/util")
 const result = util.result
-const removeResult = util.removeResult
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -24,22 +23,20 @@ const removeResult = util.removeResult
  * Execute a command.
  * @param {string} command A command to execute.
  * @param {string[]} args Arguments for the command.
- * @returns {Promise<string>} The result of child process's stdout.
+ * @returns {Promise<void>} The result of child process's stdout.
  */
 function exec(command, args) {
     return new Promise((resolve, reject) => {
-        const stdout = new BufferStream()
         const stderr = new BufferStream()
-        const cp = spawn(command, args, { stdio: ["inherit", "pipe", "pipe"] })
+        const cp = spawn(command, args, { stdio: ["ignore", "ignore", "pipe"] })
 
-        cp.stdout.pipe(stdout)
         cp.stderr.pipe(stderr)
         cp.on("exit", (exitCode) => {
             if (exitCode) {
                 reject(new Error(`Exited with ${exitCode}: ${stderr.value}`))
                 return
             }
-            resolve(stdout.value)
+            resolve()
         })
         cp.on("error", reject)
     })
@@ -50,17 +47,14 @@ function exec(command, args) {
 //------------------------------------------------------------------------------
 
 describe("[yarn]", () => {
-    before(() => process.chdir("test-workspace"))
-    after(() => process.chdir(".."))
+    util.moveToWorkspace()
 
-    beforeEach(removeResult)
+    beforeEach(util.removeResult)
 
     describe("'yarn run' command", () => {
         it("should run 'npm-run-all' in scripts with yarn.", async () => {
-            const stdout = await exec("yarn", ["run", "test-task:yarn"])
-            const matches = stdout.match(/^\$ node .+$/gm)
+            await exec("yarn", ["run", "test-task:yarn"])
             assert(result() === "aabb")
-            assert(matches.length === 3)
         })
     })
 })

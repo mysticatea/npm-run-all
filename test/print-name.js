@@ -15,24 +15,18 @@ const createHeader = require("../lib/create-header")
 const readPackageJson = require("../lib/read-package-json")
 const BufferStream = require("./lib/buffer-stream")
 const util = require("./lib/util")
-const runAll = util.runAll
-const runPar = util.runPar
-const runSeq = util.runSeq
 
 //------------------------------------------------------------------------------
 // Test
 //------------------------------------------------------------------------------
 
 describe("[print-name] npm-run-all", () => {
-    let packageInfo = null
+    util.moveToWorkspace()
 
-    before(() => {
-        process.chdir("test-workspace")
-        return readPackageJson().then(info => {
-            packageInfo = info.packageInfo
-        })
+    let packageInfo = null
+    before(async () => {
+        packageInfo = (await readPackageJson()).packageInfo
     })
-    after(() => process.chdir(".."))
 
     describe("should print names before running tasks:", () => {
         it("Node API", async () => {
@@ -44,42 +38,42 @@ describe("[print-name] npm-run-all", () => {
 
         it("npm-run-all command (--print-name)", async () => {
             const stdout = new BufferStream()
-            await runAll(["test-task:echo abc", "--silent", "--print-name"], stdout)
+            await util.runAll(["test-task:echo abc", "--silent", "--print-name"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
             assert.equal(stdout.value.slice(0, header.length), header)
         })
 
         it("run-s command (--print-name)", async () => {
             const stdout = new BufferStream()
-            await runSeq(["test-task:echo abc", "--silent", "--print-name"], stdout)
+            await util.runSeq(["test-task:echo abc", "--silent", "--print-name"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
             assert.equal(stdout.value.slice(0, header.length), header)
         })
 
         it("run-p command (--print-name)", async () => {
             const stdout = new BufferStream()
-            await runPar(["test-task:echo abc", "--silent", "--print-name"], stdout)
+            await util.runPar(["test-task:echo abc", "--silent", "--print-name"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
             assert.equal(stdout.value.slice(0, header.length), header)
         })
 
         it("npm-run-all command (-n)", async () => {
             const stdout = new BufferStream()
-            await runAll(["test-task:echo abc", "--silent", "-n"], stdout)
+            await util.runAll(["test-task:echo abc", "--silent", "-n"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
             assert.equal(stdout.value.slice(0, header.length), header)
         })
 
         it("run-s command (-n)", async () => {
             const stdout = new BufferStream()
-            await runSeq(["test-task:echo abc", "--silent", "-n"], stdout)
+            await util.runSeq(["test-task:echo abc", "--silent", "-n"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
             assert.equal(stdout.value.slice(0, header.length), header)
         })
 
         it("run-p command (-n)", async () => {
             const stdout = new BufferStream()
-            await runPar(["test-task:echo abc", "--silent", "-n"], stdout)
+            await util.runPar(["test-task:echo abc", "--silent", "-n"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
             assert.equal(stdout.value.slice(0, header.length), header)
         })

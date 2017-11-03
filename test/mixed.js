@@ -12,21 +12,18 @@
 const assert = require("power-assert")
 const util = require("./lib/util")
 const result = util.result
-const removeResult = util.removeResult
-const runAll = util.runAll
 
 //------------------------------------------------------------------------------
 // Test
 //------------------------------------------------------------------------------
 
 describe("[mixed] npm-run-all", () => {
-    before(() => process.chdir("test-workspace"))
-    after(() => process.chdir(".."))
+    util.moveToWorkspace()
 
-    beforeEach(removeResult)
+    beforeEach(util.removeResult)
 
     it("should run a mix of sequential and parallel tasks (has the default group):", async () => {
-        await runAll([
+        await util.runAll([
             "test-task:append a",
             "-p", "test-task:append b", "test-task:append c",
             "-s", "test-task:append d", "test-task:append e",
@@ -40,7 +37,7 @@ describe("[mixed] npm-run-all", () => {
     })
 
     it("should run a mix of sequential and parallel tasks (doesn't have the default group):", async () => {
-        await runAll([
+        await util.runAll([
             "-p", "test-task:append b", "test-task:append c",
             "-s", "test-task:append d", "test-task:append e",
         ])
@@ -53,7 +50,7 @@ describe("[mixed] npm-run-all", () => {
     })
 
     it("should not throw errors for --race and --max-parallel options if --parallel exists:", () =>
-        runAll([
+        util.runAll([
             "test-task:append a",
             "-p", "test-task:append b", "test-task:append c",
             "-s", "test-task:append d", "test-task:append e",

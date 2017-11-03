@@ -13,21 +13,16 @@ const assert = require("power-assert")
 const nodeApi = require("../lib")
 const spawnWithKill = require("./lib/spawn-with-kill")
 const util = require("./lib/util")
-const delay = util.delay
 const result = util.result
-const removeResult = util.removeResult
-const runAll = util.runAll
-const runPar = util.runPar
 
 //------------------------------------------------------------------------------
 // Test
 //------------------------------------------------------------------------------
 
 describe("[parallel]", () => {
-    before(() => process.chdir("test-workspace"))
-    after(() => process.chdir(".."))
+    util.moveToWorkspace()
 
-    beforeEach(() => delay(1000).then(removeResult))
+    beforeEach(() => util.delay(1000).then(util.removeResult))
 
     describe("should run tasks on parallel when was given --parallel option:", () => {
         it("Node API", async () => {
@@ -45,7 +40,7 @@ describe("[parallel]", () => {
         })
 
         it("npm-run-all command", async () => {
-            await runAll(["--parallel", "test-task:append a", "test-task:append b"])
+            await util.runAll(["--parallel", "test-task:append a", "test-task:append b"])
             assert(
                 result() === "abab" ||
                         result() === "baba" ||
@@ -54,7 +49,7 @@ describe("[parallel]", () => {
         })
 
         it("run-p command", async () => {
-            await runPar(["test-task:append a", "test-task:append b"])
+            await util.runPar(["test-task:append a", "test-task:append b"])
             assert(
                 result() === "abab" ||
                         result() === "baba" ||
@@ -82,7 +77,7 @@ describe("[parallel]", () => {
 
         it("npm-run-all command", async () => {
             try {
-                await runAll(["--parallel", "test-task:append2 a", "test-task:error"])
+                await util.runAll(["--parallel", "test-task:append2 a", "test-task:error"])
             }
             catch (_err) {
                 assert(result() == null || result() === "a")
@@ -93,7 +88,7 @@ describe("[parallel]", () => {
 
         it("run-p command", async () => {
             try {
-                await runPar(["test-task:append2 a", "test-task:error"])
+                await util.runPar(["test-task:append2 a", "test-task:error"])
             }
             catch (_err) {
                 assert(result() == null || result() === "a")
@@ -110,12 +105,12 @@ describe("[parallel]", () => {
         })
 
         it("npm-run-all command", async () => {
-            await runAll(["--parallel", "test-task:*:a", "*:append:a"])
+            await util.runAll(["--parallel", "test-task:*:a", "*:append:a"])
             assert(result() === "aa")
         })
 
         it("run-p command", async () => {
-            await runPar(["test-task:*:a", "*:append:a"])
+            await util.runPar(["test-task:*:a", "*:append:a"])
             assert(result() === "aa")
         })
     })
@@ -127,12 +122,12 @@ describe("[parallel]", () => {
         })
 
         it("npm-run-all command", async () => {
-            await runAll(["--parallel", "test-task:*:a", "test-task:*:a"])
+            await util.runAll(["--parallel", "test-task:*:a", "test-task:*:a"])
             assert(result() === "aaaa")
         })
 
         it("run-p command", async () => {
-            await runPar(["test-task:*:a", "test-task:*:a"])
+            await util.runPar(["test-task:*:a", "test-task:*:a"])
             assert(result() === "aaaa")
         })
     })
@@ -174,7 +169,7 @@ describe("[parallel]", () => {
 
         it("npm-run-all command (--continue-on-error)", async () => {
             try {
-                await runAll(["--continue-on-error", "--parallel", "test-task:append a", "test-task:error", "test-task:append b"])
+                await util.runAll(["--continue-on-error", "--parallel", "test-task:append a", "test-task:error", "test-task:append b"])
             }
             catch (_err) {
                 assert(
@@ -190,7 +185,7 @@ describe("[parallel]", () => {
 
         it("npm-run-all command (-c)", async () => {
             try {
-                await runAll(["-cp", "test-task:append a", "test-task:error", "test-task:append b"])
+                await util.runAll(["-cp", "test-task:append a", "test-task:error", "test-task:append b"])
             }
             catch (_err) {
                 assert(
@@ -206,7 +201,7 @@ describe("[parallel]", () => {
 
         it("run-p command (--continue-on-error)", async () => {
             try {
-                await runPar(["--continue-on-error", "test-task:append a", "test-task:error", "test-task:append b"])
+                await util.runPar(["--continue-on-error", "test-task:append a", "test-task:error", "test-task:append b"])
             }
             catch (_err) {
                 assert(
@@ -222,7 +217,7 @@ describe("[parallel]", () => {
 
         it("run-p command (-c)", async () => {
             try {
-                await runPar(["-c", "test-task:append a", "test-task:error", "test-task:append b"])
+                await util.runPar(["-c", "test-task:append a", "test-task:error", "test-task:append b"])
             }
             catch (_err) {
                 assert(
@@ -240,37 +235,37 @@ describe("[parallel]", () => {
     describe("should abort other tasks when a task finished, when --race option was specified:", () => {
         it("Node API", async () => {
             await nodeApi(["test-task:append1 a", "test-task:append2 b"], { parallel: true, race: true })
-            await delay(1000)
+            await util.delay(1000)
             assert(result() === "a" || result() === "ab" || result() === "ba")
         })
 
         it("npm-run-all command (--race)", async () => {
-            await runAll(["--race", "--parallel", "test-task:append1 a", "test-task:append2 b"])
-            await delay(1000)
+            await util.runAll(["--race", "--parallel", "test-task:append1 a", "test-task:append2 b"])
+            await util.delay(1000)
             assert(result() === "a" || result() === "ab" || result() === "ba")
         })
 
         it("npm-run-all command (-r)", async () => {
-            await runAll(["-rp", "test-task:append1 a", "test-task:append2 b"])
-            await delay(1000)
+            await util.runAll(["-rp", "test-task:append1 a", "test-task:append2 b"])
+            await util.delay(1000)
             assert(result() === "a" || result() === "ab" || result() === "ba")
         })
 
         it("run-p command (--race)", async () => {
-            await runPar(["--race", "test-task:append1 a", "test-task:append2 b"])
-            await delay(1000)
+            await util.runPar(["--race", "test-task:append1 a", "test-task:append2 b"])
+            await util.delay(1000)
             assert(result() === "a" || result() === "ab" || result() === "ba")
         })
 
         it("run-p command (-r)", async () => {
-            await runPar(["-r", "test-task:append1 a", "test-task:append2 b"])
-            await delay(1000)
+            await util.runPar(["-r", "test-task:append1 a", "test-task:append2 b"])
+            await util.delay(1000)
             assert(result() === "a" || result() === "ab" || result() === "ba")
         })
 
         it("run-p command (no -r)", async () => {
-            await runPar(["test-task:append1 a", "test-task:append2 b"])
-            await delay(1000)
+            await util.runPar(["test-task:append1 a", "test-task:append2 b"])
+            await util.delay(1000)
             assert(result() === "abb" || result() === "bab")
         })
     })
@@ -294,7 +289,7 @@ describe("[parallel]", () => {
         })
 
         it("npm-run-all command", async () => {
-            await runAll(["--parallel", "test-task:append a", "test-task:append b", "test-task:append c", "--max-parallel", "2"])
+            await util.runAll(["--parallel", "test-task:append a", "test-task:append b", "test-task:append c", "--max-parallel", "2"])
             assert(
                 result() === "ababcc" ||
                 result() === "babacc" ||
@@ -304,7 +299,7 @@ describe("[parallel]", () => {
         })
 
         it("run-p command", async () => {
-            await runPar(["test-task:append a", "test-task:append b", "test-task:append c", "--max-parallel", "2"])
+            await util.runPar(["test-task:append a", "test-task:append b", "test-task:append c", "--max-parallel", "2"])
             assert(
                 result() === "ababcc" ||
                 result() === "babacc" ||

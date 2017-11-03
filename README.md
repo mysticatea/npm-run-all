@@ -83,7 +83,6 @@ There are some npm-scripts to help developments.
 - **npm test** - Run tests and collect coverage.
 - **npm run clean** - Delete temporary files.
 - **npm run lint** - Run ESLint.
-- **npm run watch** - Run tests (not collect coverage) on every file change.
 
 [npm-run-all]: docs/npm-run-all.md
 [run-s]: docs/run-s.md

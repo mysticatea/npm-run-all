@@ -13,21 +13,16 @@ const assert = require("power-assert")
 const nodeApi = require("../lib")
 const spawnWithKill = require("./lib/spawn-with-kill")
 const util = require("./lib/util")
-const delay = util.delay
 const result = util.result
-const removeResult = util.removeResult
-const runAll = util.runAll
-const runSeq = util.runSeq
 
 //------------------------------------------------------------------------------
 // Test
 //------------------------------------------------------------------------------
 
 describe("[sequencial] npm-run-all", () => {
-    before(() => process.chdir("test-workspace"))
-    after(() => process.chdir(".."))
+    util.moveToWorkspace()
 
-    beforeEach(() => delay(1000).then(removeResult))
+    beforeEach(() => util.delay(1000).then(util.removeResult))
 
     describe("should run tasks sequentially:", () => {
         it("Node API", async () => {
@@ -41,12 +36,12 @@ describe("[sequencial] npm-run-all", () => {
         })
 
         it("npm-run-all command", async () => {
-            await runAll(["test-task:append a", "test-task:append b"])
+            await util.runAll(["test-task:append a", "test-task:append b"])
             assert(result() === "aabb")
         })
 
         it("run-s command", async () => {
-            await runSeq(["test-task:append a", "test-task:append b"])
+            await util.runSeq(["test-task:append a", "test-task:append b"])
             assert(result() === "aabb")
         })
     })
@@ -72,7 +67,7 @@ describe("[sequencial] npm-run-all", () => {
 
         it("npm-run-all command", async () => {
             try {
-                await runAll(["test-task:append2 a", "test-task:error", "test-task:append2 b"])
+                await util.runAll(["test-task:append2 a", "test-task:error", "test-task:append2 b"])
             }
             catch (_err) {
                 assert(result() === "aa")
@@ -83,7 +78,7 @@ describe("[sequencial] npm-run-all", () => {
 
         it("run-s command", async () => {
             try {
-                await runSeq(["test-task:append2 a", "test-task:error", "test-task:append2 b"])
+                await util.runSeq(["test-task:append2 a", "test-task:error", "test-task:append2 b"])
             }
             catch (_err) {
                 assert(result() === "aa")
@@ -100,12 +95,12 @@ describe("[sequencial] npm-run-all", () => {
         })
 
         it("npm-run-all command", async () => {
-            await runAll(["test-task:*:a", "*:append:a"])
+            await util.runAll(["test-task:*:a", "*:append:a"])
             assert(result() === "aa")
         })
 
         it("run-s command", async () => {
-            await runSeq(["test-task:*:a", "*:append:a"])
+            await util.runSeq(["test-task:*:a", "*:append:a"])
             assert(result() === "aa")
         })
     })
@@ -117,12 +112,12 @@ describe("[sequencial] npm-run-all", () => {
         })
 
         it("npm-run-all command", async () => {
-            await runAll(["test-task:*:a", "test-task:*:a"])
+            await util.runAll(["test-task:*:a", "test-task:*:a"])
             assert(result() === "aaaa")
         })
 
         it("run-s command", async () => {
-            await runSeq(["test-task:*:a", "test-task:*:a"])
+            await util.runSeq(["test-task:*:a", "test-task:*:a"])
             assert(result() === "aaaa")
         })
     })
@@ -159,7 +154,7 @@ describe("[sequencial] npm-run-all", () => {
 
         it("npm-run-all command (--continue-on-error)", async () => {
             try {
-                await runAll(["--continue-on-error", "test-task:append a", "test-task:error", "test-task:append b"])
+                await util.runAll(["--continue-on-error", "test-task:append a", "test-task:error", "test-task:append b"])
             }
             catch (_err) {
                 assert(result() === "aabb")
@@ -170,7 +165,7 @@ describe("[sequencial] npm-run-all", () => {
 
         it("run-s command (--continue-on-error)", async () => {
             try {
-                await runSeq(["--continue-on-error", "test-task:append a", "test-task:error", "test-task:append b"])
+                await util.runSeq(["--continue-on-error", "test-task:append a", "test-task:error", "test-task:append b"])
             }
             catch (_err) {
                 assert(result() === "aabb")
@@ -181,7 +176,7 @@ describe("[sequencial] npm-run-all", () => {
 
         it("npm-run-all command (-c)", async () => {
             try {
-                await runAll(["-c", "test-task:append a", "test-task:error", "test-task:append b"])
+                await util.runAll(["-c", "test-task:append a", "test-task:error", "test-task:append b"])
             }
             catch (_err) {
                 assert(result() === "aabb")
@@ -192,7 +187,7 @@ describe("[sequencial] npm-run-all", () => {
 
         it("run-s command (-c)", async () => {
             try {
-                await runSeq(["-c", "test-task:append a", "test-task:error", "test-task:append b"])
+                await util.runSeq(["-c", "test-task:append a", "test-task:error", "test-task:append b"])
             }
             catch (_err) {
                 assert(result() === "aabb")

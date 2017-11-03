@@ -22,7 +22,6 @@ const FILE_NAME = "test.txt"
 const NPM_RUN_ALL = path.resolve(__dirname, "../../bin/npm-run-all/index.js")
 const RUN_P = path.resolve(__dirname, "../../bin/run-p/index.js")
 const RUN_S = path.resolve(__dirname, "../../bin/run-s/index.js")
-const YARN = path.resolve(__dirname, "../../node_modules/yarn/bin/yarn.js")
 
 /**
  * Spawns the given script with the given arguments.
@@ -166,16 +165,13 @@ module.exports.runSeq = function runSeq(args, stdout, stderr) {
 }
 
 /**
- * Executes `yarn run` with the given arguments.
- *
- * @param {string[]} args - The arguments to execute.
- * @param {Writable} [stdout] - The writable stream to receive stdout.
- * @param {Writable} [stderr] - The writable stream to receive stderr.
- * @returns {Promise<void>} The promise which becomes fulfilled if the child
- *  process finished.
+ * Move to the workspace.
+ * @returns {void}
  */
-module.exports.runWithYarn = function runWithYarn(args, stdout, stderr) {
-    return spawn(YARN, ["run"].concat(args), stdout, stderr)
+module.exports.moveToWorkspace = function moveToWorkspace() {
+    const isInWorkspace = path.basename(process.cwd()).startsWith("test-workspace")
+    if (!isInWorkspace) {
+        before(() => process.chdir("test-workspace"))
+        after(() => process.chdir(".."))
+    }
 }
-
-module.exports.YARN_PATH = YARN

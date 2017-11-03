@@ -14,37 +14,32 @@ const nodeApi = require("../lib")
 const BufferStream = require("./lib/buffer-stream")
 const util = require("./lib/util")
 const result = util.result
-const removeResult = util.removeResult
-const runAll = util.runAll
-const runPar = util.runPar
-const runSeq = util.runSeq
 
 //------------------------------------------------------------------------------
 // Test
 //------------------------------------------------------------------------------
 
 describe("[common]", () => {
-    before(() => process.chdir("test-workspace"))
-    after(() => process.chdir(".."))
+    util.moveToWorkspace()
 
-    beforeEach(removeResult)
+    beforeEach(util.removeResult)
 
     describe("should print a help text if arguments are nothing.", () => {
         it("npm-run-all command", async () => {
             const buf = new BufferStream()
-            await runAll([], buf)
+            await util.runAll([], buf)
             assert(/Usage:/.test(buf.value))
         })
 
         it("run-s command", async () => {
             const buf = new BufferStream()
-            await runSeq([], buf)
+            await util.runSeq([], buf)
             assert(/Usage:/.test(buf.value))
         })
 
         it("run-p command", async () => {
             const buf = new BufferStream()
-            await runPar([], buf)
+            await util.runPar([], buf)
             assert(/Usage:/.test(buf.value))
         })
     })
@@ -52,37 +47,37 @@ describe("[common]", () => {
     describe("should print a help text if the first argument is --help (-h)", () => {
         it("npm-run-all command (-h)", async () => {
             const buf = new BufferStream()
-            await runAll(["-h"], buf)
+            await util.runAll(["-h"], buf)
             assert(/Usage:/.test(buf.value))
         })
 
         it("run-s command (-h)", async () => {
             const buf = new BufferStream()
-            await runSeq(["-h"], buf)
+            await util.runSeq(["-h"], buf)
             assert(/Usage:/.test(buf.value))
         })
 
         it("run-p command (-h)", async () => {
             const buf = new BufferStream()
-            await runPar(["-h"], buf)
+            await util.runPar(["-h"], buf)
             assert(/Usage:/.test(buf.value))
         })
 
         it("npm-run-all command (--help)", async () => {
             const buf = new BufferStream()
-            await runAll(["--help"], buf)
+            await util.runAll(["--help"], buf)
             assert(/Usage:/.test(buf.value))
         })
 
         it("run-s command (--help)", async () => {
             const buf = new BufferStream()
-            await runSeq(["--help"], buf)
+            await util.runSeq(["--help"], buf)
             assert(/Usage:/.test(buf.value))
         })
 
         it("run-p command (--help)", async () => {
             const buf = new BufferStream()
-            await runPar(["--help"], buf)
+            await util.runPar(["--help"], buf)
             assert(/Usage:/.test(buf.value))
         })
     })
@@ -90,37 +85,37 @@ describe("[common]", () => {
     describe("should print a version number if the first argument is --version (-v)", () => {
         it("npm-run-all command (-v)", async () => {
             const buf = new BufferStream()
-            await runAll(["-v"], buf)
+            await util.runAll(["-v"], buf)
             assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
 
         it("run-s command (-v)", async () => {
             const buf = new BufferStream()
-            await runSeq(["-v"], buf)
+            await util.runSeq(["-v"], buf)
             assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
 
         it("run-p command (-v)", async () => {
             const buf = new BufferStream()
-            await runPar(["-v"], buf)
+            await util.runPar(["-v"], buf)
             assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
 
         it("npm-run-all command (--version)", async () => {
             const buf = new BufferStream()
-            await runAll(["--version"], buf)
+            await util.runAll(["--version"], buf)
             assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
 
         it("run-s command (--version)", async () => {
             const buf = new BufferStream()
-            await runSeq(["--version"], buf)
+            await util.runSeq(["--version"], buf)
             assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
 
         it("run-p command (--version)", async () => {
             const buf = new BufferStream()
-            await runPar(["--version"], buf)
+            await util.runPar(["--version"], buf)
             assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
         })
     })
@@ -139,17 +134,17 @@ describe("[common]", () => {
         })
 
         it("npm-run-all command", async () => {
-            await runAll(["test-task:package-config"])
+            await util.runAll(["test-task:package-config"])
             assert(result() === "OK")
         })
 
         it("run-s command", async () => {
-            await runSeq(["test-task:package-config"])
+            await util.runSeq(["test-task:package-config"])
             assert(result() === "OK")
         })
 
         it("run-p command", async () => {
-            await runPar(["test-task:package-config"])
+            await util.runPar(["test-task:package-config"])
             assert(result() === "OK")
         })
     })
@@ -161,17 +156,17 @@ describe("[common]", () => {
         })
 
         it("npm-run-all command", async () => {
-            await runAll(["test-task:stdin"])
+            await util.runAll(["test-task:stdin"])
             assert(result().trim() === "STDIN")
         })
 
         it("run-s command", async () => {
-            await runSeq(["test-task:stdin"])
+            await util.runSeq(["test-task:stdin"])
             assert(result().trim() === "STDIN")
         })
 
         it("run-p command", async () => {
-            await runPar(["test-task:stdin"])
+            await util.runPar(["test-task:stdin"])
             assert(result().trim() === "STDIN")
         })
     })
@@ -183,17 +178,17 @@ describe("[common]", () => {
         })
 
         it("npm-run-all command", async () => {
-            await runAll(["test-task:stdout"])
+            await util.runAll(["test-task:stdout"])
             assert(result() === "STDOUT")
         })
 
         it("run-s command", async () => {
-            await runSeq(["test-task:stdout"])
+            await util.runSeq(["test-task:stdout"])
             assert(result() === "STDOUT")
         })
 
         it("run-p command", async () => {
-            await runPar(["test-task:stdout"])
+            await util.runPar(["test-task:stdout"])
             assert(result() === "STDOUT")
         })
     })
@@ -205,49 +200,49 @@ describe("[common]", () => {
         })
 
         it("npm-run-all command", async () => {
-            await runAll(["test-task:stderr"])
+            await util.runAll(["test-task:stderr"])
             assert(result() === "STDERR")
         })
 
         it("run-s command", async () => {
-            await runSeq(["test-task:stderr"])
+            await util.runSeq(["test-task:stderr"])
             assert(result() === "STDERR")
         })
 
         it("run-p command", async () => {
-            await runPar(["test-task:stderr"])
+            await util.runPar(["test-task:stderr"])
             assert(result() === "STDERR")
         })
     })
 
     describe("should be able to use `restart` built-in task:", () => {
         it("Node API", () => nodeApi("restart"))
-        it("npm-run-all command", () => runAll(["restart"]))
-        it("run-s command", () => runSeq(["restart"]))
-        it("run-p command", () => runPar(["restart"]))
+        it("npm-run-all command", () => util.runAll(["restart"]))
+        it("run-s command", () => util.runSeq(["restart"]))
+        it("run-p command", () => util.runPar(["restart"]))
     })
 
     describe("should be able to use `env` built-in task:", () => {
         it("Node API", () => nodeApi("env"))
-        it("npm-run-all command", () => runAll(["env"]))
-        it("run-s command", () => runSeq(["env"]))
-        it("run-p command", () => runPar(["env"]))
+        it("npm-run-all command", () => util.runAll(["env"]))
+        it("run-s command", () => util.runSeq(["env"]))
+        it("run-p command", () => util.runPar(["env"]))
     })
 
     if (process.platform === "win32") {
         describe("issue14", () => {
             it("Node API", () => nodeApi("test-task:issue14:win32"))
-            it("npm-run-all command", () => runAll(["test-task:issue14:win32"]))
-            it("run-s command", () => runSeq(["test-task:issue14:win32"]))
-            it("run-p command", () => runPar(["test-task:issue14:win32"]))
+            it("npm-run-all command", () => util.runAll(["test-task:issue14:win32"]))
+            it("run-s command", () => util.runSeq(["test-task:issue14:win32"]))
+            it("run-p command", () => util.runPar(["test-task:issue14:win32"]))
         })
     }
     else {
         describe("issue14", () => {
             it("Node API", () => nodeApi("test-task:issue14:posix"))
-            it("npm-run-all command", () => runAll(["test-task:issue14:posix"]))
-            it("run-s command", () => runSeq(["test-task:issue14:posix"]))
-            it("run-p command", () => runPar(["test-task:issue14:posix"]))
+            it("npm-run-all command", () => util.runAll(["test-task:issue14:posix"]))
+            it("run-s command", () => util.runSeq(["test-task:issue14:posix"]))
+            it("run-p command", () => util.runPar(["test-task:issue14:posix"]))
         })
     }
 
@@ -278,7 +273,7 @@ describe("[common]", () => {
             const stdout = new BufferStream()
             const stderr = new BufferStream()
             try {
-                await runAll(["--silent", "test-task:error"], stdout, stderr)
+                await util.runAll(["--silent", "test-task:error"], stdout, stderr)
             }
             catch (_err) {
                 assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
@@ -291,7 +286,7 @@ describe("[common]", () => {
             const stdout = new BufferStream()
             const stderr = new BufferStream()
             try {
-                await runSeq(["--silent", "test-task:error"], stdout, stderr)
+                await util.runSeq(["--silent", "test-task:error"], stdout, stderr)
             }
             catch (_err) {
                 assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
@@ -304,7 +299,7 @@ describe("[common]", () => {
             const stdout = new BufferStream()
             const stderr = new BufferStream()
             try {
-                await runPar(["--silent", "test-task:error"], stdout, stderr)
+                await util.runPar(["--silent", "test-task:error"], stdout, stderr)
             }
             catch (_err) {
                 assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
@@ -316,23 +311,23 @@ describe("[common]", () => {
 
     // https://github.com/mysticatea/npm-run-all/issues/105
     describe("should not print MaxListenersExceededWarning when it runs 10 tasks:", () => {
-        const tasks = Array.from({ length: 10 }, () => "test-task:append:a")
+        const tasks = Array.from({ length: 10 }, () => "test-task:dump x")
 
         it("npm-run-all command", async () => {
             const buf = new BufferStream()
-            await runAll(tasks, null, buf)
+            await util.runAll(["-p"].concat(tasks), null, buf)
             assert(buf.value.indexOf("MaxListenersExceededWarning") === -1)
         })
 
         it("run-s command", async () => {
             const buf = new BufferStream()
-            await runSeq(tasks, null, buf)
+            await util.runSeq(tasks, null, buf)
             assert(buf.value.indexOf("MaxListenersExceededWarning") === -1)
         })
 
         it("run-p command", async () => {
             const buf = new BufferStream()
-            await runPar(tasks, null, buf)
+            await util.runPar(tasks, null, buf)
             assert(buf.value.indexOf("MaxListenersExceededWarning") === -1)
         })
     })

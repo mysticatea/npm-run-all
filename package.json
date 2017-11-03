@@ -17,15 +17,12 @@
     "node": ">= 4"
   },
   "scripts": {
-    "_mocha": "mocha \"test/*.js\" --compilers js:babel-register --timeout 60000",
-    "clean": "rimraf .nyc_output coverage jsdoc \"test-workspace/{build,test.txt}\"",
-    "docs": "jsdoc -c jsdoc.json",
+    "clean": "rimraf .nyc_output coverage jsdoc test-workspace-* \"test-workspace/{build,test.txt}\"",
     "lint": "eslint bin lib scripts test \"test-workspace/tasks/*.js\"",
-    "pretest": "node scripts/make-slink.js && npm run lint",
+    "pretest": "node scripts/make-slink.js && npm run -s lint",
     "preversion": "npm test",
     "postversion": "git push && git push --tags",
-    "test": "nyc npm run _mocha",
-    "watch": "npm run _mocha -- --watch --growl",
+    "test": "nyc --require babel-register _mocha \"test/*.js\" --timeout 60000",
     "codecov": "nyc report -r lcovonly && codecov"
   },
   "dependencies": {
@@ -47,9 +44,10 @@
     "codecov": "^2.3.0",
     "eslint": "^4.5.0",
     "eslint-config-mysticatea": "^12.0.0",
-    "jsdoc": "^3.5.4",
+    "fs-extra": "^4.0.2",
     "mocha": "^3.5.0",
     "nyc": "^11.1.0",
+    "p-queue": "^2.2.0",
     "power-assert": "^1.4.4",
     "rimraf": "^2.6.1",
     "yarn": "^1.2.1"

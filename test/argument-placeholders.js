@@ -13,20 +13,15 @@ const assert = require("power-assert")
 const nodeApi = require("../lib")
 const util = require("./lib/util")
 const result = util.result
-const removeResult = util.removeResult
-const runAll = util.runAll
-const runPar = util.runPar
-const runSeq = util.runSeq
 
 //------------------------------------------------------------------------------
 // Test
 //------------------------------------------------------------------------------
 
 describe("[argument-placeholders]", () => {
-    before(() => process.chdir("test-workspace"))
-    after(() => process.chdir(".."))
+    util.moveToWorkspace()
 
-    beforeEach(removeResult)
+    beforeEach(util.removeResult)
 
     describe("If arguments preceded by '--' are nothing, '{1}' should be empty:", () => {
         it("Node API", () =>
@@ -35,32 +30,32 @@ describe("[argument-placeholders]", () => {
         )
 
         it("npm-run-all command", () =>
-            runAll(["test-task:dump {1}"])
+            util.runAll(["test-task:dump {1}"])
                 .then(() => assert(result() === "[]"))
         )
 
         it("npm-run-all command (only '--' exists)", () =>
-            runAll(["test-task:dump {1}", "--"])
+            util.runAll(["test-task:dump {1}", "--"])
                 .then(() => assert(result() === "[]"))
         )
 
         it("run-s command", () =>
-            runSeq(["test-task:dump {1}"])
+            util.runSeq(["test-task:dump {1}"])
                 .then(() => assert(result() === "[]"))
         )
 
         it("run-s command (only '--' exists)", () =>
-            runSeq(["test-task:dump {1}", "--"])
+            util.runSeq(["test-task:dump {1}", "--"])
                 .then(() => assert(result() === "[]"))
         )
 
         it("run-p command", () =>
-            runPar(["test-task:dump {1}"])
+            util.runPar(["test-task:dump {1}"])
                 .then(() => assert(result() === "[]"))
         )
 
         it("run-p command (only '--' exists)", () =>
-            runPar(["test-task:dump {1}", "--"])
+            util.runPar(["test-task:dump {1}", "--"])
                 .then(() => assert(result() === "[]"))
         )
     })
@@ -72,17 +67,17 @@ describe("[argument-placeholders]", () => {
         )
 
         it("npm-run-all command", () =>
-            runAll(["test-task:dump {1}", "--", "1st", "2nd"])
+            util.runAll(["test-task:dump {1}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st\"]"))
         )
 
         it("run-s command", () =>
-            runSeq(["test-task:dump {1}", "--", "1st", "2nd"])
+            util.runSeq(["test-task:dump {1}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st\"]"))
         )
 
         it("run-p command", () =>
-            runPar(["test-task:dump {1}", "--", "1st", "2nd"])
+            util.runPar(["test-task:dump {1}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st\"]"))
         )
     })
@@ -94,17 +89,17 @@ describe("[argument-placeholders]", () => {
         )
 
         it("npm-run-all command", () =>
-            runAll(["test-task:dump {2}", "--", "1st", "2nd"])
+            util.runAll(["test-task:dump {2}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"2nd\"]"))
         )
 
         it("run-s command", () =>
-            runSeq(["test-task:dump {2}", "--", "1st", "2nd"])
+            util.runSeq(["test-task:dump {2}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"2nd\"]"))
         )
 
         it("run-p command", () =>
-            runPar(["test-task:dump {2}", "--", "1st", "2nd"])
+            util.runPar(["test-task:dump {2}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"2nd\"]"))
         )
     })
@@ -116,17 +111,17 @@ describe("[argument-placeholders]", () => {
         )
 
         it("npm-run-all command", () =>
-            runAll(["test-task:dump {@}", "--", "1st", "2nd"])
+            util.runAll(["test-task:dump {@}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st\",\"2nd\"]"))
         )
 
         it("run-s command", () =>
-            runSeq(["test-task:dump {@}", "--", "1st", "2nd"])
+            util.runSeq(["test-task:dump {@}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st\",\"2nd\"]"))
         )
 
         it("run-p command", () =>
-            runPar(["test-task:dump {@}", "--", "1st", "2nd"])
+            util.runPar(["test-task:dump {@}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st\",\"2nd\"]"))
         )
     })
@@ -138,17 +133,17 @@ describe("[argument-placeholders]", () => {
         )
 
         it("npm-run-all command", () =>
-            runAll(["test-task:dump {*}", "--", "1st", "2nd"])
+            util.runAll(["test-task:dump {*}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st 2nd\"]"))
         )
 
         it("run-s command", () =>
-            runSeq(["test-task:dump {*}", "--", "1st", "2nd"])
+            util.runSeq(["test-task:dump {*}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st 2nd\"]"))
         )
 
         it("run-p command", () =>
-            runPar(["test-task:dump {*}", "--", "1st", "2nd"])
+            util.runPar(["test-task:dump {*}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st 2nd\"]"))
         )
     })
@@ -160,17 +155,17 @@ describe("[argument-placeholders]", () => {
         )
 
         it("npm-run-all command", () =>
-            runAll(["test-task:dump {1} {2} {3} {@} {*}", "--", "1st", "2nd"])
+            util.runAll(["test-task:dump {1} {2} {3} {@} {*}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st\",\"2nd\",\"1st\",\"2nd\",\"1st 2nd\"]"))
         )
 
         it("run-s command", () =>
-            runSeq(["test-task:dump {1} {2} {3} {@} {*}", "--", "1st", "2nd"])
+            util.runSeq(["test-task:dump {1} {2} {3} {@} {*}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st\",\"2nd\",\"1st\",\"2nd\",\"1st 2nd\"]"))
         )
 
         it("run-p command", () =>
-            runPar(["test-task:dump {1} {2} {3} {@} {*}", "--", "1st", "2nd"])
+            util.runPar(["test-task:dump {1} {2} {3} {@} {*}", "--", "1st", "2nd"])
                 .then(() => assert(result() === "[\"1st\",\"2nd\",\"1st\",\"2nd\",\"1st 2nd\"]"))
         )
     })
@@ -182,17 +177,17 @@ describe("[argument-placeholders]", () => {
         )
 
         it("npm-run-all command", () =>
-            runAll(["test-task:dump {1:-foo} {1}"])
+            util.runAll(["test-task:dump {1:-foo} {1}"])
                 .then(() => assert(result() === "[\"foo\"]"))
         )
 
         it("run-s command", () =>
-            runSeq(["test-task:dump {1:-foo} {1}"])
+            util.runSeq(["test-task:dump {1:-foo} {1}"])
                 .then(() => assert(result() === "[\"foo\"]"))
         )
 
         it("run-p command", () =>
-            runPar(["test-task:dump {1:-foo} {1}"])
+            util.runPar(["test-task:dump {1:-foo} {1}"])
                 .then(() => assert(result() === "[\"foo\"]"))
         )
     })
@@ -204,17 +199,17 @@ describe("[argument-placeholders]", () => {
         )
 
         it("npm-run-all command", () =>
-            runAll(["test-task:dump {1:=foo} {1}"])
+            util.runAll(["test-task:dump {1:=foo} {1}"])
                 .then(() => assert(result() === "[\"foo\",\"foo\"]"))
         )
 
         it("run-s command", () =>
-            runSeq(["test-task:dump {1:=foo} {1}"])
+            util.runSeq(["test-task:dump {1:=foo} {1}"])
                 .then(() => assert(result() === "[\"foo\",\"foo\"]"))
         )
 
         it("run-p command", () =>
-            runPar(["test-task:dump {1:=foo} {1}"])
+            util.runPar(["test-task:dump {1:=foo} {1}"])
                 .then(() => assert(result() === "[\"foo\",\"foo\"]"))
         )
     })
