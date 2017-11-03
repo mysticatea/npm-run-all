@@ -129,112 +129,95 @@ describe("[common]", () => {
         it("Node API", async () => {
             await nodeApi(null)
             assert(result() == null)
-        }
-        )
+        })
     })
 
     describe("should run a task by npm (check an environment variable):", () => {
         it("Node API", async () => {
             await nodeApi("test-task:package-config")
             assert(result() === "OK")
-        }
-        )
+        })
 
         it("npm-run-all command", async () => {
             await runAll(["test-task:package-config"])
             assert(result() === "OK")
-        }
-        )
+        })
 
         it("run-s command", async () => {
             await runSeq(["test-task:package-config"])
             assert(result() === "OK")
-        }
-        )
+        })
 
         it("run-p command", async () => {
             await runPar(["test-task:package-config"])
             assert(result() === "OK")
-        }
-        )
+        })
     })
 
     describe("stdin can be used in tasks:", () => {
         it("Node API", async () => {
             await nodeApi("test-task:stdin")
             assert(result().trim() === "STDIN")
-        }
-        )
+        })
 
         it("npm-run-all command", async () => {
             await runAll(["test-task:stdin"])
             assert(result().trim() === "STDIN")
-        }
-        )
+        })
 
         it("run-s command", async () => {
             await runSeq(["test-task:stdin"])
             assert(result().trim() === "STDIN")
-        }
-        )
+        })
 
         it("run-p command", async () => {
             await runPar(["test-task:stdin"])
             assert(result().trim() === "STDIN")
-        }
-        )
+        })
     })
 
     describe("stdout can be used in tasks:", () => {
         it("Node API", async () => {
             await nodeApi("test-task:stdout")
             assert(result() === "STDOUT")
-        }
-        )
+        })
 
         it("npm-run-all command", async () => {
             await runAll(["test-task:stdout"])
             assert(result() === "STDOUT")
-        }
-        )
+        })
 
         it("run-s command", async () => {
             await runSeq(["test-task:stdout"])
             assert(result() === "STDOUT")
-        }
-        )
+        })
 
         it("run-p command", async () => {
             await runPar(["test-task:stdout"])
             assert(result() === "STDOUT")
-        }
-        )
+        })
     })
 
     describe("stderr can be used in tasks:", () => {
         it("Node API", async () => {
             await nodeApi("test-task:stderr")
             assert(result() === "STDERR")
-        }
-        )
+        })
 
         it("npm-run-all command", async () => {
             await runAll(["test-task:stderr"])
             assert(result() === "STDERR")
-        }
-        )
+        })
 
         it("run-s command", async () => {
             await runSeq(["test-task:stderr"])
             assert(result() === "STDERR")
-        }
-        )
+        })
 
         it("run-p command", async () => {
             await runPar(["test-task:stderr"])
             assert(result() === "STDERR")
-        }
-        )
+        })
     })
 
     describe("should be able to use `restart` built-in task:", () => {
