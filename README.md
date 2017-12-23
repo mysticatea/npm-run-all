@@ -17,7 +17,7 @@ A CLI tool to run multiple npm-scripts in parallel or sequential.
 - **Simplify.** The official `npm run-script` command cannot run multiple scripts, so if we want to run multiple scripts, it's redundant a bit. Let's shorten it by glob-like patterns.<br>
   Before: `npm run clean && npm run build:css && npm run build:js && npm run build:html`<br>
   After: `npm-run-all clean build:*`
-- **Cross platform.** We sometimes use `&` to run multiple command in parallel, but `cmd.exe` (`npm run-script` uses it by default) does not support the `&`. Half of Node.js users is using it on Windows, so the use of `&` might block contributions. `npm-run-all --parallel` works well on Windows as well.
+- **Cross platform.** We sometimes use `&` to run multiple command in parallel, but `cmd.exe` (`npm run-script` uses it by default) does not support the `&`. Half of Node.js users are using it on Windows, so the use of `&` might block contributions. `npm-run-all --parallel` works well on Windows as well.
 
 ## 💿 Installation
 
