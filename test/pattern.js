@@ -188,4 +188,26 @@ describe("[pattern] it should run matched tasks if glob like patterns are given.
             }
         })
     })
+
+    describe("\"!test\" \"?test\" to \"!test\", \"?test\"", () => {
+        it("Node API", async () => {
+            await nodeApi(["!test", "?test"])
+            assert(result().trim() === "XQ")
+        })
+
+        it("npm-run-all command", async () => {
+            await runAll(["!test", "?test"])
+            assert(result().trim() === "XQ")
+        })
+
+        it("run-s command", async () => {
+            await runSeq(["!test", "?test"])
+            assert(result().trim() === "XQ")
+        })
+
+        it("run-p command", async () => {
+            await runPar(["!test", "?test"])
+            assert(result().trim() === "XQ" || result().trim() === "QX")
+        })
+    })
 })

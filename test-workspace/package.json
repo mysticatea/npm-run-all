@@ -38,7 +38,9 @@
     "test-task:nest-append:run-s": "node ../bin/run-s/index.js test-task:append",
     "test-task:nest-append:run-p": "node ../bin/run-p/index.js test-task:append",
     "test-task:delayed": "node tasks/output-with-delay.js",
-    "test-task:yarn": "node ../bin/npm-run-all/index.js test-task:append:{a,b} --npm-path yarn"
+    "test-task:yarn": "node ../bin/npm-run-all/index.js test-task:append:{a,b} --npm-path yarn",
+    "!test": "node tasks/append1.js X",
+    "?test": "node tasks/append1.js Q"
   },
   "repository": {
     "type": "git",
