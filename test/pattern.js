@@ -143,4 +143,71 @@ describe("[pattern] it should run matched tasks if glob like patterns are given.
             }
         })
     })
+
+    describe("\"!test-task:**\" should not match to anything", () => {
+        it("Node API", async () => {
+            try {
+                await nodeApi("!test-task:**")
+                assert(false, "should not match")
+            }
+            catch (err) {
+                assert((/not found/i).test(err.message))
+            }
+        })
+
+        it("npm-run-all command", async () => {
+            const stderr = new BufferStream()
+            try {
+                await runAll(["!test-task:**"], null, stderr)
+                assert(false, "should not match")
+            }
+            catch (_err) {
+                assert((/not found/i).test(stderr.value))
+            }
+        })
+
+        it("run-s command", async () => {
+            const stderr = new BufferStream()
+            try {
+                await runSeq(["!test-task:**"], null, stderr)
+                assert(false, "should not match")
+            }
+            catch (_err) {
+                assert((/not found/i).test(stderr.value))
+            }
+        })
+
+        it("run-p command", async () => {
+            const stderr = new BufferStream()
+            try {
+                await runPar(["!test-task:**"], null, stderr)
+                assert(false, "should not match")
+            }
+            catch (_err) {
+                assert((/not found/i).test(stderr.value))
+            }
+        })
+    })
+
+    describe("\"!test\" \"?test\" to \"!test\", \"?test\"", () => {
+        it("Node API", async () => {
+            await nodeApi(["!test", "?test"])
+            assert(result().trim() === "XQ")
+        })
+
+        it("npm-run-all command", async () => {
+            await runAll(["!test", "?test"])
+            assert(result().trim() === "XQ")
+        })
+
+        it("run-s command", async () => {
+            await runSeq(["!test", "?test"])
+            assert(result().trim() === "XQ")
+        })
+
+        it("run-p command", async () => {
+            await runPar(["!test", "?test"])
+            assert(result().trim() === "XQ" || result().trim() === "QX")
+        })
+    })
 })
