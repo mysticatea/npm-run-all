@@ -1,8 +1,9 @@
 /.nyc_output
+/.temp
 /coverage
-/jsdoc
+/dist
 /node_modules
 /test-workspace/tasks/lib
 /test-workspace/test.txt
-/test.js
-npm-debug.log
+/test.*
+/npm-debug.log

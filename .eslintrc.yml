@@ -1,0 +1,13 @@
+root: true
+extends:
+  - plugin:mysticatea/es2015
+  - plugin:mysticatea/+node
+overrides:
+  - files: ["*.ts"]
+    rules:
+      mysticatea/node/no-unsupported-features:
+        - "error"
+        - ignores:
+          - "asyncAwait"
+          - "modules"
+          - "trailingCommasInFunctions"

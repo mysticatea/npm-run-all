@@ -1,5 +1,5 @@
 {
-    "include": [
-        "{bin,lib}/**/*.js"
-    ]
+    "include": ["src/**/*.js"],
+    "require": ["ts-node/register"],
+    "cache": true
 }

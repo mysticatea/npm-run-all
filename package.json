@@ -3,22 +3,21 @@
   "version": "4.1.2",
   "description": "A CLI tool to run multiple npm-scripts in parallel or sequential.",
   "bin": {
-    "run-p": "bin/run-p/index.js",
-    "run-s": "bin/run-s/index.js",
-    "npm-run-all": "bin/npm-run-all/index.js"
+    "run-p": "dist/run-p.js",
+    "run-s": "dist/run-s.js",
+    "npm-run-all": "dist/npm-run-all.js"
   },
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "files": [
-    "bin",
-    "lib",
-    "docs"
+    "dist"
   ],
   "engines": {
-    "node": ">= 4"
+    "node": ">=6.5.0"
   },
   "scripts": {
     "_mocha": "mocha \"test/*.js\" --compilers js:babel-register --timeout 60000",
-    "clean": "rimraf .nyc_output coverage jsdoc \"test-workspace/{build,test.txt}\"",
+    "build": "rimraf .temp dist && tsc && rollup -c",
+    "clean": "rimraf .nyc_output .temp coverage dist \"test-workspace/{build,test.txt}\"",
     "docs": "jsdoc -c jsdoc.json",
     "lint": "eslint bin lib scripts test \"test-workspace/tasks/*.js\"",
     "pretest": "node scripts/make-slink.js && npm run lint",
@@ -29,32 +28,43 @@
     "codecov": "nyc report -r lcovonly && codecov"
   },
   "dependencies": {
-    "ansi-styles": "^3.2.0",
-    "chalk": "^2.1.0",
-    "cross-spawn": "^5.1.0",
-    "memorystream": "^0.3.1",
+    "abort-controller": "^1.0.2",
+    "ansi-styles": "^3.2.1",
+    "chalk": "^2.4.1",
+    "cross-spawn": "^6.0.5",
+    "fs-extra": "^6.0.1",
     "minimatch": "^3.0.4",
+    "p-queue": "^2.4.2",
     "ps-tree": "^1.1.0",
-    "read-pkg": "^3.0.0",
     "shell-quote": "^1.6.1",
     "string.prototype.padend": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^4.2.20",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-preset-power-assert": "^1.0.0",
-    "babel-register": "^6.26.0",
-    "codecov": "^2.3.0",
-    "eslint": "^4.5.0",
-    "eslint-config-mysticatea": "^12.0.0",
-    "fs-extra": "^4.0.2",
-    "jsdoc": "^3.5.4",
-    "mocha": "^3.5.0",
-    "nyc": "^11.1.0",
-    "p-queue": "^2.2.0",
-    "power-assert": "^1.4.4",
-    "rimraf": "^2.6.1",
-    "yarn": "^1.2.1"
+    "@babel/core": "^7.0.0-beta.46",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.46",
+    "@babel/preset-env": "^7.0.0-beta.46",
+    "@types/ansi-styles": "^3.2.0",
+    "@types/cross-spawn": "^6.0.0",
+    "@types/fs-extra": "^5.0.2",
+    "@types/minimatch": "^3.0.3",
+    "@types/mocha": "^5.2.0",
+    "@types/node": "^10.0.8",
+    "@types/p-queue": "^2.3.1",
+    "@types/shell-quote": "^1.6.0",
+    "codecov": "^3.0.2",
+    "eslint": "^4.19.1",
+    "eslint-plugin-mysticatea": "^5.0.0-beta.8",
+    "mocha": "^5.1.1",
+    "nyc": "^11.7.3",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.58.2",
+    "rollup-plugin-babel": "^4.0.0-beta.4",
+    "rollup-plugin-json": "^3.0.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "ts-node": "^6.0.3",
+    "typescript": "^2.8.3",
+    "yarn": "^1.6.0"
   },
   "repository": "mysticatea/npm-run-all",
   "keywords": [

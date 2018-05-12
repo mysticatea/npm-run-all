@@ -1,0 +1,39 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "baseUrl": "typings",
+        "declaration": false,
+        "diagnostics": false,
+        "emitBOM": false,
+        "inlineSources": true,
+        "lib": [
+            "es2015"
+        ],
+        "module": "esnext",
+        "moduleResolution": "node",
+        "newLine": "LF",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noStrictGenericChecks": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "outDir": ".temp",
+        "pretty": true,
+        "sourceMap": true,
+        "sourceRoot": "src",
+        "strict": true,
+        "strictFunctionTypes": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+        "target": "es2018",
+        "locale": "en"
+    },
+    "include": [
+        "src/**/*.ts"
+    ]
+}
