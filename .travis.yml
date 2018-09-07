@@ -1,14 +1,10 @@
-sudo: false
-
 language: node_js
+
 node_js:
-  - "4.0.0"
-  - "4"
   - "6"
   - "8"
   - "9"
+  - "node"
 
-script:
-  - npm test
 after_success:
   - npm run codecov
