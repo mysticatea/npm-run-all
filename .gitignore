@@ -7,3 +7,4 @@
 /test.js
 npm-debug.log
 /.npmrc
+/yarn.lock
