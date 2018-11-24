@@ -22,7 +22,6 @@
     "docs": "jsdoc -c jsdoc.json",
     "lint": "eslint bin lib scripts test \"test-workspace/tasks/*.js\"",
     "pretest": "node scripts/make-slink.js && npm run lint",
-    "preversion": "npm test",
     "postversion": "git push && git push --tags",
     "test": "nyc npm run _mocha",
     "watch": "npm run _mocha -- --watch --growl",
