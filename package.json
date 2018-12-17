@@ -5,7 +5,8 @@
   "bin": {
     "run-p": "bin/run-p/index.js",
     "run-s": "bin/run-s/index.js",
-    "npm-run-all": "bin/npm-run-all/index.js"
+    "npm-run-all": "bin/npm-run-all/index.js",
+    "npm-run": "bin/npm-run-all/index.js"
   },
   "main": "lib/index.js",
   "files": [
