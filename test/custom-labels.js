@@ -7,10 +7,8 @@
 const assert = require("power-assert")
 const util = require("./lib/util")
 const BufferStream = require("./lib/buffer-stream")
-const result = util.result
 const removeResult = util.removeResult
 const runPar = util.runPar
-const delay = util.delay
 
 //------------------------------------------------------------------------------
 // Test
