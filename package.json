@@ -14,7 +14,7 @@
     "docs"
   ],
   "engines": {
-    "node": ">= 4"
+    "node": ">= 8.15"
   },
   "scripts": {
     "_mocha": "mocha \"test/*.js\" --timeout 120000",
@@ -29,13 +29,13 @@
     "codecov": "nyc report -r lcovonly && codecov"
   },
   "dependencies": {
+    "@pnpm/read-importer-manifest": "^1.0.0",
     "ansi-styles": "^3.2.1",
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
     "memorystream": "^0.3.1",
     "minimatch": "^3.0.4",
     "pidtree": "^0.3.0",
-    "read-pkg": "^3.0.0",
     "shell-quote": "^1.6.1",
     "string.prototype.padend": "^3.0.0"
   },
