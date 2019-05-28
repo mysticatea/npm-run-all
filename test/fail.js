@@ -101,4 +101,16 @@ describe("[fail] it should fail", () => {
         it("run-s command", () => shouldFail(runSeq(["test-task:error"])))
         it("run-p command", () => shouldFail(runPar(["test-task:error"])))
     })
+
+    describe("if tasks exited via a signal:", () => {
+        it("Node API", () => shouldFail(nodeApi("test-task:abort")))
+        it("npm-run-all command", () => shouldFail(runAll(["test-task:abort"])))
+        it("run-s command", () => shouldFail(runSeq(["test-task:abort"])))
+        it("run-p command", () => shouldFail(runPar(["test-task:abort"])))
+        it("tests", () => nodeApi("test-task:abort").then(() =>
+            assert(false, "should fail")
+        ).catch(err => {
+            assert(err.code === 134, "should have correct exit code")
+        }))
+    })
 })
