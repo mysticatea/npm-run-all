@@ -37,7 +37,6 @@
     "pidtree": "^0.3.0",
     "read-pkg": "^3.0.0",
     "shell-quote": "^1.6.1",
-    "signal-numbers": "^0.2.2",
     "string.prototype.padend": "^3.0.0"
   },
   "devDependencies": {
