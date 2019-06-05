@@ -26,6 +26,7 @@
     "test-task:append:b": "node tasks/append2.js b",
     "test-task:append1": "node tasks/append1.js",
     "test-task:append2": "node tasks/append2.js",
+    "test-task:abort": "node tasks/abort.js",
     "test-task:error": "node tasks/error.js",
     "test-task:stdout": "node tasks/stdout.js > test.txt",
     "test-task:stderr": "node tasks/stderr.js 2> test.txt",

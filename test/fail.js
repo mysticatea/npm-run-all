@@ -101,4 +101,20 @@ describe("[fail] it should fail", () => {
         it("run-s command", () => shouldFail(runSeq(["test-task:error"])))
         it("run-p command", () => shouldFail(runPar(["test-task:error"])))
     })
+
+    describe("if tasks exited via a signal:", () => {
+        it("Node API", () => shouldFail(nodeApi("test-task:abort")))
+        it("npm-run-all command", () => shouldFail(runAll(["test-task:abort"])))
+        it("run-s command", () => shouldFail(runSeq(["test-task:abort"])))
+        it("run-p command", () => shouldFail(runPar(["test-task:abort"])))
+        it("with correct exit code", () => nodeApi("test-task:abort").then(() =>
+            assert(false, "should fail")
+        ).catch(err => {
+            // In NodeJS versions > 6, the child process correctly sends back
+            // the signal + code of null. In NodeJS versions <= 6, the child
+            // process does not set the signal, and sets the code to 1.
+            const code = Number(process.version.match(/^v(\d+)/)[1]) > 6 ? 134 : 1
+            assert(err.code === code, "should have correct exit code")
+        }))
+    })
 })
