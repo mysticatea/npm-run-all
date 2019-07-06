@@ -135,6 +135,10 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                 set.continueOnError = true
                 break
 
+            case "--report-by-task":
+                set.reportByTask = true
+                break
+
             case "-l":
             case "--print-label":
                 set.printLabel = true
