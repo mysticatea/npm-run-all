@@ -44,6 +44,7 @@ module.exports = function npmRunAll(args, stdout, stderr) {
                         parallel: group.parallel,
                         maxParallel: group.parallel ? argv.maxParallel : 1,
                         continueOnError: argv.continueOnError,
+                        reportByTask: argv.reportByTask,
                         printLabel: argv.printLabel,
                         printName: argv.printName,
                         config: argv.config,
