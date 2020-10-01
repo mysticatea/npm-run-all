@@ -19,7 +19,7 @@ jobs:
         # fetch full history so things like auto-changelog work properly
         fetch-depth: 0
     - name: Use Node.js ${{ env.node_version }}
-      uses: actions/setup-node@v2.1.1
+      uses: actions/setup-node@v2.1.2
       with:
         node-version: ${{ env.node_version }}
         # setting a registry enables the NODE_AUTH_TOKEN env variable where we can set an npm token.  REQUIRED
