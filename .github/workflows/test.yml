@@ -1,0 +1,21 @@
+name: tests
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14, 12, 10]
+
+    steps:
+    - uses: actions/checkout@v2.3.2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2.1.1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm i
+    - run: npm test
