@@ -34,7 +34,7 @@
     "cross-spawn": "^6.0.5",
     "memorystream": "^0.3.1",
     "minimatch": "^3.0.4",
-    "pidtree": "^0.3.0",
+    "pidtree": "^0.5.0",
     "read-pkg": "^5.2.0",
     "shell-quote": "^1.6.1",
     "string.prototype.padend": "^3.0.0"
