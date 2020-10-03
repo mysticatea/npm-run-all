@@ -1,4 +1,4 @@
-name: Version and Release
+name: npm-bump
 
 on:
   workflow_dispatch:
