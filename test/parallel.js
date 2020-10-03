@@ -39,9 +39,9 @@ describe("[parallel]", () => {
             assert(results[1].code === 0)
             assert(
                 result() === "abab" ||
-                        result() === "baba" ||
-                        result() === "abba" ||
-                        result() === "baab"
+                result() === "baba" ||
+                result() === "abba" ||
+                result() === "baab"
             )
         })
 
@@ -49,9 +49,9 @@ describe("[parallel]", () => {
             await runAll(["--parallel", "test-task:append a", "test-task:append b"])
             assert(
                 result() === "abab" ||
-                        result() === "baba" ||
-                        result() === "abba" ||
-                        result() === "baab"
+                result() === "baba" ||
+                result() === "abba" ||
+                result() === "baab"
             )
         })
 
@@ -59,9 +59,9 @@ describe("[parallel]", () => {
             await runPar(["test-task:append a", "test-task:append b"])
             assert(
                 result() === "abab" ||
-                        result() === "baba" ||
-                        result() === "abba" ||
-                        result() === "baab"
+                result() === "baba" ||
+                result() === "abba" ||
+                result() === "baab"
             )
         })
     })
@@ -164,6 +164,7 @@ describe("[parallel]", () => {
                 await nodeApi(["test-task:append a", "test-task:error", "test-task:append b"], { parallel: true, continueOnError: true })
             }
             catch (_err) {
+                console.log(result()) // TODO: This is randomly failing
                 assert(
                     result() === "abab" ||
                     result() === "baba" ||
