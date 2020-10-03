@@ -108,8 +108,7 @@ describe("[fail] it should fail", () => {
         it("run-s command", () => shouldFail(runSeq(["test-task:abort"])))
         it("run-p command", () => shouldFail(runPar(["test-task:abort"])))
         it("with correct exit code", () => nodeApi("test-task:abort").then(() =>
-            assert(false, "should fail")
-        ).catch(err => {
+            assert(false, "should fail")).catch(err => {
             // In NodeJS versions > 6, the child process correctly sends back
             // the signal + code of null. In NodeJS versions <= 6, the child
             // process does not set the signal, and sets the code to 1.
