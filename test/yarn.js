@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 const spawn = require("cross-spawn")
-const assert = require("power-assert")
+const assert = require("assert")
 const BufferStream = require("./lib/buffer-stream")
 const util = require("./lib/util")
 const result = util.result

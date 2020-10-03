@@ -9,7 +9,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const assert = require("power-assert")
+const assert = require("assert")
 const nodeApi = require("../lib")
 const util = require("./lib/util")
 const delay = util.delay

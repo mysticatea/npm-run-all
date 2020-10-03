@@ -9,7 +9,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const assert = require("power-assert")
+const assert = require("assert")
 const util = require("./lib/util")
 const result = util.result
 const removeResult = util.removeResult
