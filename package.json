@@ -26,7 +26,9 @@
     "postversion": "git push && git push --tags",
     "test": "nyc npm run _mocha",
     "watch": "npm run _mocha -- --watch --growl",
-    "codecov": "nyc report -r lcovonly && codecov"
+    "codecov": "nyc report -r lcovonly && codecov",
+    "prepublishOnly": "git push --follow-tags && gh-release -y",
+    "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md"
   },
   "dependencies": {
     "ansi-styles": "^4.2.1",
@@ -49,7 +51,9 @@
     "nyc": "^15.1.0",
     "p-queue": "^6.6.1",
     "rimraf": "^2.6.2",
-    "yarn": "^1.12.3"
+    "yarn": "^1.12.3",
+    "auto-changelog": "^2.2.0",
+    "gh-release": "^4.0.0"
   },
   "repository": "bcomnes/npm-run-all2",
   "keywords": [
