@@ -9,8 +9,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const spawn = require("cross-spawn")
 const assert = require("assert")
+const spawn = require("cross-spawn")
 const BufferStream = require("./lib/buffer-stream")
 const util = require("./lib/util")
 const result = util.result
