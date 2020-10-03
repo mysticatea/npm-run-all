@@ -9,7 +9,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const assert = require("power-assert")
+const assert = require("assert")
 const nodeApi = require("../lib")
 const createHeader = require("../lib/create-header")
 const readPackageJson = require("../lib/read-package-json")
