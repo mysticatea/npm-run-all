@@ -54,7 +54,7 @@ describe("[aggregated-output] npm-run-all", () => {
                 ["test-task:delayed first 5000", "test-task:delayed second 1000", "test-task:delayed third 3000"],
                 { stdout, parallel: true, silent: true, aggregateOutput: true }
             )
-            assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
+            assert.strictEqual(stdout.value, EXPECTED_PARALLELIZED_TEXT)
         })
 
         it("Node API without parallel should fail", async () => {
@@ -75,7 +75,7 @@ describe("[aggregated-output] npm-run-all", () => {
                 ["--parallel", "test-task:delayed first 5000", "test-task:delayed second 1000", "test-task:delayed third 3000", "--silent", "--aggregate-output"],
                 stdout
             )
-            assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
+            assert.strictEqual(stdout.value, EXPECTED_PARALLELIZED_TEXT)
         })
 
         it("npm-run-all command without parallel should fail", async () => {
@@ -114,7 +114,7 @@ describe("[aggregated-output] npm-run-all", () => {
                 ],
                 stdout
             )
-            assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
+            assert.strictEqual(stdout.value, EXPECTED_PARALLELIZED_TEXT)
         })
     })
 })
