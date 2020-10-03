@@ -29,7 +29,7 @@
     "codecov": "nyc report -r lcovonly && codecov"
   },
   "dependencies": {
-    "ansi-styles": "^3.2.1",
+    "ansi-styles": "^4.2.1",
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
     "memorystream": "^0.3.1",
