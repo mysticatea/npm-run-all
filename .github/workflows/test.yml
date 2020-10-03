@@ -24,6 +24,7 @@ jobs:
         node-version: ${{ matrix.node }}
     - run: npm i
     - run: npm test
+    - run: npm run lcov
     - uses: codecov/codecov-action@v1
       with:
         flags: ${{ matrix.os }},${{ matrix.node }}
