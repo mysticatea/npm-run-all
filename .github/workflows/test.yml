@@ -8,8 +8,8 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        node: [14, 12, 10]
+        os: [ubuntu-latest, windows-latest]
+        node: [14, 12]
 
     steps:
     - uses: actions/checkout@v2.3.3
