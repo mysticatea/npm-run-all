@@ -8,10 +8,15 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
         node: [14, 12]
 
     steps:
+    - name: Set git to use LF
+      if: ${{ matrix.os === 'windows-latest' }}
+      run: |
+        git config --global core.autocrlf false
+        git config --global core.eol lf
     - uses: actions/checkout@v2.3.3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2.1.2
