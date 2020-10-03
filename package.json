@@ -31,7 +31,7 @@
   "dependencies": {
     "ansi-styles": "^3.2.1",
     "chalk": "^2.4.1",
-    "cross-spawn": "^6.0.5",
+    "cross-spawn": "^7.0.3",
     "memorystream": "^0.3.1",
     "minimatch": "^3.0.4",
     "pidtree": "^0.5.0",
