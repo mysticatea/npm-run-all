@@ -41,7 +41,8 @@ describe("[parallel]", () => {
                 result() === "abab" ||
                         result() === "baba" ||
                         result() === "abba" ||
-                        result() === "baab")
+                        result() === "baab"
+            )
         })
 
         it("npm-run-all command", async () => {
@@ -50,7 +51,8 @@ describe("[parallel]", () => {
                 result() === "abab" ||
                         result() === "baba" ||
                         result() === "abba" ||
-                        result() === "baab")
+                        result() === "baab"
+            )
         })
 
         it("run-p command", async () => {
@@ -59,7 +61,8 @@ describe("[parallel]", () => {
                 result() === "abab" ||
                         result() === "baba" ||
                         result() === "abba" ||
-                        result() === "baab")
+                        result() === "baab"
+            )
         })
     })
 

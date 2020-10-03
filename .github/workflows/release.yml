@@ -25,7 +25,6 @@ jobs:
         # setting a registry enables the NODE_AUTH_TOKEN env variable where we can set an npm token.  REQUIRED
         registry-url: 'https://registry.npmjs.org'
     - run: npm i
-    - run: npm test
     - name: npm version && npm publish
       uses: bcomnes/npm-bump@v2.0.1
       with:

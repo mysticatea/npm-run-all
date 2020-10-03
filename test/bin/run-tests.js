@@ -5,11 +5,9 @@
  */
 "use strict"
 
-/*
- * Run tests in parallel.
- * This can reduce the spent time of tests to 1/3, but this is badly affecting to the timers in tests.
- * I need more investigation.
- */
+// Run tests in parallel.
+// This can reduce the spent time of tests to 1/3, but this is badly affecting to the timers in tests.
+// I need more investigation.
 
 //------------------------------------------------------------------------------
 // Requirements

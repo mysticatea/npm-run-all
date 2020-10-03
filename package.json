@@ -25,8 +25,9 @@
     "test": "nyc npm run _mocha",
     "watch": "npm run _mocha -- --watch --growl",
     "codecov": "nyc report -r lcovonly && codecov",
-    "prepublishOnly": "git push --follow-tags && gh-release -y",
-    "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md"
+    "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
+    "preversion": "npm test",
+    "postversion": "git push --follow-tags && gh-release -y"
   },
   "dependencies": {
     "ansi-styles": "^4.2.1",

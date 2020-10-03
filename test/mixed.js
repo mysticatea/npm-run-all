@@ -58,6 +58,5 @@ describe("[mixed] npm-run-all", () => {
             "-p", "test-task:append b", "test-task:append c",
             "-s", "test-task:append d", "test-task:append e",
             "-r",
-        ])
-    )
+        ]))
 })
