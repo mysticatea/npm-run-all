@@ -24,7 +24,7 @@
     "pretest": "node scripts/make-slink.js && npm run lint",
     "test": "nyc npm run _mocha",
     "watch": "npm run _mocha -- --watch --growl",
-    "codecov": "nyc report -r lcovonly && codecov",
+    "lcov": "nyc report -r lcovonly",
     "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
     "preversion": "npm test",
     "postversion": "git push --follow-tags && gh-release -y"
@@ -40,7 +40,6 @@
   },
   "devDependencies": {
     "auto-changelog": "^2.2.0",
-    "codecov": "^3.1.0",
     "eslint": "^4.19.1",
     "eslint-config-mysticatea": "^13.0.2",
     "fs-extra": "^9.0.1",
