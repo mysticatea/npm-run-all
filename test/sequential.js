@@ -151,6 +151,7 @@ describe("[sequencial] npm-run-all", () => {
                 await nodeApi(["test-task:append a", "test-task:error", "test-task:append b"], { continueOnError: true })
             }
             catch (_err) {
+                console.log(result()) // TODO: Spurious failures windows
                 assert(result() === "aabb")
                 return
             }
