@@ -51,7 +51,6 @@
     "rimraf": "^3.0.2",
     "yarn": "^1.12.3"
   },
-  "repository": "bcomnes/npm-run-all2",
   "repository": {
     "type": "git",
     "url": "https://github.com/bcomnes/npm-run-all2.git"
