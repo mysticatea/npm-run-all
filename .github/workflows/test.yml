@@ -17,7 +17,7 @@ jobs:
       run: |
         git config --global core.autocrlf false
         git config --global core.eol lf
-    - uses: actions/checkout@v2.3.3
+    - uses: actions/checkout@v2.3.4
     - name: Use Node.js ${{ matrix.node }}
       uses: actions/setup-node@v2.1.2
       with:
