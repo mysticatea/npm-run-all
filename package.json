@@ -30,7 +30,7 @@
     "postversion": "git push --follow-tags && gh-release -y"
   },
   "dependencies": {
-    "ansi-styles": "^4.2.1",
+    "ansi-styles": "^5.0.0",
     "cross-spawn": "^7.0.3",
     "memorystream": "^0.3.1",
     "minimatch": "^3.0.4",
