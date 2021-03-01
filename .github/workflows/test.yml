@@ -1,6 +1,6 @@
 name: tests
 
-on: [push]
+on: [pull_request, push]
 
 jobs:
   test:
@@ -26,5 +26,15 @@ jobs:
     - run: npm test
     - run: npm run lcov
     - uses: codecov/codecov-action@v1
+      if: ${{ github.event_name == 'pull_request' }}
       with:
         flags: ${{ matrix.os }}-${{ matrix.node }}
+
+  automerge:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v1.1.1
+        if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' && contains(github.head_ref, 'dependabot/github_actions') }}
+        with:
+          github-token: ${{secrets.github_token}}
