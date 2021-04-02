@@ -2,7 +2,7 @@ version: '{build}'
 shallow_clone: true
 
 install:
-  - ps: Install-Product node 12.21.0
+  - ps: Install-Product node 12
   - set CI=true
   - set AVA_APPVEYOR=true
   - node --version
