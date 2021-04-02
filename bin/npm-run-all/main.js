@@ -3,7 +3,6 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
@@ -30,46 +29,39 @@ module.exports = function npmRunAll(args, stdout, stderr) {
         const stdin = process.stdin
         const argv = parseCLIArgs(args)
 
-        const promise = argv.groups.reduce(
-            (prev, group) => {
-                if (group.patterns.length === 0) {
-                    return prev
-                }
-                return prev.then(() => runAll(
-                    group.patterns,
-                    {
-                        stdout,
-                        stderr,
-                        stdin,
-                        parallel: group.parallel,
-                        maxParallel: group.parallel ? argv.maxParallel : 1,
-                        continueOnError: argv.continueOnError,
-                        printLabel: argv.printLabel,
-                        printName: argv.printName,
-                        config: argv.config,
-                        packageConfig: argv.packageConfig,
-                        silent: argv.silent,
-                        arguments: argv.rest,
-                        race: group.parallel && argv.race,
-                        npmPath: argv.npmPath,
-                        aggregateOutput: group.parallel && argv.aggregateOutput,
-                    }
-                ))
-            },
-            Promise.resolve(null)
-        )
+        const promise = argv.groups.reduce((prev, group) => {
+            if (group.patterns.length === 0) {
+                return prev
+            }
+            return prev.then(() =>
+                runAll(group.patterns, {
+                    stdout,
+                    stderr,
+                    stdin,
+                    parallel: group.parallel,
+                    maxParallel: group.parallel ? argv.maxParallel : 1,
+                    continueOnError: argv.continueOnError,
+                    printLabel: argv.printLabel,
+                    printName: argv.printName,
+                    config: argv.config,
+                    packageConfig: argv.packageConfig,
+                    silent: argv.silent,
+                    arguments: argv.rest,
+                    race: group.parallel && argv.race,
+                    npmPath: argv.npmPath,
+                    aggregateOutput: group.parallel && argv.aggregateOutput,
+                })
+            )
+        }, Promise.resolve(null))
 
         if (!argv.silent) {
             promise.catch(err => {
-                //eslint-disable-next-line no-console
                 console.error("ERROR:", err.message)
             })
         }
 
         return promise
-    }
-    catch (err) {
-        //eslint-disable-next-line no-console
+    } catch (err) {
         console.error("ERROR:", err.message)
 
         return Promise.reject(err)

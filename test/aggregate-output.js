@@ -1,10 +1,8 @@
-
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
@@ -51,7 +49,11 @@ describe("[aggregated-output] npm-run-all", () => {
 
         it("Node API with parallel", async () => {
             await nodeApi(
-                ["test-task:delayed first 5000", "test-task:delayed second 1000", "test-task:delayed third 3000"],
+                [
+                    "test-task:delayed first 5000",
+                    "test-task:delayed second 1000",
+                    "test-task:delayed third 3000",
+                ],
                 { stdout, parallel: true, silent: true, aggregateOutput: true }
             )
             assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
@@ -60,11 +62,14 @@ describe("[aggregated-output] npm-run-all", () => {
         it("Node API without parallel should fail", async () => {
             try {
                 await nodeApi(
-                    ["test-task:delayed first 5000", "test-task:delayed second 1000", "test-task:delayed third 3000"],
+                    [
+                        "test-task:delayed first 5000",
+                        "test-task:delayed second 1000",
+                        "test-task:delayed third 3000",
+                    ],
                     { stdout, silent: true, aggregateOutput: true }
                 )
-            }
-            catch (_err) {
+            } catch (_err) {
                 return
             }
             assert(false, "should fail")
@@ -72,7 +77,14 @@ describe("[aggregated-output] npm-run-all", () => {
 
         it("npm-run-all command with parallel", async () => {
             await runAll(
-                ["--parallel", "test-task:delayed first 5000", "test-task:delayed second 1000", "test-task:delayed third 3000", "--silent", "--aggregate-output"],
+                [
+                    "--parallel",
+                    "test-task:delayed first 5000",
+                    "test-task:delayed second 1000",
+                    "test-task:delayed third 3000",
+                    "--silent",
+                    "--aggregate-output",
+                ],
                 stdout
             )
             assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
@@ -81,11 +93,16 @@ describe("[aggregated-output] npm-run-all", () => {
         it("npm-run-all command without parallel should fail", async () => {
             try {
                 await runAll(
-                    ["test-task:delayed first 5000", "test-task:delayed second 1000", "test-task:delayed third 3000", "--silent", "--aggregate-output"],
+                    [
+                        "test-task:delayed first 5000",
+                        "test-task:delayed second 1000",
+                        "test-task:delayed third 3000",
+                        "--silent",
+                        "--aggregate-output",
+                    ],
                     stdout
                 )
-            }
-            catch (_err) {
+            } catch (_err) {
                 return
             }
             assert(false, "should fail")
@@ -94,11 +111,16 @@ describe("[aggregated-output] npm-run-all", () => {
         it("run-s command should fail", async () => {
             try {
                 await runSeq(
-                    ["test-task:delayed first 5000", "test-task:delayed second 1000", "test-task:delayed third 3000", "--silent", "--aggregate-output"],
+                    [
+                        "test-task:delayed first 5000",
+                        "test-task:delayed second 1000",
+                        "test-task:delayed third 3000",
+                        "--silent",
+                        "--aggregate-output",
+                    ],
                     stdout
                 )
-            }
-            catch (_err) {
+            } catch (_err) {
                 return
             }
             assert(false, "should fail")
@@ -110,7 +132,8 @@ describe("[aggregated-output] npm-run-all", () => {
                     "test-task:delayed first 5000",
                     "test-task:delayed second 1000",
                     "test-task:delayed third 3000",
-                    "--silent", "--aggregate-output",
+                    "--silent",
+                    "--aggregate-output",
                 ],
                 stdout
             )
@@ -118,4 +141,3 @@ describe("[aggregated-output] npm-run-all", () => {
         })
     })
 })
-

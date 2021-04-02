@@ -3,7 +3,6 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
@@ -33,19 +32,19 @@ describe("[common]", () => {
         it("npm-run-all command", async () => {
             const buf = new BufferStream()
             await runAll([], buf)
-            assert(/Usage:/.test(buf.value))
+            assert(/Usage:/u.test(buf.value))
         })
 
         it("run-s command", async () => {
             const buf = new BufferStream()
             await runSeq([], buf)
-            assert(/Usage:/.test(buf.value))
+            assert(/Usage:/u.test(buf.value))
         })
 
         it("run-p command", async () => {
             const buf = new BufferStream()
             await runPar([], buf)
-            assert(/Usage:/.test(buf.value))
+            assert(/Usage:/u.test(buf.value))
         })
     })
 
@@ -53,37 +52,37 @@ describe("[common]", () => {
         it("npm-run-all command (-h)", async () => {
             const buf = new BufferStream()
             await runAll(["-h"], buf)
-            assert(/Usage:/.test(buf.value))
+            assert(/Usage:/u.test(buf.value))
         })
 
         it("run-s command (-h)", async () => {
             const buf = new BufferStream()
             await runSeq(["-h"], buf)
-            assert(/Usage:/.test(buf.value))
+            assert(/Usage:/u.test(buf.value))
         })
 
         it("run-p command (-h)", async () => {
             const buf = new BufferStream()
             await runPar(["-h"], buf)
-            assert(/Usage:/.test(buf.value))
+            assert(/Usage:/u.test(buf.value))
         })
 
         it("npm-run-all command (--help)", async () => {
             const buf = new BufferStream()
             await runAll(["--help"], buf)
-            assert(/Usage:/.test(buf.value))
+            assert(/Usage:/u.test(buf.value))
         })
 
         it("run-s command (--help)", async () => {
             const buf = new BufferStream()
             await runSeq(["--help"], buf)
-            assert(/Usage:/.test(buf.value))
+            assert(/Usage:/u.test(buf.value))
         })
 
         it("run-p command (--help)", async () => {
             const buf = new BufferStream()
             await runPar(["--help"], buf)
-            assert(/Usage:/.test(buf.value))
+            assert(/Usage:/u.test(buf.value))
         })
     })
 
@@ -91,37 +90,37 @@ describe("[common]", () => {
         it("npm-run-all command (-v)", async () => {
             const buf = new BufferStream()
             await runAll(["-v"], buf)
-            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/u.test(buf.value))
         })
 
         it("run-s command (-v)", async () => {
             const buf = new BufferStream()
             await runSeq(["-v"], buf)
-            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/u.test(buf.value))
         })
 
         it("run-p command (-v)", async () => {
             const buf = new BufferStream()
             await runPar(["-v"], buf)
-            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/u.test(buf.value))
         })
 
         it("npm-run-all command (--version)", async () => {
             const buf = new BufferStream()
             await runAll(["--version"], buf)
-            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/u.test(buf.value))
         })
 
         it("run-s command (--version)", async () => {
             const buf = new BufferStream()
             await runSeq(["--version"], buf)
-            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/u.test(buf.value))
         })
 
         it("run-p command (--version)", async () => {
             const buf = new BufferStream()
             await runPar(["--version"], buf)
-            assert(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+            assert(/v[0-9]+\.[0-9]+\.[0-9]+/u.test(buf.value))
         })
     })
 
@@ -241,8 +240,7 @@ describe("[common]", () => {
             it("run-s command", () => runSeq(["test-task:issue14:win32"]))
             it("run-p command", () => runPar(["test-task:issue14:win32"]))
         })
-    }
-    else {
+    } else {
         describe("issue14", () => {
             it("Node API", () => nodeApi("test-task:issue14:posix"))
             it("npm-run-all command", () => runAll(["test-task:issue14:posix"]))
@@ -256,9 +254,12 @@ describe("[common]", () => {
             const stdout = new BufferStream()
             const stderr = new BufferStream()
             try {
-                await nodeApi("test-task:error", { silent: true, stdout, stderr })
-            }
-            catch (_err) {
+                await nodeApi("test-task:error", {
+                    silent: true,
+                    stdout,
+                    stderr,
+                })
+            } catch (_err) {
                 assert(stdout.value === "" && stderr.value === "")
                 return
             }
@@ -271,7 +272,10 @@ describe("[common]", () => {
          * @returns {string} The stripped string.
          */
         function stripIstanbulWarnings(str) {
-            return str.replace(/File \[.+?] ignored, nothing could be mapped\r?\n/, "")
+            return str.replace(
+                /File \[.+?\] ignored, nothing could be mapped\r?\n/u,
+                ""
+            )
         }
 
         it("npm-run-all command", async () => {
@@ -279,9 +283,11 @@ describe("[common]", () => {
             const stderr = new BufferStream()
             try {
                 await runAll(["--silent", "test-task:error"], stdout, stderr)
-            }
-            catch (_err) {
-                assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
+            } catch (_err) {
+                assert(
+                    stdout.value === "" &&
+                        stripIstanbulWarnings(stderr.value) === ""
+                )
                 return
             }
             assert(false, "Should fail.")
@@ -292,9 +298,11 @@ describe("[common]", () => {
             const stderr = new BufferStream()
             try {
                 await runSeq(["--silent", "test-task:error"], stdout, stderr)
-            }
-            catch (_err) {
-                assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
+            } catch (_err) {
+                assert(
+                    stdout.value === "" &&
+                        stripIstanbulWarnings(stderr.value) === ""
+                )
                 return
             }
             assert(false, "Should fail.")
@@ -305,9 +313,11 @@ describe("[common]", () => {
             const stderr = new BufferStream()
             try {
                 await runPar(["--silent", "test-task:error"], stdout, stderr)
-            }
-            catch (_err) {
-                assert(stdout.value === "" && stripIstanbulWarnings(stderr.value) === "")
+            } catch (_err) {
+                assert(
+                    stdout.value === "" &&
+                        stripIstanbulWarnings(stderr.value) === ""
+                )
                 return
             }
             assert(false, "Should fail.")

@@ -14,7 +14,7 @@
     "docs"
   ],
   "engines": {
-    "node": ">= 4"
+    "node": "^12.17 || >= 14"
   },
   "scripts": {
     "_mocha": "mocha \"test/*.js\" --timeout 120000",
@@ -35,18 +35,18 @@
     "memorystream": "^0.3.1",
     "minimatch": "^3.0.4",
     "pidtree": "^0.3.0",
-    "read-pkg": "^3.0.0",
+    "read-pkg": "^6.0.0",
     "shell-quote": "^1.6.1",
     "string.prototype.padend": "^3.0.0"
   },
   "devDependencies": {
+    "@mysticatea/eslint-plugin": "^13.0.0",
     "@types/node": "^4.9.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-power-assert": "^2.0.0",
     "babel-register": "^6.26.0",
     "codecov": "^3.1.0",
-    "eslint": "^4.19.1",
-    "eslint-config-mysticatea": "^12.0.0",
+    "eslint": "^6.8.0",
     "fs-extra": "^7.0.1",
     "mocha": "^5.2.0",
     "nyc": "^11.9.0",

@@ -3,7 +3,6 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict"
 
 /*eslint-disable no-process-env */
 
@@ -11,10 +10,10 @@
 // Helpers
 //------------------------------------------------------------------------------
 
-const OVERWRITE_OPTION = /^--([^:]+?):([^=]+?)(?:=(.+))?$/
-const CONFIG_OPTION = /^--([^=]+?)(?:=(.+))$/
-const PACKAGE_CONFIG_PATTERN = /^npm_package_config_(.+)$/
-const CONCAT_OPTIONS = /^-[clnprs]+$/
+const OVERWRITE_OPTION = /^--([^:]+?):([^=]+?)(?:=(.+))?$/u
+const CONFIG_OPTION = /^--([^=]+?)(?:=(.+))$/u
+const PACKAGE_CONFIG_PATTERN = /^npm_package_config_(.+)$/u
+const CONCAT_OPTIONS = /^-[clnprs]+$/u
 
 /**
  * Overwrites a specified package config.
@@ -61,10 +60,9 @@ function createPackageConfig() {
  * @returns {void}
  */
 function addGroup(groups, initialValues) {
-    groups.push(Object.assign(
-        { parallel: false, patterns: [] },
-        initialValues || {}
-    ))
+    groups.push(
+        Object.assign({ parallel: false, patterns: [] }, initialValues || {})
+    )
 }
 
 /**
@@ -115,9 +113,9 @@ class ArgumentSet {
  * @param {string[]} args - CLI arguments.
  * @returns {ArgumentSet} set itself.
  */
-function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
-    LOOP:
-    for (let i = 0; i < args.length; ++i) {
+// eslint-disable-next-line complexity
+function parseCLIArgsCore(set, args) {
+    LOOP: for (let i = 0; i < args.length; ++i) {
         const arg = args[i]
 
         switch (arg) {
@@ -199,20 +197,19 @@ function parseCLIArgsCore(set, args) {    // eslint-disable-line complexity
                         matched[2],
                         matched[3] || args[++i]
                     )
-                }
-                else if ((matched = CONFIG_OPTION.exec(arg))) {
+                } else if ((matched = CONFIG_OPTION.exec(arg))) {
                     set.config[matched[1]] = matched[2]
-                }
-                else if (CONCAT_OPTIONS.test(arg)) {
+                } else if (CONCAT_OPTIONS.test(arg)) {
                     parseCLIArgsCore(
                         set,
-                        arg.slice(1).split("").map(c => `-${c}`)
+                        arg
+                            .slice(1)
+                            .split("")
+                            .map(c => `-${c}`)
                     )
-                }
-                else if (arg[0] === "-") {
+                } else if (arg[0] === "-") {
                     throw new Error(`Invalid Option: ${arg}`)
-                }
-                else {
+                } else {
                     set.lastGroup.patterns.push(arg)
                 }
 

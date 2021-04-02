@@ -3,7 +3,6 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
@@ -35,11 +34,9 @@ const RUN_S = path.resolve(__dirname, "../../bin/run-s/index.js")
  */
 function spawn(filePath, args, stdout, stderr) {
     return new Promise((resolve, reject) => {
-        const child = cp.spawn(
-            process.execPath,
-            [filePath].concat(args),
-            { stdio: "pipe" }
-        )
+        const child = cp.spawn(process.execPath, [filePath].concat(args), {
+            stdio: "pipe",
+        })
         const out = new BufferStream()
         const error = new BufferStream()
 
@@ -48,16 +45,14 @@ function spawn(filePath, args, stdout, stderr) {
         }
         if (stderr != null) {
             child.stderr.pipe(stderr)
-        }
-        else {
+        } else {
             child.stderr.pipe(error)
         }
         child.stdout.pipe(out)
-        child.on("close", (exitCode) => {
+        child.on("close", exitCode => {
             if (exitCode) {
                 reject(new Error(error.value || "Exited with non-zero code."))
-            }
-            else {
+            } else {
                 resolve()
             }
         })
@@ -77,8 +72,7 @@ function spawn(filePath, args, stdout, stderr) {
 module.exports.result = function result() {
     try {
         return fs.readFileSync(FILE_NAME, { encoding: "utf8" })
-    }
-    catch (err) {
+    } catch (err) {
         if (err.code === "ENOENT") {
             return null
         }
@@ -104,8 +98,7 @@ module.exports.appendResult = function appendResult(content) {
 module.exports.removeResult = function removeResult() {
     try {
         fs.unlinkSync(FILE_NAME)
-    }
-    catch (err) {
+    } catch (err) {
         if (err.code === "ENOENT") {
             return
         }

@@ -3,7 +3,6 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
@@ -51,14 +50,19 @@ describe("[fail] it should fail", () => {
         it("run-s command", () => shouldFail(runSeq(["--parallel"])))
         it("run-p command", () => shouldFail(runPar(["--sequential"])))
 
-        it("npm-run-all command with --race without --parallel", () => shouldFail(runAll(["--race"])))
-        it("npm-run-all command with --r without --parallel", () => shouldFail(runAll(["--r"])))
+        it("npm-run-all command with --race without --parallel", () =>
+            shouldFail(runAll(["--race"])))
+        it("npm-run-all command with --r without --parallel", () =>
+            shouldFail(runAll(["--r"])))
         it("run-s command with --race", () => shouldFail(runSeq(["--race"])))
         it("run-s command with --r", () => shouldFail(runSeq(["--r"])))
     })
 
     describe("if invalid `options.taskList` is given.", () => {
-        it("Node API", () => shouldFail(nodeApi("test-task:append a", { taskList: { invalid: 0 } })))
+        it("Node API", () =>
+            shouldFail(
+                nodeApi("test-task:append a", { taskList: { invalid: 0 } })
+            ))
     })
 
     describe("if unknown tasks are given:", () => {
@@ -69,10 +73,14 @@ describe("[fail] it should fail", () => {
     })
 
     describe("if unknown tasks are given (2):", () => {
-        it("Node API", () => shouldFail(nodeApi(["test-task:append:a", "unknown-task"])))
-        it("npm-run-all command", () => shouldFail(runAll(["test-task:append:a", "unknown-task"])))
-        it("run-s command", () => shouldFail(runSeq(["test-task:append:a", "unknown-task"])))
-        it("run-p command", () => shouldFail(runPar(["test-task:append:a", "unknown-task"])))
+        it("Node API", () =>
+            shouldFail(nodeApi(["test-task:append:a", "unknown-task"])))
+        it("npm-run-all command", () =>
+            shouldFail(runAll(["test-task:append:a", "unknown-task"])))
+        it("run-s command", () =>
+            shouldFail(runSeq(["test-task:append:a", "unknown-task"])))
+        it("run-p command", () =>
+            shouldFail(runPar(["test-task:append:a", "unknown-task"])))
     })
 
     describe("if package.json is not found:", () => {
@@ -80,7 +88,8 @@ describe("[fail] it should fail", () => {
         after(() => process.chdir(".."))
 
         it("Node API", () => shouldFail(nodeApi(["test-task:append:a"])))
-        it("npm-run-all command", () => shouldFail(runAll(["test-task:append:a"])))
+        it("npm-run-all command", () =>
+            shouldFail(runAll(["test-task:append:a"])))
         it("run-s command", () => shouldFail(runSeq(["test-task:append:a"])))
         it("run-p command", () => shouldFail(runPar(["test-task:append:a"])))
     })
@@ -90,7 +99,8 @@ describe("[fail] it should fail", () => {
         after(() => process.chdir(".."))
 
         it("Node API", () => shouldFail(nodeApi(["test-task:append:a"])))
-        it("npm-run-all command", () => shouldFail(runAll(["test-task:append:a"])))
+        it("npm-run-all command", () =>
+            shouldFail(runAll(["test-task:append:a"])))
         it("run-s command", () => shouldFail(runSeq(["test-task:append:a"])))
         it("run-p command", () => shouldFail(runPar(["test-task:append:a"])))
     })
@@ -107,14 +117,18 @@ describe("[fail] it should fail", () => {
         it("npm-run-all command", () => shouldFail(runAll(["test-task:abort"])))
         it("run-s command", () => shouldFail(runSeq(["test-task:abort"])))
         it("run-p command", () => shouldFail(runPar(["test-task:abort"])))
-        it("with correct exit code", () => nodeApi("test-task:abort").then(() =>
-            assert(false, "should fail")
-        ).catch(err => {
-            // In NodeJS versions > 6, the child process correctly sends back
-            // the signal + code of null. In NodeJS versions <= 6, the child
-            // process does not set the signal, and sets the code to 1.
-            const code = Number(process.version.match(/^v(\d+)/)[1]) > 6 ? 134 : 1
-            assert(err.code === code, "should have correct exit code")
-        }))
+        it("with correct exit code", () =>
+            nodeApi("test-task:abort")
+                .then(() => assert(false, "should fail"))
+                .catch(err => {
+                    // In NodeJS versions > 6, the child process correctly sends back
+                    // the signal + code of null. In NodeJS versions <= 6, the child
+                    // process does not set the signal, and sets the code to 1.
+                    const code =
+                        Number(process.version.match(/^v(\d+)/u)[1]) > 6
+                            ? 134
+                            : 1
+                    assert(err.code === code, "should have correct exit code")
+                }))
     })
 })
