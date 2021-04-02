@@ -1,6 +1,9 @@
 {
     "root": true,
-    "extends": ["mysticatea", "mysticatea/node"],
+    "extends": ["plugin:@mysticatea/es2015", "plugin:@mysticatea/+node"],
+    "parserOptions": {
+        "sourceType": "module"
+    },
     "rules": {
         "prefer-rest-params": "off",
         "prefer-spread": "off"

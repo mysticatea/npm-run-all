@@ -3,7 +3,6 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
@@ -46,25 +45,38 @@ describe("[print-label] npm-run-all", () => {
 
         it("Node API", async () => {
             const stdout = new BufferStream()
-            await nodeApi("test-task:echo abc", { stdout, silent: true, printLabel: true })
+            await nodeApi("test-task:echo abc", {
+                stdout,
+                silent: true,
+                printLabel: true,
+            })
             assert.equal(stdout.value, EXPECTED_TEXT)
         })
 
         it("npm-run-all command (--print-label)", async () => {
             const stdout = new BufferStream()
-            await runAll(["test-task:echo abc", "--silent", "--print-label"], stdout)
+            await runAll(
+                ["test-task:echo abc", "--silent", "--print-label"],
+                stdout
+            )
             assert.equal(stdout.value, EXPECTED_TEXT)
         })
 
         it("run-s command (--print-label)", async () => {
             const stdout = new BufferStream()
-            await runSeq(["test-task:echo abc", "--silent", "--print-label"], stdout)
+            await runSeq(
+                ["test-task:echo abc", "--silent", "--print-label"],
+                stdout
+            )
             assert.equal(stdout.value, EXPECTED_TEXT)
         })
 
         it("run-p command (--print-label)", async () => {
             const stdout = new BufferStream()
-            await runPar(["test-task:echo abc", "--silent", "--print-label"], stdout)
+            await runPar(
+                ["test-task:echo abc", "--silent", "--print-label"],
+                stdout
+            )
             assert.equal(stdout.value, EXPECTED_TEXT)
         })
 
@@ -139,7 +151,11 @@ describe("[print-label] npm-run-all", () => {
         it("Node API", async () => {
             const stdout = new BufferStream()
             await nodeApi(
-                ["test-task:echo a", "test-task:echo abcd", "test-task:echo ab"],
+                [
+                    "test-task:echo a",
+                    "test-task:echo abcd",
+                    "test-task:echo ab",
+                ],
                 { stdout, silent: true, printLabel: true }
             )
             assert.equal(stdout.value, EXPECTED_TEXT)
@@ -148,7 +164,13 @@ describe("[print-label] npm-run-all", () => {
         it("npm-run-all command", async () => {
             const stdout = new BufferStream()
             await runAll(
-                ["test-task:echo a", "test-task:echo abcd", "test-task:echo ab", "--silent", "--print-label"],
+                [
+                    "test-task:echo a",
+                    "test-task:echo abcd",
+                    "test-task:echo ab",
+                    "--silent",
+                    "--print-label",
+                ],
                 stdout
             )
             assert.equal(stdout.value, EXPECTED_TEXT)
@@ -157,7 +179,13 @@ describe("[print-label] npm-run-all", () => {
         it("run-s command", async () => {
             const stdout = new BufferStream()
             await runSeq(
-                ["test-task:echo a", "test-task:echo abcd", "test-task:echo ab", "--silent", "--print-label"],
+                [
+                    "test-task:echo a",
+                    "test-task:echo abcd",
+                    "test-task:echo ab",
+                    "--silent",
+                    "--print-label",
+                ],
                 stdout
             )
             assert.equal(stdout.value, EXPECTED_TEXT)
@@ -173,16 +201,16 @@ describe("[print-label] npm-run-all", () => {
             "\n[test-task:echo abcd] ",
             "\n[test-task:echo abcd] abcd",
         ]
-        const UNEXPECTED_PATTERNS = [
-            /aab(cd)?/,
-            /ab(cd)?a\b/,
-            /\n\n/,
-        ]
+        const UNEXPECTED_PATTERNS = [/aab(cd)?/u, /ab(cd)?a\b/u, /\n\n/u]
 
         it("Node API", async () => {
             const stdout = new BufferStream()
             await nodeApi(
-                ["test-task:echo a", "test-task:echo abcd", "test-task:echo ab"],
+                [
+                    "test-task:echo a",
+                    "test-task:echo abcd",
+                    "test-task:echo ab",
+                ],
                 { stdout, parallel: true, printLabel: true }
             )
             for (const line of EXPECTED_LINES) {
@@ -196,7 +224,13 @@ describe("[print-label] npm-run-all", () => {
         it("npm-run-all command", async () => {
             const stdout = new BufferStream()
             await runAll(
-                ["--parallel", "test-task:echo a", "test-task:echo abcd", "test-task:echo ab", "--print-label"],
+                [
+                    "--parallel",
+                    "test-task:echo a",
+                    "test-task:echo abcd",
+                    "test-task:echo ab",
+                    "--print-label",
+                ],
                 stdout
             )
             for (const line of EXPECTED_LINES) {
@@ -210,7 +244,12 @@ describe("[print-label] npm-run-all", () => {
         it("run-p command", async () => {
             const stdout = new BufferStream()
             await runPar(
-                ["test-task:echo a", "test-task:echo abcd", "test-task:echo ab", "--print-label"],
+                [
+                    "test-task:echo a",
+                    "test-task:echo abcd",
+                    "test-task:echo ab",
+                    "--print-label",
+                ],
                 stdout
             )
             for (const line of EXPECTED_LINES) {

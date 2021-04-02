@@ -3,7 +3,6 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict"
 
 //------------------------------------------------------------------------------
 // Requirements
@@ -32,7 +31,7 @@ function exec(command, args) {
         const cp = spawn(command, args, { stdio: ["ignore", "ignore", "pipe"] })
 
         cp.stderr.pipe(stderr)
-        cp.on("exit", (exitCode) => {
+        cp.on("exit", exitCode => {
             if (exitCode) {
                 reject(new Error(`Exited with ${exitCode}: ${stderr.value}`))
                 return
