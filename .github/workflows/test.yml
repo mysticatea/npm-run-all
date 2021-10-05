@@ -2,27 +2,31 @@ name: tests
 
 on: [pull_request, push]
 
+env:
+  FORCE_COLOR: 2
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
 
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         node: [14, 12]
 
     steps:
-    - uses: actions/checkout@v2.3.4
-    - name: Use Node.js ${{ matrix.node }}
-      uses: actions/setup-node@v2.4.1
-      with:
-        node-version: ${{ matrix.node }}
-    - run: npm i
-    - run: npm test
-    - uses: codecov/codecov-action@v2.1.0
-      if: ${{ github.event_name == 'pull_request' }}
-      with:
-        flags: ${{ matrix.os }}-${{ matrix.node }}
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm i
+      - run: npm test
+      - uses: codecov/codecov-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          flags: ${{ matrix.os }}-${{ matrix.node }}
 
   automerge:
     needs: test
@@ -31,4 +35,4 @@ jobs:
       - uses: fastify/github-action-merge-dependabot@v2.5.0
         if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' && contains(github.head_ref, 'dependabot/github_actions') }}
         with:
-          github-token: ${{secrets.github_token}}
+          github-token: ${{ secrets.github_token }}
