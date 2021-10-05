@@ -18,13 +18,12 @@
   },
   "scripts": {
     "_mocha": "mocha \"test/*.js\" --timeout 120000",
-    "clean": "rimraf .nyc_output coverage jsdoc \"test-workspace/{build,test.txt}\"",
+    "clean": "rimraf coverage jsdoc \"test-workspace/{build,test.txt}\"",
     "docs": "jsdoc -c jsdoc.json",
     "lint": "eslint bin lib scripts test \"test-workspace/tasks/*.js\"",
     "pretest": "node scripts/make-slink.js && npm run lint",
-    "test": "nyc npm run _mocha",
+    "test": "c8 npm run _mocha",
     "watch": "npm run _mocha -- --watch --growl",
-    "lcov": "nyc report -r lcovonly",
     "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
     "preversion": "npm test",
     "postversion": "git push --follow-tags && gh-release -y"
@@ -40,13 +39,13 @@
   },
   "devDependencies": {
     "auto-changelog": "^2.2.0",
+    "c8": "^7.9.0",
     "eslint": "^4.19.1",
     "eslint-config-mysticatea": "^13.0.2",
     "fs-extra": "^10.0.0",
     "gh-release": "^6.0.0",
     "jsdoc": "^3.6.6",
     "mocha": "^9.0.0",
-    "nyc": "^15.1.0",
     "p-queue": "^6.6.1",
     "rimraf": "^3.0.2",
     "yarn": "^1.12.3"
@@ -76,5 +75,12 @@
   "bugs": {
     "url": "https://github.com/bcomnes/npm-run-all2/issues"
   },
-  "homepage": "https://github.com/bcomnes/npm-run-all2"
+  "homepage": "https://github.com/bcomnes/npm-run-all2",
+  "c8": {
+    "reporter": [
+      "html",
+      "lcovonly",
+      "text"
+    ]
+  }
 }
