@@ -9,7 +9,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const assert = require("assert")
+const assert = require("assert").strict
 const spawn = require("cross-spawn")
 const BufferStream = require("./lib/buffer-stream")
 const util = require("./lib/util")
