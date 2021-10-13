@@ -19,7 +19,6 @@ jobs:
         node-version: ${{ matrix.node }}
     - run: npm i
     - run: npm test
-    - run: npm run lcov
     - uses: codecov/codecov-action@v2.1.0
       if: ${{ github.event_name == 'pull_request' }}
       with:
