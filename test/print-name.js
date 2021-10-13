@@ -9,7 +9,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const assert = require("assert")
+const assert = require("assert").strict
 const nodeApi = require("../lib")
 const createHeader = require("../lib/create-header")
 const readPackageJson = require("../lib/read-package-json")
@@ -39,49 +39,49 @@ describe("[print-name] npm-run-all", () => {
             const stdout = new BufferStream()
             await nodeApi("test-task:echo abc", { stdout, silent: true, printName: true })
             const header = createHeader("test-task:echo abc", packageInfo, false)
-            assert.strictEqual(stdout.value.slice(0, header.length), header)
+            assert.equal(stdout.value.slice(0, header.length), header)
         })
 
         it("npm-run-all command (--print-name)", async () => {
             const stdout = new BufferStream()
             await runAll(["test-task:echo abc", "--silent", "--print-name"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
-            assert.strictEqual(stdout.value.slice(0, header.length), header)
+            assert.equal(stdout.value.slice(0, header.length), header)
         })
 
         it("run-s command (--print-name)", async () => {
             const stdout = new BufferStream()
             await runSeq(["test-task:echo abc", "--silent", "--print-name"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
-            assert.strictEqual(stdout.value.slice(0, header.length), header)
+            assert.equal(stdout.value.slice(0, header.length), header)
         })
 
         it("run-p command (--print-name)", async () => {
             const stdout = new BufferStream()
             await runPar(["test-task:echo abc", "--silent", "--print-name"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
-            assert.strictEqual(stdout.value.slice(0, header.length), header)
+            assert.equal(stdout.value.slice(0, header.length), header)
         })
 
         it("npm-run-all command (-n)", async () => {
             const stdout = new BufferStream()
             await runAll(["test-task:echo abc", "--silent", "-n"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
-            assert.strictEqual(stdout.value.slice(0, header.length), header)
+            assert.equal(stdout.value.slice(0, header.length), header)
         })
 
         it("run-s command (-n)", async () => {
             const stdout = new BufferStream()
             await runSeq(["test-task:echo abc", "--silent", "-n"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
-            assert.strictEqual(stdout.value.slice(0, header.length), header)
+            assert.equal(stdout.value.slice(0, header.length), header)
         })
 
         it("run-p command (-n)", async () => {
             const stdout = new BufferStream()
             await runPar(["test-task:echo abc", "--silent", "-n"], stdout)
             const header = createHeader("test-task:echo abc", packageInfo, false)
-            assert.strictEqual(stdout.value.slice(0, header.length), header)
+            assert.equal(stdout.value.slice(0, header.length), header)
         })
     })
 })

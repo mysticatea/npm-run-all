@@ -9,7 +9,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const assert = require("assert")
+const assert = require("assert").strict
 const nodeApi = require("../lib")
 const spawnWithKill = require("./lib/spawn-with-kill")
 const util = require("./lib/util")

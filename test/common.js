@@ -9,7 +9,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const assert = require("assert")
+const assert = require("assert").strict
 const nodeApi = require("../lib")
 const BufferStream = require("./lib/buffer-stream")
 const util = require("./lib/util")
