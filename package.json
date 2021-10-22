@@ -17,10 +17,10 @@
     "node": ">= 10"
   },
   "scripts": {
-    "_mocha": "mocha \"test/*.js\" --timeout 120000",
+    "_mocha": "mocha --timeout 120000",
     "clean": "rimraf coverage jsdoc \"test-workspace/{build,test.txt}\"",
     "docs": "jsdoc -c jsdoc.json",
-    "lint": "eslint bin lib scripts test \"test-workspace/tasks/*.js\"",
+    "lint": "eslint --ignore-path .gitignore --report-unused-disable-directives .",
     "pretest": "node scripts/make-slink.js && npm run lint",
     "test": "c8 npm run _mocha",
     "watch": "npm run _mocha -- --watch --growl",
