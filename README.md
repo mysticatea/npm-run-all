@@ -72,7 +72,7 @@ Please use GitHub Issues.
 
 Please use GitHub Pull Requests.
 
-English grammar improvements are particularly appreciated. Arigato.
+English grammar improvements are particularly appreciated. Arigato gozaimashita.
 
 ### Implementing
 
