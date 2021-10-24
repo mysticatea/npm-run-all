@@ -72,13 +72,13 @@ Please use GitHub Issues.
 
 Please use GitHub Pull Requests.
 
-I'm not familiar with English, so I especially thank you for documents' corrections.
+English grammar improvements are particularly appreciated. Arigato gozaimashita.
 
 ### Implementing
 
 Please use GitHub Pull Requests.
 
-There are some npm-scripts to help developments.
+There are some npm-scripts to help development.
 
 - **npm test** - Run tests and collect coverage.
 - **npm run clean** - Delete temporary files.
