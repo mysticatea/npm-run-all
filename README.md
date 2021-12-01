@@ -25,9 +25,9 @@ A CLI tool to run multiple npm-scripts in parallel or sequential.
 ## 💿 Installation
 
 ```bash
-$ npm install npm-run-all --save-dev
+$ npm install npm-run-all2 --save-dev
 # or
-$ yarn add npm-run-all --dev
+$ yarn add npm-run-all2 --dev
 ```
 
 - It requires `Node@>=4`.
