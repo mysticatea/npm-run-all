@@ -32,7 +32,7 @@
     "ansi-styles": "^5.0.0",
     "cross-spawn": "^7.0.3",
     "memorystream": "^0.3.1",
-    "minimatch": "^4.1.1",
+    "minimatch": "^5.0.0",
     "pidtree": "^0.5.0",
     "read-pkg": "^5.2.0",
     "shell-quote": "^1.6.1"
