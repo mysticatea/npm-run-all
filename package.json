@@ -74,5 +74,9 @@
   "bugs": {
     "url": "https://github.com/mysticatea/npm-run-all/issues"
   },
-  "homepage": "https://github.com/mysticatea/npm-run-all"
+  "homepage": "https://github.com/mysticatea/npm-run-all",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/mysticatea"
+  }
 }
