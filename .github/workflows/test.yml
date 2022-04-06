@@ -23,7 +23,7 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm i
       - run: npm test
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
         if: ${{ github.event_name == 'pull_request' }}
         with:
           flags: ${{ matrix.os }}-${{ matrix.node }}
