@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node: [14, 12]
+        node: ['lts/*', 12]
 
     steps:
       - uses: actions/checkout@v3
@@ -35,7 +35,7 @@ jobs:
       pull-requests: write
       contents: write
     steps:
-      - uses: fastify/github-action-merge-dependabot@v3.1
+      - uses: fastify/github-action-merge-dependabot@v3
         if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' && contains(github.head_ref, 'dependabot/github_actions') }}
         with:
           github-token: ${{ secrets.github_token }}
