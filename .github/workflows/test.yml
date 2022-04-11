@@ -35,7 +35,7 @@ jobs:
       pull-requests: write
       contents: write
     steps:
-      - uses: fastify/github-action-merge-dependabot@v3.0.2
+      - uses: fastify/github-action-merge-dependabot@v3
         if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' && contains(github.head_ref, 'dependabot/github_actions') }}
         with:
           github-token: ${{ secrets.github_token }}
