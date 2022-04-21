@@ -60,7 +60,7 @@ This `npm-run-all` package provides Node API.
 
 ## 📰 Changelog
 
-- https://github.com/mysticatea/npm-run-all/releases
+- https://github.com/bcomnes/npm-run-all2/releases
 
 ## 🍻 Contributing
 
