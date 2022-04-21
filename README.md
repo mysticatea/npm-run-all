@@ -7,7 +7,6 @@
 [![Downloads/month](https://img.shields.io/npm/dm/npm-run-all2.svg)](http://www.npmtrends.com/npm-run-all2)
 [![tests](https://github.com/bcomnes/npm-run-all2/workflows/tests/badge.svg)](https://github.com/bcomnes/npm-run-all2/actions)
 [![Coverage Status](https://codecov.io/gh/bcomnes/npm-run-all2/branch/master/graph/badge.svg)](https://codecov.io/gh/bcomnes/npm-run-all2)
-[![Dependency Status](https://david-dm.org/bcomnes/npm-run-all2.svg)](https://david-dm.org/bcomnes/npm-run-all2)
 
 A CLI tool to run multiple npm-scripts in parallel or sequential.
 
