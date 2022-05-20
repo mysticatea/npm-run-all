@@ -8,7 +8,7 @@
 [![Build Status](https://travis-ci.org/mysticatea/npm-run-all.svg?branch=master)](https://travis-ci.org/mysticatea/npm-run-all)
 [![Build status](https://ci.appveyor.com/api/projects/status/v0owd44q1r7hceir/branch/master?svg=true)](https://ci.appveyor.com/project/mysticatea/npm-run-all/branch/master)
 [![Coverage Status](https://codecov.io/gh/mysticatea/eslint-plugin-node/branch/master/graph/badge.svg)](https://codecov.io/gh/mysticatea/npm-run-all)
-[![Dependency Status](https://david-dm.org/mysticatea/npm-run-all.svg)](https://david-dm.org/mysticatea/npm-run-all)
+[![Dependencies Status](https://requires.io/github/mysticatea/npm-run-all/requirements.svg?branch=master)](https://requires.io/github/mysticatea/npm-run-all/requirements/?branch=master)
 
 A CLI tool to run multiple npm-scripts in parallel or sequential.
 
