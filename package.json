@@ -14,7 +14,8 @@
     "docs"
   ],
   "engines": {
-    "node": ">= 10"
+    "node": ">= 16",
+    "npm": ">= 8"
   },
   "scripts": {
     "_mocha": "mocha --timeout 120000",

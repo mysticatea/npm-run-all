@@ -8,7 +8,7 @@ on:
         required: true
 
 env:
-  NODE_VERSION: 14
+  NODE_VERSION: 'lts/*'
   FORCE_COLOR: 2
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
       - run: git status # getting odd dirty repo errors during version debug info
       - run: git diff
       - name: npm version && npm publish
-        uses: bcomnes/npm-bump@v2
+        uses: bcomnes/npm-bump@v2.0.2
         with:
           git_email: bcomnes@gmail.com
           git_username: ${{ github.actor }}
