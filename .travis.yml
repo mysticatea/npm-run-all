@@ -2,12 +2,9 @@ sudo: false
 
 language: node_js
 node_js:
-  - "4.0.0"
-  - "4"
-  - "6"
-  - "8"
-  - "10"
-  - "11"
+  - "14"
+  - "16"
+  - "18"
 
 script:
   - npm test
