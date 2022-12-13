@@ -36,7 +36,7 @@
     "minimatch": "^3.0.4",
     "pidtree": "^0.3.0",
     "read-pkg": "^3.0.0",
-    "shell-quote": "^1.6.1",
+    "shell-quote": "^1.7.3",
     "string.prototype.padend": "^3.0.0"
   },
   "devDependencies": {
