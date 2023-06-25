@@ -31,11 +31,11 @@
   "dependencies": {
     "ansi-styles": "^3.2.1",
     "chalk": "^2.4.1",
-    "cross-spawn": "^6.0.5",
+    "cross-spawn": "^7.0.3",
     "memorystream": "^0.3.1",
     "minimatch": "^3.0.4",
     "pidtree": "^0.3.0",
-    "read-pkg": "^3.0.0",
+    "read-pkg": "^6.0.0",
     "shell-quote": "^1.6.1",
     "string.prototype.padend": "^3.0.0"
   },
