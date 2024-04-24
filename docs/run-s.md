@@ -36,10 +36,10 @@ Options:
     For example, '-clns' equals to '-c -l -n -s'.
 
 Examples:
-    $ run-s build:**
-    $ run-s lint clean build:**
-    $ run-s --silent --print-name lint clean build:**
-    $ run-s -sn lint clean build:**
+    $ run-s 'build:**'
+    $ run-s lint clean 'build:**'
+    $ run-s --silent --print-name lint clean 'build:**'
+    $ run-s -sn lint clean 'build:**'
 ```
 
 ### npm-scripts
@@ -76,14 +76,14 @@ We can use [glob]-like patterns to specify npm-scripts.
 The difference is one -- the separator is `:` instead of `/`.
 
 ```
-$ run-s build:*
+$ run-s 'build:*'
 ```
 
 In this case, runs sub scripts of `build`. For example: `build:html`, `build:js`.
 But, doesn't run sub-sub scripts. For example: `build:js:index`.
 
 ```
-$ run-s build:**
+$ run-s 'build:**'
 ```
 
 If we use a globstar `**`, runs both sub scripts and sub-sub scripts.

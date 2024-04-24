@@ -53,7 +53,7 @@ Options:
     For example, '-clns' equals to '-c -l -n -s'.
 
 Examples:
-    $ run-p watch:**
+    $ run-p 'watch:**'
     $ run-p --print-label "build:** -- --watch"
     $ run-p -sl "build:** -- --watch"
     $ run-p start-server start-browser start-electron

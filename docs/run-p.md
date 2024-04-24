@@ -42,7 +42,7 @@ Options:
     For example, '-clns' equals to '-c -l -n -s'.
 
 Examples:
-    $ run-p watch:**
+    $ run-p 'watch:**'
     $ run-p --print-label "build:** -- --watch"
     $ run-p -l "build:** -- --watch"
     $ run-p start-server start-browser start-electron
@@ -85,14 +85,14 @@ We can use [glob]-like patterns to specify npm-scripts.
 The difference is one -- the separator is `:` instead of `/`.
 
 ```
-$ run-p watch:*
+$ run-p 'watch:*'
 ```
 
 In this case, runs sub scripts of `watch`. For example: `watch:html`, `watch:js`.
 But, doesn't run sub-sub scripts. For example: `watch:js:index`.
 
 ```
-$ run-p watch:**
+$ run-p 'watch:**'
 ```
 
 If we use a globstar `**`, runs both sub scripts and sub-sub scripts.

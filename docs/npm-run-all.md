@@ -44,8 +44,8 @@ Options:
     --silent   - - - - - - - - Set 'silent' to the log level of npm.
 
 Examples:
-    $ npm-run-all --serial clean lint build:**
-    $ npm-run-all --parallel watch:**
+    $ npm-run-all --serial clean lint 'build:**'
+    $ npm-run-all --parallel 'watch:**'
     $ npm-run-all clean lint --parallel "build:** -- --watch"
     $ npm-run-all -l -p start-server start-browser start-electron
 ```
@@ -121,14 +121,14 @@ We can use [glob]-like patterns to specify npm-scripts.
 The difference is one -- the separator is `:` instead of `/`.
 
 ```
-$ npm-run-all --parallel watch:*
+$ npm-run-all --parallel 'watch:*'
 ```
 
 In this case, runs sub scripts of `watch`. For example: `watch:html`, `watch:js`.
 But, doesn't run sub-sub scripts. For example: `watch:js:index`.
 
 ```
-$ npm-run-all --parallel watch:**
+$ npm-run-all --parallel 'watch:**'
 ```
 
 If we use a globstar `**`, runs both sub scripts and sub-sub scripts.
