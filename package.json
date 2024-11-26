@@ -32,10 +32,12 @@
     "ansi-styles": "^3.2.1",
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
+    "json5": "^2.2.3",
+    "load-json-file": "^4.0.0",
     "memorystream": "^0.3.1",
     "minimatch": "^3.0.4",
+    "normalize-package-data": "^2.5.0",
     "pidtree": "^0.3.0",
-    "read-pkg": "^3.0.0",
     "shell-quote": "^1.6.1",
     "string.prototype.padend": "^3.0.0"
   },
