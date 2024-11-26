@@ -1,0 +1,22 @@
+{
+  /*
+   * Test comment
+   */
+
+  name: "npm-run-all-json5-test",
+  version: "0.0.0",
+  private: true,
+  description: "",
+  engines: {
+    node: ">=4",
+  },
+  config: {
+    test: "OK",
+  },
+  repository: {
+    type: "git",
+    url: "https://github.com/mysticatea/npm-run-all.git",
+  },
+  author: "Toru Nagashima",
+  license: "MIT",
+}
